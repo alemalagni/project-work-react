@@ -8,7 +8,7 @@ function Series() {
     const [series, setSeries] = useState([])
 
     function getSeries() {
-        axios.get('http://127.0.0.1:4000/manga/series')
+        axios.get(import.meta.env.VITE_PUBLIC_PATH + `manga/series`)
             .then(res => {
                 console.log(res.data)
                 setSeries(res.data)
