@@ -1,36 +1,36 @@
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import MangaCard from "../components/MangaCard";
+
 
 function MangaPage() {
 
-    const [mangas, setManga] = useState([]);
-
-    const url = 'http://127.0.0.1:3007/manga';
-
-    function mangaList() {
-
-        axios.get(url)
-            .then(response => { setManga(response.data) })
+    const [manga, setManga] = useState([])
+    console.log(import.meta.env.VITE_PUBLIC_PATH)
+    function getManga() {
+        axios.get(import.meta.env.VITE_PUBLIC_PATH + 'manga')
+            .then(res => {
+                console.log(res.data)
+                setManga(res.data)
+            })
             .catch(err => console.log(err))
-    };
+    }
 
-    useEffect(mangaList, []);
+    useEffect(() => {
+        getManga()
+    }, [])
 
     return (
-
         <>
-            <section>
-                <div>
-                    {mangas.length ? mangas.map(manga => (
-                        <div key={manga.id}>
-                            <MangaCard data={manga} />
-                        </div>
-                    )) : <div>Sorry, we don't have any manga in this moment. Try later.</div>}
-                </div>
-            </section>
+            <h1>Lista di manga</h1>
+            <div className="row">
+                {manga.length ? manga.map(manga => (
+                    <div key={manga.id} className="col-12 col-md-4 mt-3">
+                        <MangaCard data={manga} />
+                    </div>
+                )) : <div>Nessun elemento trovato</div>}
+            </div>
         </>
-
     )
 }
 
