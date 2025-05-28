@@ -21,6 +21,7 @@ function MangaPage() {
     }, [])
 
     return (
+
         <>
             <h1>Lista di manga</h1>
             <div className="row">
@@ -31,6 +32,7 @@ function MangaPage() {
                 )) : <div>Nessun elemento trovato</div>}
             </div>
         </>
+
     )
 }
 
