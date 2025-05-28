@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import logo from "../public/Gemini_Generated_Image_17anvi17anvi17an.png"
+import logo from "../public/logoecommercenoback.png"
 
 export default function Navbar() {
 
