@@ -51,7 +51,7 @@ function SeriesCard({ serie }) {
                 <h5 className="fw-bold text-dark">{serie.name}</h5>
                 <p className="text-muted small flex-grow-1" style={{ minHeight: "60px" }}>
                     {serie.description.length > 100
-                        ? serie.description.slice(0, 100) + "..."
+                        ? serie.description.slice(0, 150) + "..."
                         : serie.description}
                 </p>
                 <p className="text-secondary small">📚 {serie.number_volumes} volumi</p>
