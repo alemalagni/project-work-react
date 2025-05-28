@@ -6,13 +6,13 @@ export default function HeroSpace() {
             <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
                 <div className="carusel-inner ">
                     <div className="carousel-item active" data-bs-interval="10000">
-                        <img src="" alt="" />
+                        <img src="" alt="foto-1" />
                     </div>
                     <div className="carousel-item active" data-bs-interval="10000">
-                        <img src="" alt="" />
+                        <img src="" alt="foto-2" />
                     </div>
                     <div className="carousel-item active" data-bs-interval="10000">
-                        <img src="" alt="" />
+                        <img src="" alt="foto-3" />
                     </div>
                 </div>
                 <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
