@@ -1,14 +1,20 @@
-import manga from './manga'
-
-function MangaCard() {
+function MangaCard({ data }) {
     return (
-        <div>
-            <ul style={'display: none'}>
-                {manga.map(manga => (
-                    <li key={manga.id} />
-                ))}
-            </ul>
-        </div>
+        <div className="card shadow-sm h-100">
+            <div>
+                <img className="card-img-top mx-auto d-block mt-3" src={data.imagePath} alt={data.title} style={{ maxHeight: "250px", width: "auto", objectFit: "cover" }} />
+            </div>
+            <div className="card-body d-flex flex-column">
+                <div>
+                    <strong>{data.title}</strong>
+                    <p>{data.price}</p>
+                </div>
+                <div className="mt-auto">
+                    < button className="btn btn-outline-primary w-100 mt-3">Acquista</button>
+                </div>
+            </div>
+        </div >
+
     )
 }
 
