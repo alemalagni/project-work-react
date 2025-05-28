@@ -14,7 +14,7 @@ export default function HeroSpace() {
                             <img src={img1} className="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-1" />
                         </div>
                         <div className="carousel-item " data-bs-interval="10000">
-                            <img src={img2} lassName="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-2" />
+                            <img src={img2} className="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-2" />
                         </div>
                         <div className="carousel-item " data-bs-interval="10000">
                             <img src={img3} className="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-3" />
