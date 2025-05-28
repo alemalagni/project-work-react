@@ -7,7 +7,7 @@ export default function Navbar() {
         <>
             <nav className="navbar navbar-expand-lg bg-body-tertiary shadow">
                 <div className="container-fluid space ">
-                    <a className="navbar-brand" href="#"><img src={logo} className="rounded-circle" style={{ width: "100px" }} alt="logo" /></a>
+                    <NavLink to="/" className="navbar-brand" href="#"><img src={logo} className="rounded-circle" style={{ width: "100px" }} alt="logo" /></NavLink>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
