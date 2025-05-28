@@ -7,7 +7,7 @@ function MangaCard({ data }) {
             <div className="card-body d-flex flex-column">
                 <div>
                     <strong>{data.title}</strong>
-                    <p>{data.price}</p>
+                    <p>{`${data.price}€`}</p>
                 </div>
                 <div className="mt-auto">
                     < button className="btn btn-outline-primary w-100 mt-3">Acquista</button>
