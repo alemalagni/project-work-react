@@ -24,13 +24,17 @@ function Series() {
     return (
 
         <>
-            <div className="row">
-                {series.length ? series.map(series => (
-                    <div key={series.id} className="col-12 col-md-4 mt-3">
-                        <SeriesCard serie={series} />
-                    </div>
-                )) : <div>Nessun elemento trovato</div>}
+            <div className="container">
+                <h1 className="text-center">Tutte le serie</h1>
+                <div className=" row">
+                    {series.length ? series.map(series => (
+                        <div key={series.id} className="col-12 col-md-4 mt-3">
+                            <SeriesCard serie={series} />
+                        </div>
+                    )) : <div>Nessun elemento trovato</div>}
+                </div>
             </div>
+
         </>
     )
 }
