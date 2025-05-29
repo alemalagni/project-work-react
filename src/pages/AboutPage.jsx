@@ -1,7 +1,6 @@
 const AboutPage = () => {
-
-    return <>
-        <div className="container py-5">
+    return (
+        <div className="container py-5 page-content">
             <h2 className="mb-4">📖 Chi siamo</h2>
             <p>
                 Benvenuto/a su <strong>Manga e-commerce</strong>, il tuo portale definitivo per esplorare l’universo dei manga! 💥
@@ -32,8 +31,7 @@ const AboutPage = () => {
                 </div>
             </div>
         </div>
-
-    </>
+    );
 };
 
 export default AboutPage;
