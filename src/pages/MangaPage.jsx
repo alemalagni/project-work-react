@@ -5,6 +5,7 @@ import MangaCard from "../components/MangaCard";
 function MangaPage() {
     const [manga, setManga] = useState([]);
     const [search, setSearch] = useState('');
+    const [order, setOrder] = useState(0)
 
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(28);
@@ -38,6 +39,11 @@ function MangaPage() {
             .finally(() => {
                 setLoading(false);
             });
+    }
+
+    function orderManga(e) {
+        e.preventDefault();
+        alert("Non ancora funzionante")
     }
 
     function searchManga(e) {
@@ -115,8 +121,8 @@ function MangaPage() {
                     <h1>Lista di manga</h1>
                     <div className="d-flex">
                         <div className="p-3">
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Ordina per...</option>
+                            <select class="form-select" aria-label="Default select example" onChange={orderManga}>
+                                <option value="0" selected>Ordina per...</option>
                                 <option value="1">Prezzo crescente</option>
                                 <option value="2">Prezzo decrescente</option>
                                 <option value="3">Nome (da A a Z)</option>
@@ -125,6 +131,7 @@ function MangaPage() {
                                 <option value="6">Più vecchio</option>
                             </select>
                         </div>
+
                         {/* Form di ricerca */}
                         <form className="row g-3 align-items-center" onSubmit={searchManga}>
 
