@@ -8,7 +8,7 @@ function MangaPage() {
     const [order, setOrder] = useState(0)
 
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(28);
+    const [itemsPerPage] = useState(20);
     const [totalItems, setTotalItems] = useState(0);
 
     const [loading, setLoading] = useState(true);
