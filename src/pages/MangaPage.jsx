@@ -5,19 +5,22 @@ import MangaCard from "../components/MangaCard";
 function MangaPage() {
     const [manga, setManga] = useState([]);
     const [search, setSearch] = useState('');
-    const [order, setOrder] = useState(0)
-
+    const [order, setOrder] = useState('')
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(20);
     const [totalItems, setTotalItems] = useState(0);
-
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [searchInput, setSearchInput] = useState('');
     const [error, setError] = useState(null);
 
     const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-    function getManga(ordine) {
-        setLoading(true);
+    useEffect(() => {
+        getManga(order, search, currentPage);
+    }, [order, search, currentPage]);
+
+    function getManga() {
+        // setLoading(true);
         setError(null);
 
         axios.get(`${import.meta.env.VITE_PUBLIC_PATH}manga`, {
@@ -25,36 +28,31 @@ function MangaPage() {
                 search: search,
                 page: currentPage,
                 limit: itemsPerPage,
-                order: ordine
+                order: order
             }
         })
             .then(res => {
-                console.log("Dati ricevuti dal backend:", res.data);
                 setManga(res.data.items);
                 setTotalItems(res.data.totalItems);
             })
             .catch(err => {
-                console.error("Errore nel fetch dei manga:", err);
                 setError("Impossibile caricare i manga. Riprova più tardi.");
             })
-            .finally(() => {
-                setLoading(false);
-            });
+        // .finally(() => {
+        //     setLoading(false);
+        // });
     }
 
     function orderManga(e) {
-        e.preventDefault();
-        alert("Non ancora funzionante")
-
+        const selectedOrder = e.target.value;
+        setOrder(selectedOrder);
+        setCurrentPage(1); // reset pagina quando cambio ordine
     }
 
     function searchManga(e) {
         e.preventDefault();
-        if (currentPage === 1) {
-            getManga();
-        } else {
-            setCurrentPage(1);
-        }
+        setSearch(searchInput);
+        setCurrentPage(1);
     }
 
     const handleNextPage = () => {
@@ -92,10 +90,6 @@ function MangaPage() {
             setCurrentPage(prevPage => prevPage - 5);
         }
     };
-
-    useEffect(() => {
-        getManga();
-    }, [currentPage, itemsPerPage]);
 
     if (loading) {
         return (
@@ -144,8 +138,8 @@ function MangaPage() {
                                     className="form-control"
                                     id="searchInput"
                                     placeholder="Cerca"
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
+                                    value={searchInput}
+                                    onChange={(e) => setSearchInput(e.target.value)}
                                 />
                             </div>
                             <div className="col-auto">
