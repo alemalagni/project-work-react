@@ -46,50 +46,8 @@ function MangaPage() {
     function orderManga(e) {
         const selectedOrder = e.target.value;
         setOrder(selectedOrder);
-        setCurrentPage(1); // reset pagina quando cambio ordine
-    }
-
-    function searchManga(e) {
-        e.preventDefault();
-        setSearch(searchInput);
         setCurrentPage(1);
     }
-
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage(prevPage => prevPage + 1);
-        }
-    };
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(prevPage => prevPage - 1);
-        }
-    };
-
-    const handleFirstPage = () => {
-        if (currentPage !== 1) {
-            setCurrentPage(1);
-        }
-    };
-
-    const handleLastPage = () => {
-        if (currentPage !== totalPages) {
-            setCurrentPage(totalPages);
-        }
-    };
-
-    const handleNext5Page = () => {
-        if (currentPage < (totalPages - 4)) {
-            setCurrentPage(prevPage => prevPage + 5);
-        }
-    };
-
-    const handlePrev5Page = () => {
-        if (currentPage > 5) {
-            setCurrentPage(prevPage => prevPage - 5);
-        }
-    };
 
     if (loading) {
         return (
@@ -129,7 +87,7 @@ function MangaPage() {
                         </div>
 
                         {/* Form di ricerca */}
-                        <form className="row g-3 align-items-center">
+                        <div className="row g-3 align-items-center">
                             <div className="col-auto">
                                 <label htmlFor="searchInput" className="visually-hidden">Cerca</label>
                                 <input
@@ -144,7 +102,7 @@ function MangaPage() {
                                     }}
                                 />
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
 
