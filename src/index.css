@@ -28,8 +28,8 @@ nav ul {
 }
 
 .nav-link:hover {
-    background-color: #42adeb;
-    color: #ffffff;
+    background-color: #efefef;
+    color: #42adeb;
 }
 
 .nav-link.active {
