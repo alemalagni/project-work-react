@@ -3,6 +3,22 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
+function prezzo(price) {
+    const prezzo = String(price);
+    let decimale = prezzo.slice(prezzo.indexOf(".") + 1);
+
+    if (prezzo.slice(prezzo.indexOf(".") + 1).length === 1) {
+        decimale = prezzo.slice(prezzo.indexOf(".") + 1) + "0";
+    } else if (prezzo.slice(prezzo.indexOf(".") + 1).length === 0) {
+        decimale = "00";
+    } else if (prezzo.slice(prezzo.indexOf(".") + 1).length === 2) {
+        decimale = prezzo.slice(prezzo.indexOf(".") + 1);
+    }
+
+    const newPrice = prezzo.slice(0, prezzo.indexOf(".")) + "," + decimale;
+    return newPrice;
+}
+
 function SerieDetailsPage() {
     const { slug } = useParams();
     const [serie, setSerie] = useState(null);
@@ -68,6 +84,7 @@ function SerieDetailsPage() {
                                         })
                                         : "—"}
                                 </p>
+                                <p><strong>{`${prezzo(volume.price)}€`}</strong></p>
                             </div>
                         </div>
                     </div>
