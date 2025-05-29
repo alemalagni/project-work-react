@@ -49,12 +49,6 @@ function MangaPage() {
         setCurrentPage(1);
     }
 
-    function searchManga(e) {
-        e.preventDefault();
-        setSearch(searchInput);
-        setCurrentPage(1);
-    }
-
     if (loading) {
         return (
             <div className="container my-5 text-center">
