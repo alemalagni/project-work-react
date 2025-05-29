@@ -16,7 +16,7 @@ function MangaPage() {
 
     const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-    function getManga() {
+    function getManga(ordine) {
         setLoading(true);
         setError(null);
 
@@ -24,7 +24,8 @@ function MangaPage() {
             params: {
                 search: search,
                 page: currentPage,
-                limit: itemsPerPage
+                limit: itemsPerPage,
+                order: ordine
             }
         })
             .then(res => {
@@ -44,6 +45,7 @@ function MangaPage() {
     function orderManga(e) {
         e.preventDefault();
         alert("Non ancora funzionante")
+
     }
 
     function searchManga(e) {
@@ -122,8 +124,8 @@ function MangaPage() {
                     <div className="d-flex">
                         <div className="p-3">
                             <select class="form-select" aria-label="Default select example" onChange={orderManga}>
-                                <option value="0" selected>Ordina per...</option>
-                                <option value="1">Prezzo crescente</option>
+                                <option value="" selected>Ordina per...</option>
+                                <option value="manga.price">Prezzo crescente</option>
                                 <option value="2">Prezzo decrescente</option>
                                 <option value="3">Nome (da A a Z)</option>
                                 <option value="4">Nome (da Z a A)</option>
