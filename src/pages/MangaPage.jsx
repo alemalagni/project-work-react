@@ -123,14 +123,13 @@ function MangaPage() {
                                 <option value="manga.price DESC">Prezzo decrescente</option>
                                 <option value="manga.title ASC">Nome (da A a Z)</option>
                                 <option value="manga.title DESC">Nome (da Z a A)</option>
-                                <option value="manga.release_date ASC">Più recente</option>
-                                <option value="manga.release_date DESC">Più vecchio</option>
+                                <option value="manga.release_date DESC">Più recente</option>
+                                <option value="manga.release_date ASC">Più vecchio</option>
                             </select>
                         </div>
 
                         {/* Form di ricerca */}
-                        <form className="row g-3 align-items-center" onSubmit={searchManga}>
-
+                        <form className="row g-3 align-items-center">
                             <div className="col-auto">
                                 <label htmlFor="searchInput" className="visually-hidden">Cerca</label>
                                 <input
@@ -138,12 +137,12 @@ function MangaPage() {
                                     className="form-control"
                                     id="searchInput"
                                     placeholder="Cerca"
-                                    value={searchInput}
-                                    onChange={(e) => setSearchInput(e.target.value)}
+                                    value={search}
+                                    onChange={(e) => {
+                                        setSearch(e.target.value);
+                                        setCurrentPage(1);
+                                    }}
                                 />
-                            </div>
-                            <div className="col-auto">
-                                <button type="submit" className="btn btn-primary">Cerca</button>
                             </div>
                         </form>
                     </div>
