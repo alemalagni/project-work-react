@@ -101,3 +101,10 @@ a {
 .m-bott {
     margin-bottom: 100px;
 }
+
+
+
+.gradient {
+    background: radial-gradient(circle, #351ace 0%, #000000 100%);
+    color:white;
+}

@@ -8,9 +8,12 @@ function HomePage() {
     return (
 
         <>
-            <HeroSpace />
-            <Carousel />
-            <Series />
+            <div className="gradient">
+                <HeroSpace />
+                <Carousel />
+                <Series />
+
+            </div>
 
         </>
 
