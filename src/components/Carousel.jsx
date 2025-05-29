@@ -13,7 +13,7 @@ export default function MangaCarousel() {
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 4, // Quante card vuoi vedere per volta
+        slidesToShow: 4,
         slidesToScroll: 1,
         responsive: [
             {
@@ -29,6 +29,7 @@ export default function MangaCarousel() {
 
     return (
         <div className="container my-5">
+            <h2 className="text-center mb-4">Manga Popolari</h2>
             <Slider {...settings}>
                 {mangaList.map((manga) => (
                     <div key={manga.title} className="px-2">
@@ -43,6 +44,5 @@ export default function MangaCarousel() {
                 ))}
             </Slider>
         </div>
-
     );
 }
