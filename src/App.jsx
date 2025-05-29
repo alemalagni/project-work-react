@@ -8,6 +8,7 @@ import MangaPage from "./pages/MangaPage"
 import NotFound from "./pages/NotFound"
 import ContactsPage from "./pages/ContactsPage"
 import AboutPage from "./pages/AboutPage"
+import SerieDetailsPage from "./pages/SeriesDetailPage"
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/manga" element={<MangaPage />} />
             <Route path="/manga/:slug" element={<MangaDetailsPage />} />
+            <Route path="/serie/:slug" element={<SerieDetailsPage />} />
             <Route path="/contacts" element={<ContactsPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="*" element={<NotFound />} />

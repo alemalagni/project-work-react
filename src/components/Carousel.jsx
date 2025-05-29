@@ -53,7 +53,7 @@ export default function MangaCarousel() {
             </button>
             <Slider ref={sliderRef} {...settings}>
                 {Array.isArray(mangaList) && mangaList.map((manga) => (
-                    <div key={manga.slug || manga.title} className="px-2">
+                    <div key={manga.slug || manga.title} className="px-2 d-flex justify-content-center">
                         <div className="card" style={{ width: "16rem" }}>
                             <img src={manga.imagePath} className="card-img-top " alt={manga.title} />
                             <div className="card-body">
