@@ -1,6 +1,7 @@
 import Slider from "react-slick";
 import { useRef, useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function MangaCarousel() {
     const sliderRef = useRef(null);
@@ -54,12 +55,14 @@ export default function MangaCarousel() {
             <Slider ref={sliderRef} {...settings}>
                 {Array.isArray(mangaList) && mangaList.map((manga) => (
                     <div key={manga.slug || manga.title} className="px-2 d-flex justify-content-center">
-                        <div className="card" style={{ width: "16rem" }}>
-                            <img src={manga.imagePath} className="card-img-top " alt={manga.title} />
-                            <div className="card-body">
-                                <h5 className="card-title">{manga.title}</h5>
+                        <Link to={`/manga/${manga.slug}`} style={{ textDecoration: "none", color: "inherit" }}>
+                            <div className="card" style={{ width: "16rem", cursor: "pointer" }}>
+                                <img src={manga.imagePath} className="card-img-top" alt={manga.title} />
+                                <div className="card-body">
+                                    <h5 className="card-title">{manga.title}</h5>
+                                </div>
                             </div>
-                        </div>
+                        </Link>
                     </div>
                 ))}
             </Slider>
