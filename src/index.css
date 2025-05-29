@@ -1,3 +1,51 @@
+/* src/index.css */
+
+/* Assicurati che html e body occupino l'intera altezza della viewport */
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Rendi l'elemento #root (dove viene montata l'app React) un contenitore flex */
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Fa in modo che #root sia almeno alto quanto la viewport */
+}
+
+/* Questo è il contenitore che avvolge il contenuto variabile della pagina.
+   Deve espandersi per occupare tutto lo spazio disponibile.
+   Importante: rendilo un contenitore flex anche lui per gestire il suo contenuto interno. */
+.main-content-wrapper {
+    flex-grow: 1;
+    /* Permette a questo elemento di espandersi */
+    display: flex;
+    /* Rende questo div un contenitore flex */
+    flex-direction: column;
+    /* Impila il suo contenuto verticalmente */
+}
+
+/* Aggiungi questa regola: il contenuto effettivo della pagina (che è un figlio diretto
+   del main-content-wrapper) deve anche espandersi. */
+.page-content {
+    /* Questa classe la aggiungeremo al div più esterno di ogni singola pagina */
+    flex-grow: 1;
+    /* Questo fa in modo che il contenuto della pagina occupi lo spazio disponibile */
+    display: flex;
+    /* Potrebbe essere utile se la pagina stessa ha un layout complesso */
+    flex-direction: column;
+    /* E impili i suoi elementi in colonna */
+}
+
+/* Opzionale: per assicurarti che il footer occupi l'intera larghezza */
+footer {
+    width: 100%;
+}
+
+
+
 nav {
     padding: 30px 20px;
     position: sticky;

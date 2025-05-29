@@ -9,9 +9,9 @@ export default function DefaultLayout() {
             <header className="m-bott">
                 <Navbar />
             </header>
-            <main>
+            <div className="main-content-wrapper">
                 <Outlet />
-            </main>
+            </div>
             <Footer />
         </div>
     )
