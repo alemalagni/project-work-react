@@ -59,3 +59,8 @@ nav li a.active {
 .anime-card img:hover {
     transform: scale(1.03);
 }
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
