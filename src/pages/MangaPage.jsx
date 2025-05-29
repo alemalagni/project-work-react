@@ -33,27 +33,29 @@ function MangaPage() {
     return (
 
         <>
+            <div className="container my-5">
 
-            <div className="d-flex justify-content-between mt-4">
-                <h1>Lista di manga</h1>
-                <form className="row g-3" onSubmit={searchManga}>
-                    <div className="col-auto">
-                        <label className="visually-hidden">Cerca</label>
-                        <input type="text" className="form-control" placeholder="Cerca"
-                            value={search} onChange={(e) => setSearch(e.target.value)} />
-                    </div>
-                    <div className="col-auto">
-                        <button type="submit" className="btn btn-primary mb-3">Cerca</button>
-                    </div>
-                </form>
-            </div>
-            <div className="row">
-                {manga.length ? manga.map(manga => (
-                    <div key={manga.id} className="col-12 col-md-4 mt-3">
-                        <MangaCard data={manga} />
-                    </div>
-                )) : <div>Nessun elemento trovato</div>}
+                <div className="d-flex justify-content-between mt-4">
+                    <h1>Lista di manga</h1>
+                    <form className="row g-3" onSubmit={searchManga}>
+                        <div className="col-auto">
+                            <label className="visually-hidden">Cerca</label>
+                            <input type="text" className="form-control" placeholder="Cerca"
+                                value={search} onChange={(e) => setSearch(e.target.value)} />
+                        </div>
+                        <div className="col-auto">
+                            <button type="submit" className="btn btn-primary mb-3">Cerca</button>
+                        </div>
+                    </form>
+                </div>
+                <div className="row">
+                    {manga.length ? manga.map(manga => (
+                        <div key={manga.id} className="col-12 col-md-4 mt-3">
+                            <MangaCard data={manga} />
+                        </div>
+                    )) : <div>Nessun elemento trovato</div>}
 
+                </div>
             </div>
 
         </>
