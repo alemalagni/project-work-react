@@ -66,36 +66,29 @@ import MangaCard from "../components/MangaCard";
 
 
 function MangaPage() {
-    const [manga, setManga] = useState([]); // Gli elementi della pagina corrente
-    const [search, setSearch] = useState(''); // Stato per il campo di ricerca
+    const [manga, setManga] = useState([]);
+    const [search, setSearch] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(28);
+    const [totalItems, setTotalItems] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // Stati per la paginazione
-    const [currentPage, setCurrentPage] = useState(1); // Pagina corrente, inizia da 1
-    const [itemsPerPage] = useState(28); // Elementi per pagina (deve corrispondere al backend default)
-    const [totalItems, setTotalItems] = useState(0); // Totale degli elementi filtrati (dal backend)
-
-    // Stati per UI/UX
-    const [loading, setLoading] = useState(true); // Stato di caricamento
-    const [error, setError] = useState(null); // Stato per gli errori
-
-    // Calcola il numero totale di pagine
     const totalPages = Math.ceil(totalItems / itemsPerPage);
 
     function getManga() {
-        setLoading(true); // Inizia il caricamento
-        setError(null);    // Resetta errori precedenti
+        setLoading(true);
+        setError(null);
 
-        // Modifica la chiamata Axios per includere i parametri di ricerca E paginazione
         axios.get(`${import.meta.env.VITE_PUBLIC_PATH}manga`, {
             params: {
-                search: search,      // Parametro per la ricerca
-                page: currentPage,   // Parametro per la pagina corrente
-                limit: itemsPerPage  // Parametro per il limite di elementi per pagina
+                search: search,
+                page: currentPage,
+                limit: itemsPerPage
             }
         })
             .then(res => {
                 console.log("Dati ricevuti dal backend:", res.data);
-                // Il backend dovrebbe restituire { items: [...], totalItems: N, currentPage: X, ... }
                 setManga(res.data.items);
                 setTotalItems(res.data.totalItems);
             })
@@ -104,18 +97,16 @@ function MangaPage() {
                 setError("Impossibile caricare i manga. Riprova più tardi.");
             })
             .finally(() => {
-                setLoading(false); // Fine caricamento
+                setLoading(false);
             });
     }
 
-    // Gestore per la sottomissione del form di ricerca
+
     function searchManga(e) {
         e.preventDefault();
-        setCurrentPage(1); // Quando si effettua una nuova ricerca, resetta alla prima pagina
-        // getManga() verrà chiamato dall'useEffect grazie alla dipendenza 'search'
+        setCurrentPage(1);
     };
 
-    // Gestori per i pulsanti di paginazione
     const handleNextPage = () => {
         if (currentPage < totalPages) {
             setCurrentPage(prevPage => prevPage + 1);
@@ -128,12 +119,10 @@ function MangaPage() {
         }
     };
 
-    // Effetto per chiamare l'API quando la pagina corrente o il termine di ricerca cambiano
     useEffect(() => {
         getManga();
-    }, [currentPage, itemsPerPage, search]); // Dipendenze: ricarica quando cambia la pagina, il limite o il termine di ricerca
+    }, [currentPage, itemsPerPage, search]);
 
-    // Messaggi di stato UI
     if (loading) {
         return (
             <div className="container my-5 text-center">
@@ -180,8 +169,8 @@ function MangaPage() {
                 {/* Visualizzazione dei manga */}
                 <div className="row mt-4">
                     {manga.length > 0 ? (
-                        manga.map(mangaItem => ( // Ho rinominato la variabile di iterazione per evitare conflitti
-                            <div key={mangaItem.id} className="col-12 col-md-4 col-lg-3 mt-3"> {/* Aggiunto col-lg-3 per 4 colonne su schermi grandi */}
+                        manga.map(mangaItem => (
+                            <div key={mangaItem.id} className="col-12 col-md-4 col-lg-3 mt-3">
                                 <MangaCard data={mangaItem} />
                             </div>
                         ))
@@ -190,23 +179,22 @@ function MangaPage() {
                     )}
                 </div>
 
-                {/* Controlli di paginazione */}
-                {totalItems > 0 && totalPages > 1 && ( // Mostra i controlli solo se ci sono elementi e più di una pagina
+                {totalItems > 0 && totalPages > 1 && (
                     <div className="d-flex justify-content-center mt-5 mb-4">
                         <button
-                            className="btn btn-outline-primary me-2" // Usato outline per minor enfasi
+                            className="btn btn-outline-primary me-2"
                             onClick={handlePrevPage}
-                            disabled={currentPage === 1 || loading} // Disabilita anche durante il caricamento
+                            disabled={currentPage === 1 || loading}
                         >
                             Pagina Precedente
                         </button>
-                        <span className="align-self-center fs-5 px-3"> {/* Aggiunto fs-5 per testo più grande, px-3 per padding */}
+                        <span className="align-self-center fs-5 px-3">
                             Pagina {currentPage} di {totalPages}
                         </span>
                         <button
-                            className="btn btn-outline-primary ms-2" // Usato outline per minor enfasi
+                            className="btn btn-outline-primary ms-2"
                             onClick={handleNextPage}
-                            disabled={currentPage === totalPages || loading} // Disabilita anche durante il caricamento
+                            disabled={currentPage === totalPages || loading}
                         >
                             Pagina Successiva
                         </button>
