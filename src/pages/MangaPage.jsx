@@ -23,14 +23,17 @@ function MangaPage() {
     return (
 
         <>
-            <h1>Lista di manga</h1>
-            <div className="row">
-                {manga.length ? manga.map(manga => (
-                    <div key={manga.id} className="col-12 col-md-4 mt-3">
-                        <MangaCard data={manga} />
-                    </div>
-                )) : <div>Nessun elemento trovato</div>}
+            <div className="container my-5">
+                <h1 className="mb-5">Lista di manga</h1>
+                <div className="row">
+                    {manga.length ? manga.map(manga => (
+                        <div key={manga.id} className="col-12 col-md-4 mt-3">
+                            <MangaCard data={manga} />
+                        </div>
+                    )) : <div>Nessun elemento trovato</div>}
+                </div>
             </div>
+
         </>
 
     )
