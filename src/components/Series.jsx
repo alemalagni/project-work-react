@@ -8,7 +8,7 @@ function Series() {
     const [series, setSeries] = useState([])
 
     function getSeries() {
-        axios.get('http://127.0.0.1:4000/manga/series')
+        axios.get(import.meta.env.VITE_PUBLIC_PATH + `manga/series`)
             .then(res => {
                 console.log(res.data)
                 setSeries(res.data)
@@ -24,13 +24,17 @@ function Series() {
     return (
 
         <>
-            <div className="row">
-                {series.length ? series.map(series => (
-                    <div key={series.id} className="col-12 col-md-4 mt-3">
-                        <SeriesCard serie={series} />
-                    </div>
-                )) : <div>Nessun elemento trovato</div>}
+            <div className="container">
+                <h1 className="text-center">Tutte le serie</h1>
+                <div className=" row">
+                    {series.length ? series.map(series => (
+                        <div key={series.id} className="col-12 col-md-4 mt-3">
+                            <SeriesCard serie={series} />
+                        </div>
+                    )) : <div>Nessun elemento trovato</div>}
+                </div>
             </div>
+
         </>
     )
 }

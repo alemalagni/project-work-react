@@ -8,7 +8,6 @@ function HomePage() {
 
         <>
             <HeroSpace />
-            <h1>Tutte le serie</h1>
             <Series/>
 
         </>
