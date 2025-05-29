@@ -116,6 +116,17 @@ function MangaPage() {
                     {/* Form di ricerca */}
                     <form className="row g-3 align-items-center" onSubmit={searchManga}>
                         <div className="col-auto">
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>Ordina per...</option>
+                                <option value="1">Prezzo crescente</option>
+                                <option value="2">Prezzo decrescente</option>
+                                <option value="3">Nome (da A a Z)</option>
+                                <option value="4">Nome (da Z a A)</option>
+                                <option value="5">Più recente</option>
+                                <option value="6">Più vecchio</option>
+                            </select>
+                        </div>
+                        <div className="col-auto">
                             <label htmlFor="searchInput" className="visually-hidden">Cerca</label>
                             <input
                                 type="text"
