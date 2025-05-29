@@ -8,7 +8,7 @@ function HomePage() {
     return (
 
         <>
-            <div>
+            <div className="mb-5">
                 <HeroSpace />
                 <Carousel />
                 <Series />
