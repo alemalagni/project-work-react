@@ -5,6 +5,7 @@ import MangaCard from "../components/MangaCard";
 function MangaPage() {
     const [manga, setManga] = useState([]);
     const [search, setSearch] = useState('');
+    const [order, setOrder] = useState(0)
 
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(28);
@@ -38,6 +39,11 @@ function MangaPage() {
             .finally(() => {
                 setLoading(false);
             });
+    }
+
+    function orderManga(e) {
+        e.preventDefault();
+        alert("Non ancora funzionante")
     }
 
     function searchManga(e) {
@@ -113,11 +119,10 @@ function MangaPage() {
             <div className="container my-5">
                 <div className="d-flex justify-content-between align-items-center mt-4">
                     <h1>Lista di manga</h1>
-                    {/* Form di ricerca */}
-                    <form className="row g-3 align-items-center" onSubmit={searchManga}>
-                        <div className="col-auto">
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Ordina per...</option>
+                    <div className="d-flex">
+                        <div className="p-3">
+                            <select class="form-select" aria-label="Default select example" onChange={orderManga}>
+                                <option value="0" selected>Ordina per...</option>
                                 <option value="1">Prezzo crescente</option>
                                 <option value="2">Prezzo decrescente</option>
                                 <option value="3">Nome (da A a Z)</option>
@@ -126,21 +131,26 @@ function MangaPage() {
                                 <option value="6">Più vecchio</option>
                             </select>
                         </div>
-                        <div className="col-auto">
-                            <label htmlFor="searchInput" className="visually-hidden">Cerca</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="searchInput"
-                                placeholder="Cerca"
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
-                        </div>
-                        <div className="col-auto">
-                            <button type="submit" className="btn btn-primary">Cerca</button>
-                        </div>
-                    </form>
+
+                        {/* Form di ricerca */}
+                        <form className="row g-3 align-items-center" onSubmit={searchManga}>
+
+                            <div className="col-auto">
+                                <label htmlFor="searchInput" className="visually-hidden">Cerca</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="searchInput"
+                                    placeholder="Cerca"
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                />
+                            </div>
+                            <div className="col-auto">
+                                <button type="submit" className="btn btn-primary">Cerca</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
 
                 {/* Visualizzazione dei manga */}
