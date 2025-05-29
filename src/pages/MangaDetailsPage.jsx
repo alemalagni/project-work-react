@@ -63,7 +63,7 @@ function MangaDetailsPage() {
                                     <li className="mt-1" >Price: <strong>{`€ ${prezzoNuovo}`}</strong></li>
                                     <li className="mt-1">ISBN: <strong>{manga.ISBN}</strong></li>
                                     <li className="mt-1">Pages Number: <strong>{manga.pages}</strong></li>
-                                    <li className="mt-1">Release Date: <strong>{manga.release_date.slice(0, 10)}</strong></li>
+                                    <li className="mt-1">Release Date: <strong>{manga.release_date ? manga.release_date.slice(0, 10) : <p></p>}</strong></li>
                                 </ul>
                             </div>
                             <div className="col-md-6">
