@@ -56,7 +56,7 @@ function SeriesCard({ serie }) {
                 </p>
                 <p className="text-secondary small">📚 {serie.number_volumes} volumi</p>
                 <Link
-                    to={`/serie/${serie.id}`}
+                    to={`/serie/${serie.slug}`}
                     className="btn btn-primary w-100 mt-auto rounded-pill fw-semibold"
                 >
                     Tutti i volumi
