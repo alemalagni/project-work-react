@@ -8,9 +8,10 @@ function MangaCard({ data }) {
                     <img className="card-img-top mx-auto d-block mt-3" src={data.imagePath} alt={data.title} style={{ maxHeight: "250px", width: "auto", objectFit: "cover" }} />
                 </div>
                 <div className="card-body d-flex flex-column">
-                    <div>
-                        <strong>{data.title}</strong>
-                        <p>{`${data.price}€`}</p>
+                    <div className="text-center">
+                        <p><strong>{data.title}</strong></p>
+                        <p><strong>{`${data.price}€`}</strong></p>
+                        <p><strong>Genere:</strong> {`${data.genre}`}</p>
                     </div>
                     <div className="mt-auto">
                         < button className="btn btn-outline-primary w-100 mt-3">Acquista</button>
