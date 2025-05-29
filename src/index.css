@@ -44,3 +44,23 @@ nav li a.active {
 .btn-outline-secondary:hover {
     background-color: #5a6268;
 }
+
+
+.anime-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.anime-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+}
+
+.anime-card img:hover {
+    transform: scale(1.03);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
