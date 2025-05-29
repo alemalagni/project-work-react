@@ -14,16 +14,16 @@ export default function Navbar() {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav mb-2 mb-lg-0 ms-auto">
                             <li className="nav-item">
-                                <NavLink to='/' end>Home page</NavLink>
+                                <NavLink to='/' end className="nav-link">Home page</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink to='/manga' end>Manga</NavLink>
+                                <NavLink to='/manga' end className="nav-link">Manga</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink to='/about' end>About</NavLink>
+                                <NavLink to='/about' end className="nav-link">About</NavLink>
                             </li>
                             <li className="nav-item">
-                                <NavLink to='/contacts'>Contacts</NavLink>
+                                <NavLink to='/contacts' className="nav-link">Contacts</NavLink>
                             </li>
                         </ul>
                     </div>

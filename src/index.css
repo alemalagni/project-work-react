@@ -16,24 +16,25 @@ nav ul {
     gap: 40px;
 }
 
-nav li a {
+.nav-link {
     white-space: nowrap;
     text-decoration: none;
-    color: black;
+    color: #000000;
     font-weight: 500;
     padding: 8px 15px;
     border-radius: 5px;
-    transition: background-color 0.3s ease;
+    /* transition: background-color 0.3s ease, color 0.3s ease; */
     font-family: "Montserrat", sans-serif;
 }
 
-nav li a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+.nav-link:hover {
+    background-color: #42adeb;
+    color: #ffffff;
 }
 
-nav li a.active {
+.nav-link.active {
     background-color: #0b98e9;
-    color: #fff;
+    color: #ffffff !important;
     font-weight: 700;
 }
 
