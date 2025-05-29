@@ -22,7 +22,7 @@ function SerieDetailsPage() {
                 {volumi.length ? volumi.map(volume => (
                     <div key={volume.id} className="col-md-3 mb-4">
                         <div className="card h-100">
-                            <Link to={`/manga/${slug}`}>
+                            <Link to={`/manga/${volume.slug}`}>
                                 <img src={volume.imagePath} alt={volume.title} className="card-img-top" />
 
                             </Link>
