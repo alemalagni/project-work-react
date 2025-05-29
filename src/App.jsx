@@ -4,6 +4,8 @@ import DefaultLayout from "./layouts/DefaulLayout"
 import MangaDetailsPage from "./pages/MangaDetailsPage"
 import MangaPage from "./pages/MangaPage"
 import NotFound from "./pages/NotFound"
+import ContactsPage from "./pages/ContactsPage"
+import AboutPage from "./pages/AboutPage"
 
 
 function App() {
@@ -17,8 +19,8 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/manga" element={<MangaPage />} />
             <Route path="/manga/:slug" element={<MangaDetailsPage />} />
-            <Route path="/contacts" element={<div>contatti</div>} />
-            <Route path="/about" element={<div>chi siamo</div>} />
+            <Route path="/contacts" element={<ContactsPage />} />
+            <Route path="/about" element={<AboutPage />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
