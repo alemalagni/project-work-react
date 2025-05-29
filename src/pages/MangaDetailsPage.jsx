@@ -25,21 +25,49 @@ function MangaDetailsPage() {
     return (
 
         <>
-            <div className="container my-5">
-                <div className="row align-items-center">
-                    <div className="col-md-6 text-center mb-4 mb-md-0">
-                        <img className="img-fluid rounded shadow" src={manga.imagePath}
-                            alt={manga.title} style={{ maxHeight: "400px", objectFit: "cover" }} />
+            <div className="container py-5">
+                <div className="row">
+                    <div className="col-md-4 mb-4">
+                        <img src={manga.imagePath} className="img-fluid rounded shadow" alt={manga.title} />
                     </div>
-                    <div className="col-md-6 d-flex flex-column justify-content-center">
-                        <h1 className="mb-3">{manga.title}</h1>
-                        <p>Release Date: <strong>{manga.release_date}</strong></p>
-                        <p>Genre: <strong>{manga.genre}</strong></p>
-                        <p>Author: <strong>{manga.author}</strong></p>
-                        <p>ISBN: <strong>{manga.ISBN}</strong></p>
+
+                    <div className="col-md-8">
+                        <h2 className="mb-2">{manga.title}</h2>
+                        <h5 className="text-muted">Serie: {manga.serie}</h5>
+                        <p className="mt-3">
+                            {manga.series_description}
+                        </p>
+
+                        <div className="row mt-4">
+                            <div className="col-md-6">
+                                <ul className="list-unstyled">
+                                    <li>Author: <strong>{manga.author}</strong></li>
+                                    <li>Price: <strong>{manga.price}</strong></li>
+                                    <li>ISBN: <strong>{manga.ISBN}</strong></li>
+                                    <li>Pages Number: <strong>{manga.pages}</strong></li>
+                                    <li>Release Date: <strong>{manga.release_date}</strong></li>
+                                </ul>
+                            </div>
+                            <div className="col-md-6">
+                                <p><strong>Genres:</strong></p>
+                                <div>
+                                    {manga.genres_array &&
+                                        manga.genres_array.map((genre) => (
+                                            <span key={genre} className="badge bg-primary me-1">
+                                                {genre}
+                                            </span>
+                                        ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <button className="btn btn-success mt-4">
+                            <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
+                        </button>
                     </div>
                 </div>
             </div>
+
         </>
 
     )
