@@ -25,7 +25,7 @@ function MangaDetailsPage() {
     return (
 
         <>
-            <div className="container py-5">
+            <div className="container pb-5">
                 <div className="row">
                     <div className="col-md-4 mb-4">
                         <img src={manga.imagePath} className="img-fluid rounded shadow" alt={manga.title} />
