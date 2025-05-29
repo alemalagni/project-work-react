@@ -39,14 +39,14 @@ export default function MangaCarousel() {
         <div className="container my-5 position-relative">
             <h2 className="text-center mb-4">Nuovi Arrivi</h2>
             <button
-                className="btn btn-secondary position-absolute top-50 start-0 translate-middle-y"
+                className="btn btn-primary position-absolute top-50 start-0 translate-middle-y"
                 style={{ zIndex: 2 }}
                 onClick={() => sliderRef.current.slickPrev()}
             >
                 &lt;
             </button>
             <button
-                className="btn btn-secondary position-absolute top-50 end-0 translate-middle-y"
+                className="btn btn-primary position-absolute top-50 end-0 translate-middle-y"
                 style={{ zIndex: 2 }}
                 onClick={() => sliderRef.current.slickNext()}
             >
