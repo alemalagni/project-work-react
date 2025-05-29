@@ -8,11 +8,7 @@ function HomePage() {
     return (
 
         <>
-<<<<<<< HEAD
             <div>
-=======
-            <div className="gradient pb-5">
->>>>>>> 083955a07593a313e1a7c13fbbf0f1467e3e37b3
                 <HeroSpace />
                 <Carousel />
                 <Series />
