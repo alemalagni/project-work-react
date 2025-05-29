@@ -60,8 +60,7 @@ function MangaDetailsPage() {
                                 </div>
                             </div>
                         </div>
-
-                        <button className="btn btn-success mt-4">
+                        <button className="btn btn-warning text-primary-emphasis mt-4">
                             <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
                         </button>
                     </div>
