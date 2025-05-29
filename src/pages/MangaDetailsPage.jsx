@@ -53,7 +53,7 @@ function MangaDetailsPage() {
                         </button>
 
                         <p className="mt-4">
-                            {manga.series_description}
+                            {manga.description}
                         </p>
 
                         <div className="row mt-4">
