@@ -8,7 +8,7 @@ function HomePage() {
     return (
 
         <>
-            <div className="gradient">
+            <div className="gradient pb-5">
                 <HeroSpace />
                 <Carousel />
                 <Series />
