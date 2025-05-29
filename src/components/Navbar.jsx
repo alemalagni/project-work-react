@@ -5,7 +5,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg bg-body-tertiary shadow">
+            <nav className="navbar navbar-expand-lg bg-body-tertiary px-5 shadow">
                 <div className="container-fluid space ">
                     <NavLink to="/" className="navbar-brand" href="#"><img src={logo} style={{ width: "100px" }} alt="logo" /></NavLink>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
