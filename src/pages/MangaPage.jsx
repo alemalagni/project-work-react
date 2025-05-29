@@ -245,7 +245,7 @@ function MangaPage() {
                             />
                         </div>
                         <div className="col-auto">
-                            <button type="submit" className="btn btn-primary mb-3">Cerca</button>
+                            <button type="submit" className="btn btn-primary">Cerca</button>
                         </div>
                     </form>
                 </div>
