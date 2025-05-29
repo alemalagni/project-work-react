@@ -125,12 +125,12 @@ function MangaPage() {
                         <div className="p-3">
                             <select class="form-select" aria-label="Default select example" onChange={orderManga}>
                                 <option value="" selected>Ordina per...</option>
-                                <option value="manga.price">Prezzo crescente</option>
-                                <option value="2">Prezzo decrescente</option>
-                                <option value="3">Nome (da A a Z)</option>
-                                <option value="4">Nome (da Z a A)</option>
-                                <option value="5">Più recente</option>
-                                <option value="6">Più vecchio</option>
+                                <option value="manga.price ASC">Prezzo crescente</option>
+                                <option value="manga.price DESC">Prezzo decrescente</option>
+                                <option value="manga.title ASC">Nome (da A a Z)</option>
+                                <option value="manga.title DESC">Nome (da Z a A)</option>
+                                <option value="manga.release_date ASC">Più recente</option>
+                                <option value="manga.release_date DESC">Più vecchio</option>
                             </select>
                         </div>
 
