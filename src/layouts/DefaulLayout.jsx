@@ -1,18 +1,40 @@
+// import { Outlet } from "react-router-dom";
+// import Navbar from "../components/Navbar";
+// import Footer from "../components/Footer";
+
+// export default function DefaultLayout() {
+
+//     return (
+//         <>
+//             <div>
+//                 <header className="m-bott">
+//                     <Navbar />
+//                 </header>
+//                 <div className="main-content-wrapper">
+//                     <Outlet />
+//                 </div>
+//                 <Footer />
+//             </div>
+//         </>
+//     )
+// };
+
+// src/layouts/DefaultLayout.jsx
+
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function DefaultLayout() {
-
     return (
-        <div>
+        <>
             <header className="m-bott">
                 <Navbar />
             </header>
-            <main>
+            <div className="main-content-wrapper">
                 <Outlet />
-            </main>
+            </div>
             <Footer />
-        </div>
-    )
-};
+        </>
+    );
+}
