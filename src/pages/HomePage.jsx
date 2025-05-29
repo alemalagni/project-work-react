@@ -1,4 +1,5 @@
 import HeroSpace from "../components/HeroSpace";
+import Series from "../components/Series";
 
 
 function HomePage() {
@@ -7,7 +8,7 @@ function HomePage() {
 
         <>
             <HeroSpace />
-            <h1>home page</h1>
+            <Series/>
 
         </>
 
