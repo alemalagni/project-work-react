@@ -9,8 +9,9 @@ function MangaCard({ data }) {
                 </div>
                 <div className="card-body d-flex flex-column">
                     <div>
-                        <strong>{data.title}</strong>
-                        <p>{`${data.price}€`}</p>
+                        <p><strong>{data.title}</strong></p>
+                        <p><strong>{`${data.price}€`}</strong></p>
+                        <p><strong>Genere:</strong> {`${data.genre}`}</p>
                     </div>
                     <div className="mt-auto">
                         < button className="btn btn-outline-primary w-100 mt-3">Acquista</button>
