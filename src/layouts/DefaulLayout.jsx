@@ -6,7 +6,7 @@ export default function DefaultLayout() {
 
     return (
         <div>
-            <header>
+            <header className="m-bott">
                 <Navbar />
             </header>
             <main>
