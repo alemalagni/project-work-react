@@ -22,20 +22,25 @@ function SerieDetailsPage() {
     }
 
     return (
-        <div className="container mt-5">
-            <div>
+        <div className="container mt-2">
+            <div className="position-relative">
                 <img
                     className="card-img-top  rounded-top-4"
                     src={import.meta.env.VITE_PUBLIC_PATH + serie.image_series}
                     alt={serie.name}
                     style={{
-                        height: "300px",
+                        height: "500px",
                         objectFit: "cover",
+                        objectPosition: "top",
                         backgroundColor: "#f8f8f8", // per riempire eventuali spazi vuoti
                     }}
                 />
+                <div className="fade-bottom" />
             </div>
-            <h2 className="mb-4">Volumi della serie: <span className="text-capitalize">{slug}</span></h2>
+            <div>
+                <h2 className="mb-4">{serie.name}</h2>
+            </div>
+
             <div className="row">
                 {volumi.length ? volumi.map(volume => (
                     <div key={volume.id} className="col-md-3 mb-4">
