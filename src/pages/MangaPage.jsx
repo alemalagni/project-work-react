@@ -73,6 +73,18 @@ function MangaPage() {
         }
     };
 
+    const handleNext5Page = () => {
+        if (currentPage < (totalPages - 4)) {
+            setCurrentPage(prevPage => prevPage + 5);
+        }
+    };
+
+    const handlePrev5Page = () => {
+        if (currentPage > 5) {
+            setCurrentPage(prevPage => prevPage - 5);
+        }
+    };
+
     useEffect(() => {
         getManga();
     }, [currentPage, itemsPerPage]);
@@ -142,7 +154,16 @@ function MangaPage() {
                             onClick={handleFirstPage}
                             disabled={currentPage === 1 || loading}
                         >
-                            Prima Pagina
+                            {currentPage > 1 ? `Prima Pagina` : '-'}
+                        </button>
+
+                        {/* TASTO: Pagina Precedente di 5 */}
+                        <button
+                            className="btn btn-outline-success me-2"
+                            onClick={handlePrev5Page}
+                            disabled={currentPage <= 5 || loading}
+                        >
+                            {currentPage > 5 ? `Pagina ${currentPage - 5}` : '-'}
                         </button>
 
                         {/* TASTO: Pagina Precedente */}
@@ -151,7 +172,7 @@ function MangaPage() {
                             onClick={handlePrevPage}
                             disabled={currentPage === 1 || loading}
                         >
-                            Pagina Precedente
+                            {currentPage > 1 ? `Pagina ${currentPage - 1}` : '-'}
                         </button>
 
                         {/* RIFERIMENTO PAGINA AL CENTRO */}
@@ -165,7 +186,16 @@ function MangaPage() {
                             onClick={handleNextPage}
                             disabled={currentPage === totalPages || loading}
                         >
-                            Pagina Successiva
+                            {currentPage < totalPages ? `Pagina ${currentPage + 1}` : '-'}
+                        </button>
+
+                        {/* TASTO: Pagina Successiva di 5*/}
+                        <button
+                            className="btn btn-outline-success ms-2"
+                            onClick={handleNext5Page}
+                            disabled={currentPage >= (totalPages - 4) || loading}
+                        >
+                            {currentPage < (totalPages - 4) ? `Pagina ${currentPage + 5}` : '-'}
                         </button>
 
                         {/* TASTO: Ultima Pagina */}
@@ -174,7 +204,7 @@ function MangaPage() {
                             onClick={handleLastPage}
                             disabled={currentPage === totalPages || loading}
                         >
-                            Ultima Pagina
+                            {currentPage < totalPages ? `Ultima Pagina` : '-'}
                         </button>
                     </div>
                 )}
