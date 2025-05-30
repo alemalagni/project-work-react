@@ -8,9 +8,8 @@ export default function MangaCarousel() {
     const [mangaList, setMangaList] = useState([]);
 
     useEffect(() => {
-        axios.get(import.meta.env.VITE_PUBLIC_PATH + "manga/newRelease")
+        axios.get(import.meta.env.VITE_PUBLIC_PATH + "manga/popularity")
             .then(res => {
-
                 if (Array.isArray(res.data)) {
                     setMangaList(res.data);
                 } else if (Array.isArray(res.data.manga)) {
@@ -37,7 +36,7 @@ export default function MangaCarousel() {
 
     return (
         <div className="container my-5 position-relative">
-            <h2 className="text-center mb-4">Nuovi Arrivi</h2>
+            <h2 className="text-center mb-4">Più Popolari</h2>
             <button
                 className="btn btn-primary position-absolute top-50 start-0 translate-middle-y"
                 style={{ zIndex: 2 }}

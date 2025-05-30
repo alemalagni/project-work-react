@@ -1,7 +1,7 @@
 import HeroSpace from "../components/HeroSpace";
 import Series from "../components/Series";
 import Carousel from "../components/Carousel";
-
+import CarouselPoplarity from "../components/CarouselPoplarity";
 
 function HomePage() {
 
@@ -11,7 +11,10 @@ function HomePage() {
             <div className="mb-5">
                 <HeroSpace />
                 <Carousel />
+                <CarouselPoplarity />
                 <Series />
+
+
 
             </div>
 

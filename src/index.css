@@ -167,3 +167,7 @@ a {
     /* Puoi cambiare #fff con il colore di sfondo della pagina */
     pointer-events: none;
 }
+
+.he {
+    height: 490px;
+}

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function MangaCard({ data }) {
+function MangaListCard({ data }) {
 
     const prezzo = String(data.price);
     let decimale = prezzo.slice(prezzo.indexOf(".") + 1);
@@ -23,42 +23,24 @@ function MangaCard({ data }) {
     const prezzoScontatoNumerico = prezzoBaseNumerico * (1 - discount);
     const prezzoScontatoFormattato = prezzoScontatoNumerico.toFixed(2).replace(".", ",");
 
-    const discountBadgeStyle = {
-        position: 'absolute',
-        top: '12px',
-        right: '12px',
-        backgroundColor: '#dc3545',
-        color: 'white',
-        padding: '0.3em 0.6em',
-        borderRadius: '0.375rem',
-        fontSize: '0.85em',
-        fontWeight: 'bold',
-        zIndex: 10
-    };
-
     return (
-        <div className="card shadow-sm h-100" style={{ position: 'relative' }}>
-            {discountPercentualeNumerico > 0 && (
-                <div style={discountBadgeStyle}>
-                    -{discountPercentualeNumerico}%
-                </div>
-            )}
+        <div className="card shadow-sm h-100 flex-row align-items-center p-2">
             <Link to={`/manga/${data.slug}`}>
-                <div>
-                    <img
-                        className="card-img-top mx-auto d-block mt-3"
-                        src={data.imagePath}
-                        alt={data.title}
-                        style={{ maxHeight: "250px", width: "auto", objectFit: "cover" }}
-                    />
-                </div>
+                <img
+                    className="rounded"
+                    src={data.imagePath}
+                    alt={data.title}
+                    style={{ height: "120px", width: "80px", objectFit: "cover" }}
+                />
             </Link>
-            <div className="card-body d-flex flex-column justify-content-between">
-                <div className="text-center">
-                    <p><strong>{data.title}</strong></p>
-                </div>
-                <div className="mt-1 d-flex flex-column">
-                    <div className="text-center">
+            <div className="card-body d-flex flex-column justify-content-between ms-3 p-2">
+                <div>
+                    <h5 className="mb-1">
+                        <Link to={`/manga/${data.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
+                            {data.title}
+                        </Link>
+                    </h5>
+                    <div>
                         {Number(data.discount) > 0 ? (
                             <>
                                 <span className="text-decoration-line-through text-muted me-2">
@@ -73,17 +55,17 @@ function MangaCard({ data }) {
                                 <strong>{`${prezzoNuovo}€`}</strong>
                             </span>
                         )}
-
-                        <p><strong>Genere:</strong> {`${data.genre}`}</p>
                     </div>
-
-                    <button className="btn btn-warning text-primary-emphasis mt-1">
-                        <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
-                    </button>
+                    <div className="text-muted small mt-1">
+                        <strong>Genere:</strong> {data.genre}
+                    </div>
                 </div>
+                <button className="btn btn-warning text-primary-emphasis mt-2 align-self-end">
+                    <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
+                </button>
             </div>
-        </div >
+        </div>
     );
 }
 
-export default MangaCard;
+export default MangaListCard;
