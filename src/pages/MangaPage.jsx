@@ -97,25 +97,6 @@ function MangaPage() {
         setSearchParams(newParams);
     }
 
-    if (loading) {
-        return (
-            <div className="container my-5 text-center">
-                <p>Caricamento manga...</p>
-                <div className="spinner-border text-primary" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div>
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div className="container my-5 text-center">
-                <p className="text-danger">{error}</p>
-            </div>
-        );
-    }
-
     return (
         <>
             <div className="container my-5">
@@ -176,9 +157,18 @@ function MangaPage() {
                         </div>
                     </div>
                 </div>
-
-                {/* Visualizzazione dei manga */}
-                {manga.length > 0 ? (
+                {loading ? (
+                    <div className="container my-5 text-center">
+                        <p>Caricamento manga...</p>
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                ) : error ? (
+                    <div className="container my-5 text-center">
+                        <p className="text-danger">{error}</p>
+                    </div>
+                ) : manga.length > 0 ? (
                     viewMode === "grid" ? (
                         <div className="row mt-4">
                             {manga.map(mangaItem => (
