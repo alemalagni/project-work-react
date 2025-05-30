@@ -35,6 +35,14 @@ function MangaDetailsPage() {
 
     const prezzoNuovo = prezzo.slice(0, prezzo.indexOf(".")) + "," + decimale;
 
+    // CALCOLO DELLO SCONTO
+    const prezzoBaseNumerico = parseFloat(manga.price);
+    // controllo che sia numero
+    const discountPercentualeNumerico = Number(manga.discount);
+    const discount = discountPercentualeNumerico / 100;
+    const prezzoScontatoNumerico = prezzoBaseNumerico * (1 - discount);
+    const prezzoScontatoFormattato = prezzoScontatoNumerico.toFixed(2).replace(".", ",");
+
     return (
 
         <>
@@ -59,15 +67,29 @@ function MangaDetailsPage() {
                         <div className="row mt-4">
                             <div className="col-md-6">
                                 <ul className="list-unstyled">
-                                    <li>Author: <strong>{manga.author}</strong></li>
-                                    <li className="mt-1" >Price: <strong>{`€ ${prezzoNuovo}`}</strong></li>
+                                    <li>Autore: <strong>{manga.author}</strong></li>
+                                    <li className="mt-1" >{Number(manga.discount) > 0 ? (
+                                        <>
+                                            <span>Prezzo: </span>
+                                            <span className="text-decoration-line-through text-muted me-2">
+                                                <strong>{` ${prezzoNuovo}€`}</strong>
+                                            </span>
+                                            <span className="text-danger">
+                                                <strong>{` ${prezzoScontatoFormattato}€`}</strong>
+                                            </span>
+                                        </>
+                                    ) : (
+                                        <span>
+                                            Prezzo: <strong>{` ${prezzoNuovo}€`}</strong>
+                                        </span>
+                                    )} </li>
                                     <li className="mt-1">ISBN: <strong>{manga.ISBN}</strong></li>
-                                    <li className="mt-1">Pages Number: <strong>{manga.pages}</strong></li>
-                                    <li className="mt-1">Release Date: <strong>{manga.release_date ? manga.release_date.slice(0, 10) : <p></p>}</strong></li>
+                                    <li className="mt-1">Numero di pagine: <strong>{manga.pages}</strong></li>
+                                    <li className="mt-1">Data uscita: <strong>{manga.release_date ? manga.release_date.slice(0, 10) : <p></p>}</strong></li>
                                 </ul>
                             </div>
                             <div className="col-md-6">
-                                <p><strong>Genres:</strong></p>
+                                <p><strong>Genere:</strong></p>
                                 <div>
                                     {manga.genres_array &&
                                         manga.genres_array.map((genre) => (
