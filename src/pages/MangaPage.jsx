@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import MangaCard from "../components/MangaCard";
+import MangaListCard from "../components/MangaListCard";
 
 function MangaPage() {
     const [manga, setManga] = useState([]);
@@ -134,8 +135,8 @@ function MangaPage() {
                                 value={order}
                             >
                                 <option value="">Ordina per...</option>
-                                <option value="manga.price ASC">Prezzo crescente</option>
-                                <option value="manga.price DESC">Prezzo decrescente</option>
+                                <option value="order_price ASC">Prezzo crescente</option>
+                                <option value="order_price DESC">Prezzo decrescente</option>
                                 <option value="manga.title ASC">Nome (da A a Z)</option>
                                 <option value="manga.title DESC">Nome (da Z a A)</option>
                                 <option value="manga.release_date DESC">Più recente</option>
@@ -177,17 +178,7 @@ function MangaPage() {
                         <div className="list-group mt-4">
                             {manga.map(mangaItem => (
                                 <div key={mangaItem.id} className="list-group-item">
-                                    <div className="d-flex align-items-center">
-                                        <img
-                                            src={mangaItem.imagePath}
-                                            alt={mangaItem.title}
-                                            style={{ width: 60, height: 90, objectFit: "cover", marginRight: 16 }}
-                                        />
-                                        <div>
-                                            <h5 className="mb-1">{mangaItem.title}</h5>
-                                            <small>{mangaItem.genre}</small>
-                                        </div>
-                                    </div>
+                                    <MangaListCard data={mangaItem} />
                                 </div>
                             ))}
                         </div>
