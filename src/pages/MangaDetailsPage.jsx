@@ -8,11 +8,9 @@ function MangaDetailsPage() {
 
     const [manga, setManga] = useState([])
 
-    console.log(import.meta.env.VITE_PUBLIC_PATH)
     function getManga() {
         axios.get(import.meta.env.VITE_PUBLIC_PATH + `manga/${slug}`)
             .then(res => {
-                console.log(res.data)
                 setManga(res.data)
             })
             .catch(err => console.log(err))
@@ -46,7 +44,7 @@ function MangaDetailsPage() {
     return (
 
         <>
-            <div className="container pb-5">
+            <div className="container pb-5 pt-5">
                 <div className="row">
                     <div className="col-md-6 px-5 mb-4">
                         <img src={manga.imagePath} className="img-fluid rounded shadow" alt={manga.title} />

@@ -1,7 +1,9 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
+import MangaCard from "../components/MangaCard";
+import MangaListCard from "../components/MangaListCard";
 
 function prezzo(price) {
     const prezzo = String(price);
@@ -24,6 +26,10 @@ function SerieDetailsPage() {
     const [serie, setSerie] = useState(null);
     const [volumi, setVolumi] = useState([]);
 
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [isInitialized, setIsInitialized] = useState(false);
+    const [viewMode, setViewMode] = useState("grid")
+
     useEffect(() => {
         axios.get(import.meta.env.VITE_PUBLIC_PATH + `manga/series/${slug}`)
             .then(res => {
@@ -32,6 +38,31 @@ function SerieDetailsPage() {
             })
             .catch(err => console.error(err));
     }, [slug]);
+
+
+
+    useEffect(() => {
+        const urlView = searchParams.get('view') || 'grid';
+
+        if (['grid', 'list'].includes(urlView)) {
+            setViewMode(urlView);
+        } else {
+            setViewMode('grid');
+        }
+        setIsInitialized(true);
+    }, []);
+
+    useEffect(() => {
+        if (!isInitialized) return;
+        const newParams = new URLSearchParams();
+
+        if (viewMode && viewMode !== 'grid') {
+            newParams.set("view", viewMode)
+        }
+
+        setSearchParams(newParams, { replace: true });
+    }, [viewMode]);
+
 
     if (!serie) {
         return <p>Caricamento...</p>;
@@ -64,31 +95,48 @@ function SerieDetailsPage() {
                 </div>
             </div>
 
-            <div className="row">
-                {volumi.length ? volumi.map(volume => (
-                    <div key={volume.id} className="col-md-3 mb-4">
-                        <div className="card h-100">
-                            <Link to={`/manga/${volume.slug}`}>
-                                <img src={volume.imagePath} alt={volume.title} className="card-img-top" />
+            {/* bottoni per paginazione griglia o lista */}
+            <div className="d-flex align-items-center gap-2">
+                <button
+                    className={`btn btn-sm ${viewMode === "grid" ? "btn-primary" : "btn-outline-primary"}`}
+                    onClick={() => setViewMode("grid")}
+                    title="griglia"
+                >
+                    <i className="fas fa-th"></i>
+                </button>
+                <button
+                    className={`btn btn-sm ${viewMode === "list" ? "btn-primary" : "btn-outline-primary"}`}
+                    onClick={() => setViewMode("list")}
+                    title="lista"
+                >
+                    <i className="fas fa-list"></i>
+                </button>
+            </div>
 
-                            </Link>
-                            <div className="card-body">
-                                <h5 className="card-title">{volume.title}</h5>
-                                {/* <p className="card-text">Volume #{volume.volume_number}</p> */}
-                                <p className="card-text">
-                                    {volume.release_date
-                                        ? new Date(volume.release_date).toLocaleDateString("it-IT", {
-                                            year: "numeric",
-                                            month: "long",
-                                            day: "numeric"
-                                        })
-                                        : "—"}
-                                </p>
-                                <p><strong>{`${prezzo(volume.price)}€`}</strong></p>
-                            </div>
+            {/* visualizzazione manga */}
+            <div className="row mb-5">
+                {volumi.length > 0 ? (
+                    viewMode === "grid" ? (
+                        <div className="row mt-4">
+                            {volumi.map(volumiItem => (
+                                <div key={volumiItem.id} className="col-12 col-md-4 col-lg-3 mt-3">
+                                    <MangaCard data={volumiItem} />
+                                </div>
+                            ))}
                         </div>
-                    </div>
-                )) : <p>Nessun volume trovato.</p>}
+                    ) : (
+                        <div className="list-group mt-4">
+                            {volumi.map(volumiItem => (
+                                <div key={volumiItem.id} className="list-group-item">
+                                    <MangaListCard data={volumiItem} />
+                                </div>
+                            ))}
+                        </div>
+                    )
+                ) : (
+                    <p>Nessun volume trovato.</p>
+                )}
+
             </div>
         </div>
     );
