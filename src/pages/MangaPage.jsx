@@ -32,6 +32,7 @@ function MangaPage() {
         setOrder(urlOrder);
         setSearch(urlSearch);
         setCurrentPage(urlPage);
+
         if (['grid', 'list'].includes(urlView)) {
             setViewMode(urlView);
         } else {
@@ -42,7 +43,6 @@ function MangaPage() {
 
     useEffect(() => {
         if (!isInitialized) return;
-
         if (debounceTimeout) {
             clearTimeout(debounceTimeout);
         }
@@ -76,7 +76,6 @@ function MangaPage() {
         setSearchParams(newParams, { replace: true });
     }, [order, search, currentPage, viewMode, isInitialized]);
 
-    // Funzione per recuperare i manga dall'API
     function getManga() {
         setLoading(true);
         setError(null);
@@ -94,7 +93,7 @@ function MangaPage() {
                 setTotalItems(res.data.totalItems);
             })
             .catch(err => {
-                console.error("Errore nel caricamento manga:", err);
+                console.error("Errore nel caricamento manga:", err); // Logga l'errore per il debug
                 setError("Impossibile caricare i manga. Riprova più tardi.");
             })
             .finally(() => {
@@ -165,7 +164,7 @@ function MangaPage() {
                                     value={search}
                                     onChange={(e) => {
                                         setSearch(e.target.value);
-                                        setCurrentPage(1);
+                                        setCurrentPage(1); // Resetta la pagina alla prima quando si cambia la ricerca
                                     }}
                                 />
                             </div>
