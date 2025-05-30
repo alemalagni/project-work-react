@@ -19,6 +19,7 @@ function MangaPage() {
 
     const [isInitialized, setIsInitialized] = useState(false);
 
+    const [viewMode, setViewMode] = useState("grid")
 
     useEffect(() => {
         const urlOrder = searchParams.get('order') || '';
@@ -107,6 +108,24 @@ function MangaPage() {
                 <div className="d-flex justify-content-between align-items-center mt-4">
                     <h1>Lista di manga</h1>
                     <div className="d-flex">
+
+                        <div className="d-flex align-items-center gap-2">
+                            <button
+                                className={`btn btn-sm ${viewMode === "grid" ? "btn-primary" : "btn-outline-primary"}`}
+                                onClick={() => setViewMode("grid")}
+                                title="griglia"
+                            >
+                                <i className="fas fa-th"></i>
+                            </button>
+                            <button
+                                className={`btn btn-sm ${viewMode === "list" ? "btn-primary" : "btn-outline-primary"}`}
+                                onClick={() => setViewMode("list")}
+                                title="lista"
+                            >
+                                <i className="fas fa-list"></i>
+                            </button>
+                        </div>
+
                         <div className="p-3">
                             <select
                                 className="form-select"
@@ -145,17 +164,39 @@ function MangaPage() {
                 </div>
 
                 {/* Visualizzazione dei manga */}
-                <div className="row mt-4">
-                    {manga.length > 0 ? (
-                        manga.map(mangaItem => (
-                            <div key={mangaItem.id} className="col-12 col-md-4 col-lg-3 mt-3">
-                                <MangaCard data={mangaItem} />
-                            </div>
-                        ))
+                {manga.length > 0 ? (
+                    viewMode === "grid" ? (
+                        <div className="row mt-4">
+                            {manga.map(mangaItem => (
+                                <div key={mangaItem.id} className="col-12 col-md-4 col-lg-3 mt-3">
+                                    <MangaCard data={mangaItem} />
+                                </div>
+                            ))}
+                        </div>
                     ) : (
-                        <div className="col-12 text-center mt-3">Nessun elemento trovato. Prova con una ricerca diversa o controlla i filtri.</div>
-                    )}
-                </div>
+                        <div className="list-group mt-4">
+                            {manga.map(mangaItem => (
+                                <div key={mangaItem.id} className="list-group-item">
+                                    <div className="d-flex align-items-center">
+                                        <img
+                                            src={mangaItem.imagePath}
+                                            alt={mangaItem.title}
+                                            style={{ width: 60, height: 90, objectFit: "cover", marginRight: 16 }}
+                                        />
+                                        <div>
+                                            <h5 className="mb-1">{mangaItem.title}</h5>
+                                            <small>{mangaItem.genre}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )
+                ) : (
+                    <div className="col-12 text-center mt-3">
+                        Nessun elemento trovato. Prova con una ricerca diversa o controlla i filtri.
+                    </div>
+                )}
 
                 {/* Controlli di paginazione */}
                 {totalItems > 0 && totalPages > 1 && (
