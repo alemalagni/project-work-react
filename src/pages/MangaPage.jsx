@@ -49,7 +49,7 @@ function MangaPage() {
 
         const newTimeout = setTimeout(() => {
             getManga();
-        }, 100);
+        }, 500);
 
         setDebounceTimeout(newTimeout);
 
