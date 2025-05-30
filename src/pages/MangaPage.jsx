@@ -5,95 +5,49 @@ import MangaCard from "../components/MangaCard";
 function MangaPage() {
     const [manga, setManga] = useState([]);
     const [search, setSearch] = useState('');
-    const [order, setOrder] = useState(0)
-
+    const [order, setOrder] = useState('')
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(20);
     const [totalItems, setTotalItems] = useState(0);
-
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [searchInput, setSearchInput] = useState('');
     const [error, setError] = useState(null);
 
     const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+    useEffect(() => {
+        getManga(order, search, currentPage);
+    }, [order, search, currentPage]);
+
     function getManga() {
-        setLoading(true);
+        // setLoading(true);
         setError(null);
 
         axios.get(`${import.meta.env.VITE_PUBLIC_PATH}manga`, {
             params: {
                 search: search,
                 page: currentPage,
-                limit: itemsPerPage
+                limit: itemsPerPage,
+                order: order
             }
         })
             .then(res => {
-                console.log("Dati ricevuti dal backend:", res.data);
                 setManga(res.data.items);
                 setTotalItems(res.data.totalItems);
             })
             .catch(err => {
-                console.error("Errore nel fetch dei manga:", err);
                 setError("Impossibile caricare i manga. Riprova più tardi.");
             })
-            .finally(() => {
-                setLoading(false);
-            });
+        // .finally(() => {
+        //     setLoading(false);
+        // });
     }
 
     function orderManga(e) {
-        e.preventDefault();
-        alert("Non ancora funzionante")
+        const selectedOrder = e.target.value;
+        setOrder(selectedOrder);
+        setCurrentPage(1);
     }
-
-    function searchManga(e) {
-        e.preventDefault();
-        if (currentPage === 1) {
-            getManga();
-        } else {
-            setCurrentPage(1);
-        }
-    }
-
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage(prevPage => prevPage + 1);
-        }
-    };
-
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage(prevPage => prevPage - 1);
-        }
-    };
-
-    const handleFirstPage = () => {
-        if (currentPage !== 1) {
-            setCurrentPage(1);
-        }
-    };
-
-    const handleLastPage = () => {
-        if (currentPage !== totalPages) {
-            setCurrentPage(totalPages);
-        }
-    };
-
-    const handleNext5Page = () => {
-        if (currentPage < (totalPages - 4)) {
-            setCurrentPage(prevPage => prevPage + 5);
-        }
-    };
-
-    const handlePrev5Page = () => {
-        if (currentPage > 5) {
-            setCurrentPage(prevPage => prevPage - 5);
-        }
-    };
-
-    useEffect(() => {
-        getManga();
-    }, [currentPage, itemsPerPage]);
 
     if (loading) {
         return (
@@ -122,19 +76,18 @@ function MangaPage() {
                     <div className="d-flex">
                         <div className="p-3">
                             <select class="form-select" aria-label="Default select example" onChange={orderManga}>
-                                <option value="0" selected>Ordina per...</option>
-                                <option value="1">Prezzo crescente</option>
-                                <option value="2">Prezzo decrescente</option>
-                                <option value="3">Nome (da A a Z)</option>
-                                <option value="4">Nome (da Z a A)</option>
-                                <option value="5">Più recente</option>
-                                <option value="6">Più vecchio</option>
+                                <option value="" selected>Ordina per...</option>
+                                <option value="manga.price ASC">Prezzo crescente</option>
+                                <option value="manga.price DESC">Prezzo decrescente</option>
+                                <option value="manga.title ASC">Nome (da A a Z)</option>
+                                <option value="manga.title DESC">Nome (da Z a A)</option>
+                                <option value="manga.release_date DESC">Più recente</option>
+                                <option value="manga.release_date ASC">Più vecchio</option>
                             </select>
                         </div>
 
                         {/* Form di ricerca */}
-                        <form className="row g-3 align-items-center" onSubmit={searchManga}>
-
+                        <div className="row g-3 align-items-center">
                             <div className="col-auto">
                                 <label htmlFor="searchInput" className="visually-hidden">Cerca</label>
                                 <input
@@ -143,13 +96,13 @@ function MangaPage() {
                                     id="searchInput"
                                     placeholder="Cerca"
                                     value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
+                                    onChange={(e) => {
+                                        setSearch(e.target.value);
+                                        setCurrentPage(1);
+                                    }}
                                 />
                             </div>
-                            <div className="col-auto">
-                                <button type="submit" className="btn btn-primary">Cerca</button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
 

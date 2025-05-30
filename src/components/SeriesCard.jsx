@@ -37,12 +37,12 @@ function SeriesCard({ serie }) {
     return (
         <div className="card border-0 shadow-lg rounded-4 h-100 bg-white position-relative overflow-hidden anime-card">
             <img
-                className="card-img-top object-fit-contain rounded-top-4"
+                className="card-img-top  rounded-top-4"
                 src={serie.imagePath}
                 alt={serie.name}
                 style={{
                     height: "260px",
-                    objectFit: "contain",
+                    objectFit: "cover",
                     backgroundColor: "#f8f8f8", // per riempire eventuali spazi vuoti
                 }}
             />

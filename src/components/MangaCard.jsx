@@ -21,7 +21,7 @@ function MangaCard({ data }) {
                     <img className="card-img-top mx-auto d-block mt-3" src={data.imagePath} alt={data.title} style={{ maxHeight: "250px", width: "auto", objectFit: "cover" }} />
                 </div>
             </Link>
-            <div className="card-body d-flex flex-column">
+            <div className="card-body d-flex flex-column justify-content-between">
                 <div className="text-center">
                     <p><strong>{data.title}</strong></p>
                     <p><strong>{`${prezzoNuovo}€`}</strong></p>
