@@ -26,10 +26,16 @@ function MangaPage() {
         const urlOrder = searchParams.get('order') || '';
         const urlSearch = searchParams.get('search') || '';
         const urlPage = parseInt(searchParams.get('page')) || 1;
+        const urlView = searchParams.get('view') || 'grid';
 
         setOrder(urlOrder);
         setSearch(urlSearch);
         setCurrentPage(urlPage);
+        if (['grid', 'list'].includes(urlView)) {
+            setViewMode(urlView);
+        } else {
+            setViewMode('grid');
+        }
         setIsInitialized(true);
     }, []);
 
@@ -46,11 +52,15 @@ function MangaPage() {
         if (search) newParams.set("search", search);
         if (currentPage !== 1) newParams.set("page", currentPage);
 
-        setSearchParams(newParams);
-    }, [order, search, currentPage]);
+        if (viewMode && viewMode !== 'grid') {
+            newParams.set("view", viewMode)
+        }
+
+        setSearchParams(newParams, { replace: true });
+    }, [order, search, currentPage, viewMode]);
 
     function getManga() {
-        // setLoading(true);
+        setLoading(true);
         setError(null);
 
         axios.get(`${import.meta.env.VITE_PUBLIC_PATH}manga`, {
@@ -68,6 +78,9 @@ function MangaPage() {
             .catch(err => {
                 setError("Impossibile caricare i manga. Riprova più tardi.");
             })
+            .finally(() => {
+                setLoading(false);
+            });
     }
 
     function orderManga(e) {
