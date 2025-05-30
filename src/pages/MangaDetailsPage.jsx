@@ -8,11 +8,9 @@ function MangaDetailsPage() {
 
     const [manga, setManga] = useState([])
 
-    console.log(import.meta.env.VITE_PUBLIC_PATH)
     function getManga() {
         axios.get(import.meta.env.VITE_PUBLIC_PATH + `manga/${slug}`)
             .then(res => {
-                console.log(res.data)
                 setManga(res.data)
             })
             .catch(err => console.log(err))
