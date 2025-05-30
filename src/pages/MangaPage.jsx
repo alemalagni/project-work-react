@@ -75,7 +75,7 @@ function MangaPage() {
                     <h1>Lista di manga</h1>
                     <div className="d-flex">
                         <div className="p-3">
-                            <select class="form-select" aria-label="Default select example" onChange={orderManga}>
+                            <select className="form-select" aria-label="Default select example" onChange={orderManga}>
                                 <option value="" selected>Ordina per...</option>
                                 <option value="manga.price ASC">Prezzo crescente</option>
                                 <option value="manga.price DESC">Prezzo decrescente</option>
