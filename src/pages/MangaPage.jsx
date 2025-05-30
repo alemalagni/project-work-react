@@ -34,7 +34,7 @@ function MangaPage() {
     useEffect(() => {
         if (!isInitialized) return;
         getManga();
-    }, [order, search, currentPage]);
+    }, [order, search, currentPage, isInitialized]);
 
     useEffect(() => {
         if (!isInitialized) return;
@@ -66,9 +66,6 @@ function MangaPage() {
             .catch(err => {
                 setError("Impossibile caricare i manga. Riprova più tardi.");
             })
-        // .finally(() => {
-        //     setLoading(false);
-        // });
     }
 
     function orderManga(e) {
