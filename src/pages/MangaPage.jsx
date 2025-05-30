@@ -135,8 +135,8 @@ function MangaPage() {
                                 value={order}
                             >
                                 <option value="">Ordina per...</option>
-                                <option value="manga.price ASC">Prezzo crescente</option>
-                                <option value="manga.price DESC">Prezzo decrescente</option>
+                                <option value="order_price ASC">Prezzo crescente</option>
+                                <option value="order_price DESC">Prezzo decrescente</option>
                                 <option value="manga.title ASC">Nome (da A a Z)</option>
                                 <option value="manga.title DESC">Nome (da Z a A)</option>
                                 <option value="manga.release_date DESC">Più recente</option>
