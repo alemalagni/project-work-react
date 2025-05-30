@@ -153,7 +153,7 @@ function MangaPage() {
                         </div>
 
                         {/* Form di ricerca: onSubmit è sul tag form */}
-                        <form className="row g-3 align-items-center m-0" onSubmit={handleSearchSubmit}>
+                        <form className="row g-3 align-items-center" onSubmit={handleSearchSubmit}>
                             <div className="col-auto">
                                 <label htmlFor="searchInput" className="visually-hidden">Cerca</label>
                                 <input
