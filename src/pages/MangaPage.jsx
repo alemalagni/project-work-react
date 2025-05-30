@@ -34,7 +34,7 @@ function MangaPage() {
     useEffect(() => {
         if (!isInitialized) return;
         getManga();
-    }, [order, search, currentPage]);
+    }, [order, search, currentPage, isInitialized]);
 
     useEffect(() => {
         if (!isInitialized) return;
@@ -51,6 +51,19 @@ function MangaPage() {
         // setLoading(true);
         setError(null);
 
+        const paramsForAPI = {
+            search: search,
+            page: currentPage,
+            limit: itemsPerPage,
+            // Invia 'order' solo se ha un valore, altrimenti il backend userà il suo default.
+            // Se 'order' è una stringa vuota '' e vuoi che il backend la interpreti
+            // per usare il suo default, allora inviala. Se vuoi ometterla se vuota:
+            order: order || undefined
+        };
+
+        console.log('[DEBUG] Frontend: Parametri inviati ad Axios:', paramsForAPI); // <-- LOG CRUCIALE
+        console.log('[DEBUG] Frontend: URL API completo:', `${import.meta.env.VITE_PUBLIC_PATH}manga`);
+
         axios.get(`${import.meta.env.VITE_PUBLIC_PATH}manga`, {
             params: {
                 search: search,
@@ -62,13 +75,13 @@ function MangaPage() {
             .then(res => {
                 setManga(res.data.items);
                 setTotalItems(res.data.totalItems);
+                console.warn('[DEBUG] Frontend: La risposta non contiene items:', res.data);
             })
             .catch(err => {
                 setError("Impossibile caricare i manga. Riprova più tardi.");
+                console.error('[DEBUG] Frontend: Errore Axios:', err.toJSON ? err.toJSON() : err); // Log più dettagliato dell'errore
+
             })
-        // .finally(() => {
-        //     setLoading(false);
-        // });
     }
 
     function orderManga(e) {
