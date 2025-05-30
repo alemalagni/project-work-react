@@ -10,7 +10,6 @@ export default function MangaCarousel() {
     useEffect(() => {
         axios.get(import.meta.env.VITE_PUBLIC_PATH + "manga/popularity")
             .then(res => {
-                console.log(res.data);
                 if (Array.isArray(res.data)) {
                     setMangaList(res.data);
                 } else if (Array.isArray(res.data.manga)) {
@@ -56,8 +55,13 @@ export default function MangaCarousel() {
                 {Array.isArray(mangaList) && mangaList.map((manga) => (
                     <div key={manga.slug || manga.title} className="px-2 d-flex justify-content-center">
                         <Link to={`/manga/${manga.slug}`} style={{ textDecoration: "none", color: "inherit" }}>
-                            <div className="card" style={{ width: "16rem", cursor: "pointer" }}>
-                                <img src={manga.imagePath} className="card-img-top" alt={manga.title} />
+                            <div className="card he" style={{ width: "16rem", cursor: "pointer" }}>
+                                <img
+                                    src={manga.imagePath}
+                                    className="card-img-top"
+                                    alt={manga.title}
+                                    style={{ height: "382px", objectFit: "cover", width: "100%" }}
+                                />
                                 <div className="card-body">
                                     <h5 className="card-title">{manga.title}</h5>
                                 </div>
