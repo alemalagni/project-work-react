@@ -92,27 +92,31 @@ function MangaCard({ data }) {
             <div className="card-body d-flex flex-column justify-content-between">
                 <div className="text-center">
                     <p><strong>{data.title}</strong></p>
-
-                    {Number(data.discount) > 0 ? (
-                        <>
-                            <span className="text-decoration-line-through text-muted me-2">
+                </div>
+                <div className="mt-1 d-flex flex-column">
+                    <div className="text-center">
+                        {Number(data.discount) > 0 ? (
+                            <>
+                                <span className="text-decoration-line-through text-muted me-2">
+                                    <strong>{`${prezzoNuovo}€`}</strong>
+                                </span>
+                                <span className="text-danger">
+                                    <strong>{`${prezzoScontatoFormattato}€`}</strong>
+                                </span>
+                            </>
+                        ) : (
+                            <span>
                                 <strong>{`${prezzoNuovo}€`}</strong>
                             </span>
-                            <span className="text-danger">
-                                <strong>{`${prezzoScontatoFormattato}€`}</strong>
-                            </span>
-                        </>
-                    ) : (
-                        <span>
-                            <strong>{`${prezzoNuovo}€`}</strong>
-                        </span>
-                    )}
+                        )}
 
-                    <p><strong>Genere:</strong> {`${data.genre}`}</p>
+                        <p><strong>Genere:</strong> {`${data.genre}`}</p>
+                    </div>
+
+                    <button className="btn btn-warning text-primary-emphasis mt-1">
+                        <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
+                    </button>
                 </div>
-                <button className="btn btn-warning text-primary-emphasis mt-4">
-                    <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
-                </button>
             </div>
         </div >
     );
