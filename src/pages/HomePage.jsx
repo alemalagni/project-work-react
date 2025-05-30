@@ -11,8 +11,9 @@ function HomePage() {
             <div className="mb-5">
                 <HeroSpace />
                 <Carousel />
-                <Series />
                 <CarouselPoplarity />
+                <Series />
+
 
 
             </div>
