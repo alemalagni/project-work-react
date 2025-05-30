@@ -261,6 +261,7 @@ const Filter = ({
                         <option value="Seinen">Seinen</option>
                         <option value="Thriller">Thriller</option>
                         <option value="Fantasy">Fantasy</option>
+                        <option value="Horror">Horror</option>
                         {/* Aggiungi altre opzioni di genere se necessario */}
                     </select>
                 </div>
