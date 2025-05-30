@@ -315,12 +315,12 @@
 import axios from "axios";
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
-import MangaCard from "../components/MangaCard"; // Assicurati che il percorso sia corretto
-import MangaListCard from "../components/MangaListCard"; // Assicurati che il percorso sia corretto
-import Filter from "../components/Filter"; // Assicurati che il percorso sia corretto
+import MangaCard from "../components/MangaCard";
+import MangaListCard from "../components/MangaListCard";
+import Filter from "../components/Filter";
 
 function MangaPage() {
-    // Stati per i dati e UI generale
+
     const [manga, setManga] = useState([]);
     const [search, setSearch] = useState('');
     const [order, setOrder] = useState('');
@@ -340,7 +340,7 @@ function MangaPage() {
     // Costante per il prezzo massimo di default
     const DEFAULT_MAX_PRICE = 25;
 
-    // --- Stati dei filtri ATTIVI (usati per la query API e per aggiornare l'URL) ---
+    // Stati dei filtri ATTIVI (usati per la query API e per aggiornare l'URL) 
     const [filterPriceRange, setFilterPriceRange] = useState(DEFAULT_MAX_PRICE);
     const [filterEditorialLine, setFilterEditorialLine] = useState('');
     const [filterHasDiscount, setFilterHasDiscount] = useState(null); // Può essere true, false, o null (per "qualsiasi")
@@ -406,7 +406,7 @@ function MangaPage() {
             params.has_discount = filterHasDiscount; // Invia true o false
         }
 
-        axios.get(`${import.meta.env.VITE_PUBLIC_PATH}manga`, { params })
+        axios.get(`${import.meta.env.VITE_PUBLIC_PATH}manga/`, { params })
             .then(res => {
                 setManga(res.data.items);
                 setTotalItems(res.data.totalItems);
@@ -423,7 +423,6 @@ function MangaPage() {
         filterPriceRange, filterEditorialLine, filterHasDiscount, DEFAULT_MAX_PRICE // Dipendenze di getManga
     ]);
 
-    // Effetto per eseguire la chiamata API (con debounce) quando cambiano i filtri attivi,
     // la ricerca, l'ordinamento o la pagina.
     useEffect(() => {
         if (!isInitialized) return;
@@ -451,7 +450,6 @@ function MangaPage() {
         if (currentPage !== 1) newParams.set("page", currentPage.toString());
         if (viewMode !== 'grid') newParams.set("view", viewMode);
 
-        // Aggiungi i filtri ATTIVI all'URL
         if (filterPriceRange !== DEFAULT_MAX_PRICE) newParams.set("priceRange", filterPriceRange.toString());
         if (filterEditorialLine) newParams.set("editorialLine", filterEditorialLine);
         if (filterHasDiscount !== null) newParams.set("hasDiscount", filterHasDiscount.toString());
@@ -484,7 +482,7 @@ function MangaPage() {
         setFilterHasDiscount(stagedFilterHasDiscount);
         setCurrentPage(1); // Resetta la pagina quando si applicano nuovi filtri
         handleCloseOffcanvas(); // Chiude l'offcanvas
-        // Il cambio dei filtri attivi (filterPriceRange, etc.) triggererà l'useEffect per getManga
+        // Il cambio dei filtri attivi, triggererà l'useEffect per getManga
     };
 
     // Gestore per resettare tutti i filtri ai valori di default
