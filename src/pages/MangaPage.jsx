@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import MangaCard from "../components/MangaCard";
 
 function MangaPage() {
@@ -10,13 +11,40 @@ function MangaPage() {
     const [itemsPerPage] = useState(20);
     const [totalItems, setTotalItems] = useState(0);
     const [loading, setLoading] = useState(false);
-    const [searchInput, setSearchInput] = useState('');
     const [error, setError] = useState(null);
 
     const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const [isInitialized, setIsInitialized] = useState(false);
+
+
     useEffect(() => {
-        getManga(order, search, currentPage);
+        const urlOrder = searchParams.get('order') || '';
+        const urlSearch = searchParams.get('search') || '';
+        const urlPage = parseInt(searchParams.get('page')) || 1;
+
+        setOrder(urlOrder);
+        setSearch(urlSearch);
+        setCurrentPage(urlPage);
+        setIsInitialized(true);
+    }, []);
+
+    useEffect(() => {
+        if (!isInitialized) return;
+        getManga();
+    }, [order, search, currentPage]);
+
+    useEffect(() => {
+        if (!isInitialized) return;
+        const newParams = new URLSearchParams();
+
+        if (order) newParams.set("order", order);
+        if (search) newParams.set("search", search);
+        if (currentPage !== 1) newParams.set("page", currentPage);
+
+        setSearchParams(newParams);
     }, [order, search, currentPage]);
 
     function getManga() {
@@ -47,6 +75,14 @@ function MangaPage() {
         const selectedOrder = e.target.value;
         setOrder(selectedOrder);
         setCurrentPage(1);
+
+        const newParams = new URLSearchParams(searchParams);
+        if (selectedOrder) {
+            newParams.set("order", selectedOrder);
+        } else {
+            newParams.delete("order");
+        }
+        setSearchParams(newParams);
     }
 
     if (loading) {
@@ -75,8 +111,13 @@ function MangaPage() {
                     <h1>Lista di manga</h1>
                     <div className="d-flex">
                         <div className="p-3">
-                            <select class="form-select" aria-label="Default select example" onChange={orderManga}>
-                                <option value="" selected>Ordina per...</option>
+                            <select
+                                className="form-select"
+                                aria-label="Default select example"
+                                onChange={orderManga}
+                                value={order}
+                            >
+                                <option value="">Ordina per...</option>
                                 <option value="manga.price ASC">Prezzo crescente</option>
                                 <option value="manga.price DESC">Prezzo decrescente</option>
                                 <option value="manga.title ASC">Nome (da A a Z)</option>
