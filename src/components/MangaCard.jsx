@@ -77,8 +77,26 @@ function MangaCard({ data }) {
     const prezzoScontatoNumerico = prezzoBaseNumerico * (1 - discount);
     const prezzoScontatoFormattato = prezzoScontatoNumerico.toFixed(2).replace(".", ",");
 
+    const discountBadgeStyle = {
+        position: 'absolute',
+        top: '12px',
+        right: '12px',
+        backgroundColor: '#dc3545',
+        color: 'white',
+        padding: '0.3em 0.6em',
+        borderRadius: '0.375rem',
+        fontSize: '0.85em',
+        fontWeight: 'bold',
+        zIndex: 10
+    };
+
     return (
-        <div className="card shadow-sm h-100">
+        <div className="card shadow-sm h-100" style={{ position: 'relative' }}>
+            {discountPercentualeNumerico > 0 && (
+                <div style={discountBadgeStyle}>
+                    -{discountPercentualeNumerico}%
+                </div>
+            )}
             <Link to={`/manga/${data.slug}`}>
                 <div>
                     <img
@@ -92,27 +110,31 @@ function MangaCard({ data }) {
             <div className="card-body d-flex flex-column justify-content-between">
                 <div className="text-center">
                     <p><strong>{data.title}</strong></p>
-
-                    {Number(data.discount) > 0 ? (
-                        <>
-                            <span className="text-decoration-line-through text-muted me-2">
+                </div>
+                <div className="mt-1 d-flex flex-column">
+                    <div className="text-center">
+                        {Number(data.discount) > 0 ? (
+                            <>
+                                <span className="text-decoration-line-through text-muted me-2">
+                                    <strong>{`${prezzoNuovo}€`}</strong>
+                                </span>
+                                <span className="text-danger">
+                                    <strong>{`${prezzoScontatoFormattato}€`}</strong>
+                                </span>
+                            </>
+                        ) : (
+                            <span>
                                 <strong>{`${prezzoNuovo}€`}</strong>
                             </span>
-                            <span className="text-danger">
-                                <strong>{`${prezzoScontatoFormattato}€`}</strong>
-                            </span>
-                        </>
-                    ) : (
-                        <span>
-                            <strong>{`${prezzoNuovo}€`}</strong>
-                        </span>
-                    )}
+                        )}
 
-                    <p><strong>Genere:</strong> {`${data.genre}`}</p>
+                        <p><strong>Genere:</strong> {`${data.genre}`}</p>
+                    </div>
+
+                    <button className="btn btn-warning text-primary-emphasis mt-1">
+                        <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
+                    </button>
                 </div>
-                <button className="btn btn-warning text-primary-emphasis mt-4">
-                    <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
-                </button>
             </div>
         </div >
     );
