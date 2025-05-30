@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import DiscountBedge from "./DiscountBedge";
 
 function MangaCard({ data }) {
 
@@ -23,26 +24,9 @@ function MangaCard({ data }) {
     const prezzoScontatoNumerico = prezzoBaseNumerico * (1 - discount);
     const prezzoScontatoFormattato = prezzoScontatoNumerico.toFixed(2).replace(".", ",");
 
-    const discountBadgeStyle = {
-        position: 'absolute',
-        top: '12px',
-        right: '12px',
-        backgroundColor: '#dc3545',
-        color: 'white',
-        padding: '0.3em 0.6em',
-        borderRadius: '0.375rem',
-        fontSize: '0.85em',
-        fontWeight: 'bold',
-        zIndex: 10
-    };
-
     return (
         <div className="card shadow-sm h-100" style={{ position: 'relative' }}>
-            {discountPercentualeNumerico > 0 && (
-                <div style={discountBadgeStyle}>
-                    -{discountPercentualeNumerico}%
-                </div>
-            )}
+            <DiscountBedge discount={discountPercentualeNumerico} />
             <Link to={`/manga/${data.slug}`}>
                 <div>
                     <img

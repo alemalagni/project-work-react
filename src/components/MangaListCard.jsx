@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import DiscountBedge from "./DiscountBedge";
 
 function MangaListCard({ data }) {
 
@@ -24,7 +25,8 @@ function MangaListCard({ data }) {
     const prezzoScontatoFormattato = prezzoScontatoNumerico.toFixed(2).replace(".", ",");
 
     return (
-        <div className="card shadow-sm h-100 flex-row align-items-center p-2">
+        <div className="card shadow-sm h-100 flex-row align-items-center p-2" style={{ position: 'relative' }}>
+            <DiscountBedge discount={discountPercentualeNumerico} />
             <Link to={`/manga/${data.slug}`}>
                 <img
                     className="rounded"
