@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 function PrivacyPolicyPage() {
@@ -7,6 +7,10 @@ function PrivacyPolicyPage() {
     const websiteUrl = "MangaE-Commerce.com";
     const contactEmail = "privacy.manga@ecommerce.com";
     const lastUpdated = "31 Maggio 2025";
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div className="container my-5">

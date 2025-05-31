@@ -321,6 +321,10 @@ import Filter from "../components/Filter";
 
 function MangaPage() {
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const [manga, setManga] = useState([]);
     const [search, setSearch] = useState('');
     const [order, setOrder] = useState('');

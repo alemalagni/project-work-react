@@ -6,6 +6,11 @@ import MangaCard from "../components/MangaCard";
 import MangaListCard from "../components/MangaListCard";
 
 function prezzo(price) {
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const prezzo = String(price);
     let decimale = prezzo.slice(prezzo.indexOf(".") + 1);
 

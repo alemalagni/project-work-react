@@ -2,24 +2,22 @@ import HeroSpace from "../components/HeroSpace";
 import Series from "../components/Series";
 import Carousel from "../components/Carousel";
 import CarouselPoplarity from "../components/CarouselPoplarity";
-
+import { useEffect } from "react";
 function HomePage() {
 
-    return (
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
+    return (
         <>
             <div className="mb-5">
                 <HeroSpace />
                 <Carousel />
                 <CarouselPoplarity />
                 <Series />
-
-
-
             </div>
-
         </>
-
     )
 }
 
