@@ -1,8 +1,12 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import DiscountBedge from "./DiscountBedge";
+import HeartIcon from "./HeartIcon";
+import { useWishlist } from "./WishlistContext";
+
 
 function MangaCard({ data }) {
-    const navigate = useNavigate();
+    const { addToWishlist } = useWishlist();
+
 
     const prezzo = String(data.price);
     let decimale = prezzo.slice(prezzo.indexOf(".") + 1);
@@ -24,16 +28,13 @@ function MangaCard({ data }) {
     const prezzoScontatoNumerico = prezzoBaseNumerico * (1 - discount);
     const prezzoScontatoFormattato = prezzoScontatoNumerico.toFixed(2).replace(".", ",");
 
-    // Funzione per andare alla wishlist
-    const handleWishlistClick = () => {
-        navigate("/wishlist");
-    };
+
 
     return (
         <div className="card shadow-sm h-100" style={{ position: "relative" }}>
             {/* Bottone cuore */}
             <button
-                onClick={handleWishlistClick}
+
                 style={{
 
                     position: "absolute",
@@ -53,7 +54,16 @@ function MangaCard({ data }) {
                 }}
                 aria-label="Vai alla wishlist"
             >
-                <i className="fas fa-heart fa-2x text-danger"></i>
+
+                {/* NAMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO   <-------------- INSERIRE QUI IL COMPONENTE DEL CUORE */}
+                <HeartIcon
+                    manga={data} // passa l'intero manga o solo lo slug
+                    onToggle={(liked) => {
+                        if (liked) {
+                            addToWishlist(data);
+                        }
+                    }}
+                />
             </button>
 
             {/* Badge sconto sotto il cuore */}
