@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DiscountBedge from "./DiscountBedge";
 
 function MangaCard({ data }) {
+    const navigate = useNavigate();
 
     const prezzo = String(data.price);
     let decimale = prezzo.slice(prezzo.indexOf(".") + 1);
@@ -18,15 +19,50 @@ function MangaCard({ data }) {
 
     // CALCOLO DELLO SCONTO
     const prezzoBaseNumerico = parseFloat(data.price);
-    // controllo che sia numero
     const discountPercentualeNumerico = Number(data.discount);
     const discount = discountPercentualeNumerico / 100;
     const prezzoScontatoNumerico = prezzoBaseNumerico * (1 - discount);
     const prezzoScontatoFormattato = prezzoScontatoNumerico.toFixed(2).replace(".", ",");
 
+    // Funzione per andare alla wishlist
+    const handleWishlistClick = () => {
+        navigate("/wishlist");
+    };
+
     return (
-        <div className="card shadow-sm h-100" style={{ position: 'relative' }}>
-            <DiscountBedge discount={discountPercentualeNumerico} />
+        <div className="card shadow-sm h-100" style={{ position: "relative" }}>
+            {/* Bottone cuore */}
+            <button
+                onClick={handleWishlistClick}
+                style={{
+
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: 0,
+                    margin: 0,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "40px",
+                    height: "40px",
+                    zIndex: 20,
+                }}
+                aria-label="Vai alla wishlist"
+            >
+                <i className="fas fa-heart fa-2x text-danger"></i>
+            </button>
+
+            {/* Badge sconto sotto il cuore */}
+            {/* {discountPercentualeNumerico > 0 && (
+
+          <DiscountBedge discount={discountPercentualeNumerico} />
+        
+      )} */}
+
             <Link to={`/manga/${data.slug}`}>
                 <div>
                     <img
@@ -39,26 +75,40 @@ function MangaCard({ data }) {
             </Link>
             <div className="card-body d-flex flex-column justify-content-between">
                 <div className="text-center">
-                    <p><strong>{data.title}</strong></p>
+                    <p>
+                        <strong>{data.title}</strong>
+                    </p>
                 </div>
                 <div className="mt-1 d-flex flex-column">
                     <div className="text-center">
-                        {Number(data.discount) > 0 ? (
+                        {discountPercentualeNumerico > 0 ? (
                             <>
-                                <span className="text-decoration-line-through text-muted me-2">
-                                    <strong>{`${prezzoNuovo}€`}</strong>
-                                </span>
-                                <span className="text-danger">
-                                    <strong>{`${prezzoScontatoFormattato}€`}</strong>
-                                </span>
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
+                                    <DiscountBedge discount={discountPercentualeNumerico} />
+                                    <div>
+                                        <span className="text-decoration-line-through text-muted me-2">
+                                            <strong>{`${prezzoNuovo}€`}</strong>
+                                        </span>
+                                        <span className="text-danger">
+                                            <strong>{`${prezzoScontatoFormattato}€`}</strong>
+                                        </span>
+                                    </div>
+                                </div>
+
                             </>
                         ) : (
                             <span>
-                                <strong>{`${prezzoNuovo}€`}</strong>
+                                <strong>{`${prezzoNuovo}€`} </strong>
                             </span>
-                        )}
 
-                        <p><strong>Genere:</strong> {`${data.genre}`}</p>
+                        )}
+                        <div>
+
+                            <p>
+                                <strong>Genere:</strong> {`${data.genre}`}
+                            </p>
+                        </div>
+
                     </div>
 
                     <button className="btn btn-warning text-primary-emphasis mt-1">
@@ -66,7 +116,7 @@ function MangaCard({ data }) {
                     </button>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }
 
