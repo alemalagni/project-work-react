@@ -11,6 +11,7 @@ import AboutPage from "./pages/AboutPage"
 import SerieDetailsPage from "./pages/SeriesDetailPage"
 import Wishlist from "./pages/WishList";
 import { WishlistProvider } from "./components/WishlistContext";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 
 
 
@@ -19,21 +20,22 @@ function App() {
 
   return (
     <>
-    <WishlistProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<DefaultLayout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/manga" element={<MangaPage />} />
-            <Route path="/manga/:slug" element={<MangaDetailsPage />} />
-            <Route path="/serie/:slug" element={<SerieDetailsPage />} />
-            <Route path="/contacts" element={<ContactsPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/wishlist" element={<Wishlist />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <WishlistProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<DefaultLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/manga" element={<MangaPage />} />
+              <Route path="/manga/:slug" element={<MangaDetailsPage />} />
+              <Route path="/serie/:slug" element={<SerieDetailsPage />} />
+              <Route path="/contacts" element={<ContactsPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/privacy&policy" element={<PrivacyPolicyPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
       </WishlistProvider>
     </>
   )
