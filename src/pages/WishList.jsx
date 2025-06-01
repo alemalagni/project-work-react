@@ -10,7 +10,7 @@ function Wishlist() {
             {wishlist && wishlist.length > 0 ? (
                 <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                     {wishlist.map(manga => (
-                        <div key={manga.slug} className="col">
+                        <div key={manga.slug} className="col-6 col-sm-6 col-md-4 col-lg-4 col-xxl-3 mb-3">
                             <MangaCard data={manga} />
                         </div>
                     ))}
