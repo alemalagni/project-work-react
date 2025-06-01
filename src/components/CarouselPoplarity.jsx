@@ -28,10 +28,26 @@ export default function MangaCarousel() {
         slidesToShow: 4,
         slidesToScroll: 1,
         responsive: [
-            { breakpoint: 992, settings: { slidesToShow: 2 } },
-            { breakpoint: 768, settings: { slidesToShow: 1 } }
+            {
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 3,
+                }
+            },
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 2
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 1
+                }
+            }
         ],
-        arrows: false // Disabilita le frecce di default
+        arrows: false
     };
 
     return (
