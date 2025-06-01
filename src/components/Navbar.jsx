@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
-import { useState } from "react-router-dom";
+import { useState } from "react";
+import { useCallback } from "react";
 import logo from "../public/Gemini_Generated_Image_qf26rqf26rqf26rq.png"
 
 export default function Navbar() {
