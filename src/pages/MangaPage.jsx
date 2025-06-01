@@ -321,6 +321,10 @@ import Filter from "../components/Filter";
 
 function MangaPage() {
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const [manga, setManga] = useState([]);
     const [search, setSearch] = useState('');
     const [order, setOrder] = useState('');
@@ -633,7 +637,7 @@ function MangaPage() {
                         <div className="row mt-4">
                             {manga.map(mangaItem => (
                                 mangaItem && mangaItem.id ? (
-                                    <div key={mangaItem.id} className="col-6 col-sm-4 col-md-3 col-lg-3 mb-4">
+                                    <div key={mangaItem.id} className="col-6 col-sm-6 col-md-4 col-lg-4 col-xxl-3 mb-3">
                                         <MangaCard data={mangaItem} />
                                     </div>
                                 ) : null

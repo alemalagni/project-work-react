@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import DiscountBedge from "./DiscountBedge";
+import HeartIcon from "./HeartIcon";
+import { useWishlist } from "./WishlistContext";
+
 
 function MangaCard({ data }) {
+    const { addToWishlist } = useWishlist();
 
+    // Logica per formattare il prezzo (lasciata invariata)
     const prezzo = String(data.price);
     let decimale = prezzo.slice(prezzo.indexOf(".") + 1);
 
@@ -16,49 +21,70 @@ function MangaCard({ data }) {
 
     const prezzoNuovo = prezzo.slice(0, prezzo.indexOf(".")) + "," + decimale;
 
-    // CALCOLO DELLO SCONTO
+    // CALCOLO DELLO SCONTO (lasciata invariata)
     const prezzoBaseNumerico = parseFloat(data.price);
-    // controllo che sia numero
     const discountPercentualeNumerico = Number(data.discount);
     const discount = discountPercentualeNumerico / 100;
     const prezzoScontatoNumerico = prezzoBaseNumerico * (1 - discount);
     const prezzoScontatoFormattato = prezzoScontatoNumerico.toFixed(2).replace(".", ",");
 
+
     return (
-        <div className="card shadow-sm h-100" style={{ position: 'relative' }}>
-            <DiscountBedge discount={discountPercentualeNumerico} />
-            <Link to={`/manga/${data.slug}`}>
+        <div className="card shadow-sm h-100 manga-card">
+            {/* Bottone cuore */}
+            <button
+                className="heart-button"
+                aria-label="Aggiungi alla wishlist"
+            >
+                <HeartIcon
+                    manga={data}
+                    onToggle={(liked) => {
+                        if (liked) {
+                            addToWishlist(data); // Chiama addToWishlist quando il cuore è "liked"
+                        }
+                    }}
+                />
+            </button>
+
+            <Link to={`/manga/${data.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div>
                     <img
-                        className="card-img-top mx-auto d-block mt-3"
+                        className="card-img-top mx-auto d-block mt-3 manga-image"
                         src={data.imagePath}
                         alt={data.title}
-                        style={{ maxHeight: "250px", width: "auto", objectFit: "cover" }}
                     />
                 </div>
             </Link>
             <div className="card-body d-flex flex-column justify-content-between">
                 <div className="text-center">
-                    <p><strong>{data.title}</strong></p>
+                    <p>
+                        <strong>{data.title}</strong>
+                    </p>
                 </div>
                 <div className="mt-1 d-flex flex-column">
                     <div className="text-center">
-                        {Number(data.discount) > 0 ? (
+                        {discountPercentualeNumerico > 0 ? (
                             <>
-                                <span className="text-decoration-line-through text-muted me-2">
-                                    <strong>{`${prezzoNuovo}€`}</strong>
-                                </span>
-                                <span className="text-danger">
-                                    <strong>{`${prezzoScontatoFormattato}€`}</strong>
-                                </span>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                    <span className="text-decoration-line-through text-muted">
+                                        <strong>{`${prezzoNuovo}€`}</strong>
+                                    </span>
+                                    <span className="text-danger">
+                                        <strong>{`${prezzoScontatoFormattato}€`}</strong>
+                                    </span>
+                                    <DiscountBedge discount={discountPercentualeNumerico} />
+                                </div>
                             </>
                         ) : (
                             <span>
-                                <strong>{`${prezzoNuovo}€`}</strong>
+                                <strong>{`${prezzoNuovo}€`} </strong>
                             </span>
                         )}
-
-                        <p><strong>Genere:</strong> {`${data.genre}`}</p>
+                        <div>
+                            <p>
+                                <strong>Genere:</strong> {`${data.genre}`}
+                            </p>
+                        </div>
                     </div>
 
                     <button className="btn btn-warning text-primary-emphasis mt-1">
@@ -66,7 +92,7 @@ function MangaCard({ data }) {
                     </button>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }
 

@@ -1,4 +1,10 @@
+import { useEffect } from "react";
 const AboutPage = () => {
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <div className="container py-5 page-content">
             <h2 className="mb-4">📖 Chi siamo</h2>

@@ -171,3 +171,119 @@ a {
 .he {
     height: 490px;
 }
+
+/* manga card per responsive */
+
+/* Stili di base per il contenitore della card */
+.manga-card {
+    position: relative;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+/* Stili per il bottone del cuore */
+.manga-card .heart-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    z-index: 20;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease-in-out;
+}
+
+.manga-card .heart-button:hover {
+    transform: scale(1.1);
+}
+
+/* Stili per l'icona del cuore (all'interno del bottone) */
+.manga-card .heart-button i {
+    font-size: 28px;
+    line-height: 1;
+}
+
+/* Stili per l'immagine del manga */
+.manga-card .manga-image {
+    max-height: 250px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+/* Media Queries per la responsività */
+@media (max-width: 992px) {
+    .manga-card {
+        padding: 12px;
+    }
+
+    .manga-card .heart-button {
+        top: 12px;
+        right: 12px;
+        width: 35px;
+        height: 35px;
+    }
+
+    .manga-card .heart-button i {
+        font-size: 24px;
+    }
+
+    .manga-card .manga-image {
+        max-height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .manga-card {
+        padding: 10px;
+    }
+
+    .manga-card .heart-button {
+        top: 10px;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+    }
+
+    .manga-card .heart-button i {
+        font-size: 20px;
+    }
+
+    .manga-card .manga-image {
+        max-height: 150px;
+    }
+}
+
+@media (max-width: 576px) {
+    .manga-card {
+        padding: 8px;
+    }
+
+    .manga-card .heart-button {
+        top: 8px;
+        right: 8px;
+        width: 28px;
+        height: 28px;
+    }
+
+    .manga-card .heart-button i {
+        font-size: 18px;
+    }
+
+    .manga-card .manga-image {
+        max-height: 120px;
+    }
+}

@@ -4,6 +4,10 @@ import { useParams } from "react-router-dom";
 
 function MangaDetailsPage() {
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const { slug } = useParams();
 
     const [manga, setManga] = useState([])

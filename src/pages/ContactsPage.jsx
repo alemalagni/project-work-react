@@ -1,4 +1,9 @@
+import { useEffect } from "react";
 const ContactsPage = () => {
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return <>
         <div class="container py-5 page-content">
