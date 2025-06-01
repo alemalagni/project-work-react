@@ -6,9 +6,9 @@ const ContactsPage = () => {
     }, []);
 
     return <>
-        <div class="container py-5 page-content">
-            <h2 class="mb-4">📬 Contattaci</h2>
-            <p class="mb-4">
+        <div className="container py-5 page-content">
+            <h2 className="mb-4">📬 Contattaci</h2>
+            <p className="mb-4">
                 Per qualsiasi informazione riguardante ordini, spedizioni, disponibilità dei prodotti o collaborazioni, puoi contattarci attraverso i seguenti canali. Il nostro team sarà lieto di rispondere nel più breve tempo possibile durante gli orari lavorativi.
             </p>
             <div className="row">
