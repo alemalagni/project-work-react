@@ -1,13 +1,9 @@
 import { Link } from "react-router-dom";
 import DiscountBedge from "./DiscountBedge";
 import HeartIcon from "./HeartIcon";
-import { useWishlist } from "./WishlistContext";
 
 
 function MangaCard({ data }) {
-    const { addToWishlist } = useWishlist();
-
-    // Logica per formattare il prezzo (lasciata invariata)
     const prezzo = String(data.price);
     let decimale = prezzo.slice(prezzo.indexOf(".") + 1);
 
@@ -21,7 +17,7 @@ function MangaCard({ data }) {
 
     const prezzoNuovo = prezzo.slice(0, prezzo.indexOf(".")) + "," + decimale;
 
-    // CALCOLO DELLO SCONTO (lasciata invariata)
+    // CALCOLO DELLO SCONTO
     const prezzoBaseNumerico = parseFloat(data.price);
     const discountPercentualeNumerico = Number(data.discount);
     const discount = discountPercentualeNumerico / 100;
@@ -31,19 +27,11 @@ function MangaCard({ data }) {
 
     return (
         <div className="card shadow-sm h-100 manga-card">
-            {/* Bottone cuore */}
             <button
                 className="heart-button"
                 aria-label="Aggiungi alla wishlist"
             >
-                <HeartIcon
-                    manga={data}
-                    onToggle={(liked) => {
-                        if (liked) {
-                            addToWishlist(data); // Chiama addToWishlist quando il cuore è "liked"
-                        }
-                    }}
-                />
+                <HeartIcon manga={data} />
             </button>
 
             <Link to={`/manga/${data.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>

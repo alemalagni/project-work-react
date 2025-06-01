@@ -1,24 +1,28 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
+import { useWishlist } from "../contexts/WishListContext";
 
-const HeartIcon = ({ onToggle, manga }) => {
-
+const HeartIcon = ({ manga, sizeClass = '', customStyle = {} }) => {
+  const { isMangaLiked, toggleMangaLike } = useWishlist();
   const [liked, setLiked] = useState(false);
 
-  const toggleLike = (e) => {
-    e.stopPropagation(); // Evita che il click sul cuore si propaghi al Link della card
+  useEffect(() => {
+    if (manga) {
+      setLiked(isMangaLiked(manga.slug));
+    }
+  }, [manga, isMangaLiked]);
 
-    const newLiked = !liked;
-    setLiked(newLiked);
-    if (onToggle) {
-      onToggle(newLiked); // Passa lo stato di "liked" al genitore
+  const handleToggle = (e) => {
+    e.stopPropagation();
+    if (manga) {
+      toggleMangaLike(manga);
     }
   };
 
   return (
     <i
-      className={`${liked ? "fas" : "far"} fa-heart text-danger`}
-      onClick={toggleLike}
-      style={{ cursor: "pointer" }}
+      className={`${liked ? "fas" : "far"} fa-heart text-danger ${sizeClass}`}
+      onClick={handleToggle}
+      style={{ cursor: "pointer", ...customStyle }}
       aria-label="Aggiungi/Rimuovi dalla Wishlist"
     ></i>
   );
