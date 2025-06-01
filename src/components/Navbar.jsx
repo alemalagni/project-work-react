@@ -1,7 +1,24 @@
 import { NavLink } from "react-router-dom";
+import { useState } from "react-router-dom";
 import logo from "../public/Gemini_Generated_Image_qf26rqf26rqf26rq.png"
 
 export default function Navbar() {
+
+
+    const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
+
+    const handleOpenOffcanvas = () => {
+        // Sincronizza gli stati staging con gli stati attivi correnti
+        setIsOffcanvasOpen(true); // Apre l'offcanvas
+    };
+
+    // Gestore per la chiusura dell'offcanvas (memoizzata)
+    const handleCloseOffcanvas = useCallback(() => {
+        setIsOffcanvasOpen(false);
+    }, []);
+
+
+
 
     return (
         <>
@@ -28,6 +45,15 @@ export default function Navbar() {
 
                             <li className="nav-item">
                                 <NavLink to='/wishlist' className="nav-link"><strong>Wishlist</strong></NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <button
+                                    className="btn btn-sm btn-outline-primary"
+                                    type="button"
+                                // onClick={ }
+                                >
+                                    <i className="fas fa-shopping-cart"></i>
+                                </button>
                             </li>
 
                         </ul>
