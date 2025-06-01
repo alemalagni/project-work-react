@@ -1,7 +1,13 @@
 import MangaCard from '../components/MangaCard';
+import { useEffect } from 'react';
 import { useWishlist } from '../contexts/WishListContext';
 
 function Wishlist() {
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const { wishlist } = useWishlist();
 
     return (
