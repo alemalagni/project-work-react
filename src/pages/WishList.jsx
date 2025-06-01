@@ -1,12 +1,12 @@
 
 
-function Wishlist(){
+function Wishlist() {
 
 
-    return(
+    return (
 
         <>
-        {/* <div>ciao sono dentro la lista desideri</div> */}
+            {/* <div>ciao sono dentro la lista desideri</div> */}
         </>
     )
 }

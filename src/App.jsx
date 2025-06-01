@@ -10,14 +10,10 @@ import ContactsPage from "./pages/ContactsPage"
 import AboutPage from "./pages/AboutPage"
 import SerieDetailsPage from "./pages/SeriesDetailPage"
 import Wishlist from "./pages/WishList";
-import { WishlistProvider } from "./components/WishlistContext";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
-
-
+import { WishlistProvider } from "./contexts/WishListContext";
 
 function App() {
-
-
   return (
     <>
       <WishlistProvider>
@@ -41,4 +37,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
