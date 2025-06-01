@@ -7,7 +7,7 @@ import { useWishlist } from "./WishlistContext";
 function MangaCard({ data }) {
     const { addToWishlist } = useWishlist();
 
-
+    // Logica per formattare il prezzo (lasciata invariata)
     const prezzo = String(data.price);
     let decimale = prezzo.slice(prezzo.indexOf(".") + 1);
 
@@ -21,7 +21,7 @@ function MangaCard({ data }) {
 
     const prezzoNuovo = prezzo.slice(0, prezzo.indexOf(".")) + "," + decimale;
 
-    // CALCOLO DELLO SCONTO
+    // CALCOLO DELLO SCONTO (lasciata invariata)
     const prezzoBaseNumerico = parseFloat(data.price);
     const discountPercentualeNumerico = Number(data.discount);
     const discount = discountPercentualeNumerico / 100;
@@ -29,57 +29,29 @@ function MangaCard({ data }) {
     const prezzoScontatoFormattato = prezzoScontatoNumerico.toFixed(2).replace(".", ",");
 
 
-
     return (
-        <div className="card shadow-sm h-100" style={{ position: "relative" }}>
+        <div className="card shadow-sm h-100 manga-card">
             {/* Bottone cuore */}
             <button
-
-                style={{
-
-                    position: "absolute",
-                    top: "10px",
-                    right: "10px",
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    padding: 0,
-                    margin: 0,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "40px",
-                    height: "40px",
-                    zIndex: 20,
-                }}
-                aria-label="Vai alla wishlist"
+                className="heart-button"
+                aria-label="Aggiungi alla wishlist"
             >
-
-                {/* NAMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO   <-------------- INSERIRE QUI IL COMPONENTE DEL CUORE */}
                 <HeartIcon
-                    manga={data} // passa l'intero manga o solo lo slug
+                    manga={data}
                     onToggle={(liked) => {
                         if (liked) {
-                            addToWishlist(data);
+                            addToWishlist(data); // Chiama addToWishlist quando il cuore è "liked"
                         }
                     }}
                 />
             </button>
 
-            {/* Badge sconto sotto il cuore */}
-            {/* {discountPercentualeNumerico > 0 && (
-
-          <DiscountBedge discount={discountPercentualeNumerico} />
-        
-      )} */}
-
-            <Link to={`/manga/${data.slug}`}>
+            <Link to={`/manga/${data.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <div>
                     <img
-                        className="card-img-top mx-auto d-block mt-3"
+                        className="card-img-top mx-auto d-block mt-3 manga-image"
                         src={data.imagePath}
                         alt={data.title}
-                        style={{ maxHeight: "250px", width: "auto", objectFit: "cover" }}
                     />
                 </div>
             </Link>
@@ -104,21 +76,17 @@ function MangaCard({ data }) {
                                         </span>
                                     </div>
                                 </div>
-
                             </>
                         ) : (
                             <span>
                                 <strong>{`${prezzoNuovo}€`} </strong>
                             </span>
-
                         )}
                         <div>
-
                             <p>
                                 <strong>Genere:</strong> {`${data.genre}`}
                             </p>
                         </div>
-
                     </div>
 
                     <button className="btn btn-warning text-primary-emphasis mt-1">

@@ -637,7 +637,7 @@ function MangaPage() {
                         <div className="row mt-4">
                             {manga.map(mangaItem => (
                                 mangaItem && mangaItem.id ? (
-                                    <div key={mangaItem.id} className="col-6 col-sm-4 col-md-3 col-lg-3 mb-4">
+                                    <div key={mangaItem.id} className="col-6 col-sm-6 col-md-4 col-lg-4 col-xxl-3 mb-3">
                                         <MangaCard data={mangaItem} />
                                     </div>
                                 ) : null
