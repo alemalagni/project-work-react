@@ -65,16 +65,14 @@ function MangaCard({ data }) {
                     <div className="text-center">
                         {discountPercentualeNumerico > 0 ? (
                             <>
-                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                    <span className="text-decoration-line-through text-muted">
+                                        <strong>{`${prezzoNuovo}€`}</strong>
+                                    </span>
+                                    <span className="text-danger">
+                                        <strong>{`${prezzoScontatoFormattato}€`}</strong>
+                                    </span>
                                     <DiscountBedge discount={discountPercentualeNumerico} />
-                                    <div>
-                                        <span className="text-decoration-line-through text-muted me-2">
-                                            <strong>{`${prezzoNuovo}€`}</strong>
-                                        </span>
-                                        <span className="text-danger">
-                                            <strong>{`${prezzoScontatoFormattato}€`}</strong>
-                                        </span>
-                                    </div>
                                 </div>
                             </>
                         ) : (

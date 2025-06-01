@@ -26,7 +26,6 @@ function MangaListCard({ data }) {
 
     return (
         <div className="card shadow-sm h-100 flex-row align-items-center p-2" style={{ position: 'relative' }}>
-            <DiscountBedge discount={discountPercentualeNumerico} />
             <Link to={`/manga/${data.slug}`}>
                 <img
                     className="rounded"
@@ -42,15 +41,17 @@ function MangaListCard({ data }) {
                             {data.title}
                         </Link>
                     </h5>
-                    <div>
+
+                    <div className="d-flex align-items-center flex-wrap">
                         {Number(data.discount) > 0 ? (
                             <>
                                 <span className="text-decoration-line-through text-muted me-2">
                                     <strong>{`${prezzoNuovo}€`}</strong>
                                 </span>
-                                <span className="text-danger">
+                                <span className="text-danger me-2">
                                     <strong>{`${prezzoScontatoFormattato}€`}</strong>
                                 </span>
+                                <DiscountBedge discount={discountPercentualeNumerico} />
                             </>
                         ) : (
                             <span>
