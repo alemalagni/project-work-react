@@ -1,13 +1,17 @@
+// src/components/CartOffcanvas.js (Verifica questa parte)
 import { useEffect, useRef } from 'react';
 import { useCart } from '../contexts/CartContext';
-import MangaCardOnCart from './MangaCardOnCart';
+import MangaCardOnCart from './MangaCardOnCart'; // Assicurati che il percorso sia corretto
 
 const CartOffcanvas = ({ isOpen, onClose }) => {
     const offcanvasHtmlRef = useRef(null);
     const bsOffcanvasInstanceRef = useRef(null);
-    const { cartItems, removeFromCart } = useCart(); // Prendo cartItems e funzione di rimozione
+    // Rimuovi 'removeFromCart' da qui se MangaCardOnCart lo prende da useCart()
+    const { cartItems /*, removeFromCart */ } = useCart();
 
-    // Inizializza l'istanza di Bootstrap Offcanvas
+    // ... resto del codice useEffect per gestire l'istanza offcanvas ...
+    // (Il codice esistente per l'inizializzazione e la gestione open/close è corretto)
+
     useEffect(() => {
         if (offcanvasHtmlRef.current && window.bootstrap?.Offcanvas) {
             if (!bsOffcanvasInstanceRef.current) {
@@ -16,7 +20,6 @@ const CartOffcanvas = ({ isOpen, onClose }) => {
         }
     }, []);
 
-    // Listener per chiusura offcanvas
     useEffect(() => {
         const htmlElement = offcanvasHtmlRef.current;
         const instance = bsOffcanvasInstanceRef.current;
@@ -28,7 +31,6 @@ const CartOffcanvas = ({ isOpen, onClose }) => {
         }
     }, [onClose]);
 
-    // Apri o chiudi il pannello a seconda della prop `isOpen`
     useEffect(() => {
         const instance = bsOffcanvasInstanceRef.current;
         if (instance) {
@@ -56,13 +58,21 @@ const CartOffcanvas = ({ isOpen, onClose }) => {
                     <ul className="list-group">
                         {cartItems.map(item => (
                             <MangaCardOnCart
-                                key={item.slug}
+                                key={item.slug} // slug è un'ottima chiave
                                 item={item}
-                                onRemove={removeFromCart}
+                            // Non è più necessario passare onRemove se MangaCardOnCart usa useCart()
+                            // onRemove={removeFromCart} // Rimuovi questa riga se MangaCardOnCart usa useCart()
                             />
                         ))}
                     </ul>
                 )}
+                {/* Potresti voler mostrare il totale qui */}
+                {/* {cartItems.length > 0 && (
+                    <div className="mt-3">
+                        <p>Articoli totali: {totalItemsInCart}</p> // Esempio
+                        <h4>Totale Carrello: {cartTotal.toFixed(2)} €</h4> // Esempio
+                    </div>
+                )} */}
             </div>
         </div>
     );
