@@ -1,3 +1,4 @@
+import { useState } from "react";
 
 
 
@@ -45,7 +46,7 @@ function CheckoutPage(){
     className="border rounded p-4 shadow-sm bg-light"
     style={{ width: "500px", height: "450px", overflowY: "auto" }}
   >
-    <form onSubmit={sendForm}>
+    <form>
       <div className="mb-3">
         <label htmlFor="author" className="form-label">Autore</label>
         <input
