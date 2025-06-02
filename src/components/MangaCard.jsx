@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import DiscountBedge from "./DiscountBedge";
 import HeartIcon from "./HeartIcon";
+import AddToCartButton from "./AddToCartButton";
 
 
 function MangaCard({ data }) {
@@ -75,9 +76,11 @@ function MangaCard({ data }) {
                         </div>
                     </div>
 
-                    <button className="btn btn-warning text-primary-emphasis mt-1">
+                    {/* <button className="btn btn-warning text-primary-emphasis mt-1">
                         <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
-                    </button>
+                    </button> */}
+                    <AddToCartButton manga={data} />
+
                 </div>
             </div>
         </div>
