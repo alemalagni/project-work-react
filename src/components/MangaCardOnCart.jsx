@@ -3,7 +3,7 @@ import React from 'react';
 import { useCart } from '../contexts/CartContext'; // Assicurati che il percorso sia corretto
 import { Link } from 'react-router-dom';
 
-const MangaCardOnCart = ({ item }) => {
+const MangaCardOnCart = ({ item, closeCartOffcanvas }) => {
   const { increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
 
   const {
@@ -24,12 +24,19 @@ const MangaCardOnCart = ({ item }) => {
     return '€ ' + price.toFixed(2).replace('.', ',');
   };
 
+  const handleImageLinkClick = () => {
+    if (closeCartOffcanvas) {
+      closeCartOffcanvas(); // Chiama la funzione per chiudere l'offcanvas
+    }
+    // La navigazione del Link procederà normalmente
+  };
+
   return (
     <li className="list-group-item p-3">
       <div className="row g-3 align-items-center"> {/* Main row for image and content */}
         {/* Colonna Immagine */}
         <div className="col-3 text-center">
-          <Link to={'/manga/' + slug}>
+          <Link to={'/manga/' + slug} onClick={handleImageLinkClick}>
             <img
               src={imagePath}
               alt={title}

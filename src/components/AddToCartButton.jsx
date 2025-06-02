@@ -3,7 +3,6 @@ import { useCart } from '../contexts/CartContext'; // Assicurati che il percorso
 
 function AddToCartButton({ manga }) {
   const { addToCart } = useCart();
-  console.log(manga)
 
   return (
     <button
