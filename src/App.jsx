@@ -31,7 +31,7 @@ function App() {
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/privacy&policy" element={<PrivacyPolicyPage />} />
-                <Route path="/checkout"element={<CheckoutPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
             </Routes>
