@@ -70,6 +70,16 @@ export function CartProvider({ children }) {
   // Calcola il costo totale (se hai un campo 'price' negli item)
   // const cartTotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
 
+  const cartTotal = cartItems.reduce((total, item) => {
+    // Assicurati che effective_price sia un numero
+    const price = parseFloat(item.effective_price);
+    if (isNaN(price)) {
+      console.warn(`Prezzo non valido per l'articolo: ${item.title}`, item);
+      return total;
+    }
+    return total + (price * item.quantity);
+  }, 0);
+
 
   return (
     <CartContext.Provider
@@ -80,7 +90,7 @@ export function CartProvider({ children }) {
         decreaseQuantity,
         increaseQuantity,
         totalItemsInCart,
-        // cartTotal // uncomment if you have price
+        cartTotal
       }}
     >
       {children}

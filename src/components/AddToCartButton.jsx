@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 
 function AddToCartButton({ manga }) {
   const { addToCart } = useCart();
-  console.log(manga)
 
   const [clicked, setClicked] = useState(false);
   const handleClick = () => {
