@@ -156,6 +156,15 @@ a {
     --bs-gradient: none;
 }
 
+/*dissolvenza aggiungi al carrello */
+.fade-button {
+    transition: background-color 0.5s ease;
+}
+
+.fade-button.clicked {
+    background-color: #E75924;
+}
+
 /* Series details */
 .fade-bottom {
     position: absolute;

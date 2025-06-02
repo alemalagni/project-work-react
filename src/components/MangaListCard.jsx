@@ -63,7 +63,7 @@ function MangaListCard({ data }) {
                         <strong>Genere:</strong> {data.genre}
                     </div>
                 </div>
-                <button className="btn btn-warning text-primary-emphasis mt-2 align-self-end">
+                <button className="btn btn-warning text-primary-emphasis mt-2 align-self-end btn-transparent">
                     <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
                 </button>
             </div>
