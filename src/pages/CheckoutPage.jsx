@@ -2,10 +2,10 @@ import { useState } from "react";
 
 
 
-function CheckoutPage(){
+function CheckoutPage() {
 
 
-      const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
     author: '',
     title: '',
     body: '',
@@ -24,86 +24,82 @@ function CheckoutPage(){
   }
   console.log(formData)
 
-//   function sendForm(e) {
-//     e.preventDefault()
-//     axios.post("https://67c5b4f3351c081993fb1ab6.mockapi.io/api/posts", formData)
-//       .then((response) => {
-//         console.log(response.data)
-//         alert("Form inserito con successo")
-//       })
-//       .catch((error) => {
-//         console.error(error)
-//         alert("Errore durante l'invio del form")
-//       })
+  //   function sendForm(e) {
+  //     e.preventDefault()
+  //     axios.post("https://67c5b4f3351c081993fb1ab6.mockapi.io/api/posts", formData)
+  //       .then((response) => {
+  //         console.log(response.data)
+  //         alert("Form inserito con successo")
+  //       })
+  //       .catch((error) => {
+  //         console.error(error)
+  //         alert("Errore durante l'invio del form")
+  //       })
 
-//   }
+  //   }
 
-    return(
+  return (
 
-        <>
-        <div className="d-flex justify-content-center align-items-center gradient-bg" style={{ height: "100vh" }}>
-  <div
-    className="border rounded p-4 shadow-sm bg-light"
-    style={{ width: "500px", height: "450px", overflowY: "auto" }}
-  >
-    <form>
-      <div className="mb-3">
-        <label htmlFor="author" className="form-label">Autore</label>
-        <input
-          type="text"
-          className="form-control"
-          id="author"
-          name="author"
-          value={formData.author}
-          placeholder="Inserisci autore"
-          onChange={handleFormdData}
-        />
+    <>
+      <div className="d-flex justify-content-center align-items-center gradient-bg" style={{ height: "100vh" }}>
+        <div
+          className="container border rounded p-4 shadow-sm bg-light"
+        >
+          <form class="row g-3">
+            <div class="col-md-6">
+              <label for="name" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="name" />
+            </div>
+            <div class="col-md-6">
+              <label for="inputEmail4" class="form-label">Email</label>
+              <input type="email" class="form-control" id="inputEmail4" />
+            </div>
+            <div class="col-12">
+              <label for="inputAddress" class="form-label">Indirizzo</label>
+              <input type="text" class="form-control" id="inputAddress" placeholder="Via ..." />
+            </div>
+            <div class="col-12">
+              <label for="inputAddress2" class="form-label">Dettagli di consegna</label>
+              <input type="text" class="form-control" id="inputAddress2" placeholder="Appartamento, scala, piano" />
+            </div>
+            <div class="col-md-8">
+              <label for="inputCity" class="form-label">Città</label>
+              <input type="text" class="form-control" id="inputCity" />
+            </div>
+            <div class="col-md-4">
+              <label for="inputState" class="form-label">Regione</label>
+              <select id="inputState" class="form-select">
+                <option value="">-- Seleziona una regione --</option>
+                <option value="ABR">Abruzzo</option>
+                <option value="BAS">Basilicata</option>
+                <option value="CAL">Calabria</option>
+                <option value="CAM">Campania</option>
+                <option value="EMR">Emilia-Romagna</option>
+                <option value="FVG">Friuli-Venezia Giulia</option>
+                <option value="LAZ">Lazio</option>
+                <option value="LIG">Liguria</option>
+                <option value="LOM">Lombardia</option>
+                <option value="MAR">Marche</option>
+                <option value="MOL">Molise</option>
+                <option value="PMN">Piemonte</option>
+                <option value="PUG">Puglia</option>
+                <option value="SAR">Sardegna</option>
+                <option value="SIC">Sicilia</option>
+                <option value="TOS">Toscana</option>
+                <option value="TAA">Trentino-Alto Adige</option>
+                <option value="UMB">Umbria</option>
+                <option value="VDA">Valle d'Aosta</option>
+                <option value="VEN">Veneto</option>
+              </select>
+            </div>
+            <div class="col-12 mt-5">
+              <button type="submit" class="btn btn-primary">Completa il Pagamento</button>
+            </div>
+          </form>
+        </div>
       </div>
-
-      <div className="mb-3">
-        <label htmlFor="title" className="form-label">Titolo</label>
-        <input
-          type="text"
-          className="form-control"
-          id="title"
-          name="title"
-          value={formData.title}
-          placeholder="Inserisci titolo"
-          onChange={handleFormdData}
-        />
-      </div>
-
-      <div className="mb-3">
-        <label htmlFor="body" className="form-label">Testo</label>np
-        <textarea
-          className="form-control"
-          id="body"
-          name="body"
-          value={formData.body}
-          placeholder="Inserisci il contenuto del post"
-          onChange={handleFormdData}
-          rows="2"
-        ></textarea>
-      </div>
-
-      <div className="form-check mb-3">
-        <input
-          type="checkbox"
-          className="form-check-input"
-          id="public"
-          name="public"
-          checked={formData.public}
-          onChange={handleFormdData}
-        />
-        <label className="form-check-label" htmlFor="public">Pubblic</label>
-      </div>
-
-      <button type="submit" className="btn btn-primary w-100">Invia</button>
-    </form>
-  </div>
-</div>
-        </>
-    )
+    </>
+  )
 }
 
 

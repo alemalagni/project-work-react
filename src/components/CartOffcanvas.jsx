@@ -90,6 +90,7 @@ const CartOffcanvas = ({ isOpen, onClose }) => {
                                 <button
                                     type="button"
                                     className="btn btn-primary w-100 btn-lg"
+                                    onClick={onClose}
                                 >
                                     Vai al Pagamento
                                 </button>
