@@ -13,6 +13,7 @@ import Wishlist from "./pages/WishList";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import { WishlistProvider } from "./contexts/WishListContext";
 import { CartProvider } from "./contexts/CartContext";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/privacy&policy" element={<PrivacyPolicyPage />} />
-                <Route path="/checkout" />
+                <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="*" element={<NotFound />} />
               </Route>
             </Routes>
