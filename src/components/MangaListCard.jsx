@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import DiscountBedge from "./DiscountBedge";
+import HeartIcon from "./HeartIcon";
 
 function MangaListCard({ data }) {
 
@@ -36,11 +37,26 @@ function MangaListCard({ data }) {
             </Link>
             <div className="card-body d-flex flex-column justify-content-between ms-3 p-2">
                 <div>
-                    <h5 className="mb-1">
-                        <Link to={`/manga/${data.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
-                            {data.title}
-                        </Link>
-                    </h5>
+                    <div className="d-flex justify-content-between">
+                        <h5 className="mb-1">
+                            <Link to={`/manga/${data.slug}`} style={{ color: "inherit", textDecoration: "none" }}>
+                                {data.title}
+                            </Link>
+                        </h5>
+
+                        <button
+                            className="heart-button"
+                            aria-label="Aggiungi alla wishlist"
+                            style={{
+                                borderRadius: '50%',
+                                border: 'none',
+                                background: 'none',
+                                fontSize: 'x-large',
+                            }}
+                        >
+                            <HeartIcon manga={data} />
+                        </button>
+                    </div>
 
                     <div className="d-flex align-items-center flex-wrap">
                         {Number(data.discount) > 0 ? (
