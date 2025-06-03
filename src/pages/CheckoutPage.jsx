@@ -108,9 +108,12 @@
 import { useState, useEffect } from "react";
 import { useCart } from "../contexts/CartContext"; // Assicurati che il percorso sia corretto
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function CheckoutPage() {
   const { cartItems, cartTotal, totalItemsInCart } = useCart();
+
+  const { clearCart } = useCart();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -118,11 +121,14 @@ function CheckoutPage() {
 
   const [formData, setFormData] = useState({
     name: '',
+    surname: '',
     email: '',
     address: '',
     address2: '',
     city: '',
     state: '',
+    payment_method: '',
+    promo_code: ''
   });
 
   const navigate = useNavigate();
@@ -156,6 +162,7 @@ function CheckoutPage() {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
+
   });
 
 
@@ -172,6 +179,70 @@ function CheckoutPage() {
         estimatedShippingDate: estimatedShippingDate.toISOString()
       }
     });
+    // Validazione base
+    if (
+      !formData.name ||
+      !formData.surname ||
+      !formData.email ||
+      !formData.address ||
+      !formData.city ||
+      !formData.state ||
+      !formData.payment_method
+    ) {
+      alert("Per favore compila tutti i campi obbligatori.");
+      return;
+    }
+
+    // Funzione per inviare l'ordine dopo aver risolto l'ID promo
+    const submitOrder = (promoCodeId) => {
+      const orderData = {
+        total_amount: finalOrderTotal,
+        shipping_price: shippingCost,
+        payment_method: formData.payment_method,
+        address: formData.address,
+        email: formData.email,
+        name: formData.name,
+        surname: formData.surname,
+      };
+
+      if (promoCodeId) {
+        orderData.promo_code_id = promoCodeId;
+      }
+
+
+      axios.post("http://127.0.0.1:3000/manga/order", orderData)
+        .then(() => {
+          clearCart();
+          alert("Ordine completato con successo!");
+        })
+        .catch(() => {
+          alert("Errore durante l'invio dell'ordine.");
+        });
+    };
+
+    // Se c'è un codice promo, cerca l'ID
+    if (formData.promo_code) {
+      axios.get(`http://127.0.0.1:3000/manga/promo_code?code=${encodeURIComponent(formData.promo_code)}`)
+        .then(res => {
+          // Codice valido
+          if (res.data && res.data.id) {
+            submitOrder(res.data.id);
+          } else {
+            alert("Codice promo non valido.");
+          }
+        })
+        .catch(err => {
+          // Gestione errori specifici
+          if (err.response && err.response.data && err.response.data.error) {
+            alert(err.response.data.error);
+          } else {
+            alert("Errore nella verifica del codice promo.");
+          }
+        });
+    } else {
+      // Nessun promo code, invia direttamente
+      submitOrder(null);
+    }
   }
 
   return (
@@ -180,6 +251,7 @@ function CheckoutPage() {
         <div className="row justify-content-center">
           <div className="col-lg-8 col-md-10">
             <div className="border rounded p-4 p-md-5 shadow-sm bg-light">
+
 
               {/* --- INIZIO RIEPILOGO ORDINE --- */}
               <h2 className="mb-4">Riepilogo Ordine</h2> {/* Titolo principale del riepilogo più grande */}
@@ -262,13 +334,25 @@ function CheckoutPage() {
               <h3 className="mb-4 mt-4">Dati di Spedizione e Pagamento</h3>
               <form className="row g-3" onSubmit={sendForm}>
                 <div className="col-md-6">
-                  <label htmlFor="nameInput" className="form-label">Nome Completo</label>
+                  <label htmlFor="nameInput" className="form-label">Nome</label>
                   <input
                     type="text"
                     className="form-control"
                     id="nameInput"
                     name="name"
                     value={formData.name}
+                    onChange={handleFormData}
+                    required
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label htmlFor="surnameInput" className="form-label">Cognome</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="surnameInput"
+                    name="surname"
+                    value={formData.surname}
                     onChange={handleFormData}
                     required
                   />
@@ -283,6 +367,18 @@ function CheckoutPage() {
                     value={formData.email}
                     onChange={handleFormData}
                     required
+                  />
+                </div>
+                <div className="col-6">
+                  <label htmlFor="promoCodeInput" className="form-label">Codice Promo (opzionale)</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="promoCodeInput"
+                    name="promo_code"
+                    value={formData.promo_code}
+                    onChange={handleFormData}
+                    placeholder="Inserisci il codice promo"
                   />
                 </div>
                 <div className="col-12">
@@ -356,11 +452,20 @@ function CheckoutPage() {
                   </select>
                 </div>
 
-                <div className="col-12 mt-4">
-                  <h4 className="mb-3">Dati Pagamento</h4>
-                  <div className="alert alert-info">
-                    Sezione pagamento da implementare.
-                  </div>
+                <div className="col-12">
+                  <label htmlFor="paymentMethod" className="form-label">Metodo di pagamento</label>
+                  <select
+                    id="paymentMethod"
+                    name="payment_method"
+                    className="form-select"
+                    value={formData.payment_method}
+                    onChange={handleFormData}
+                    required
+                  >
+                    <option value="">-- Seleziona --</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="carta">Carta di credito</option>
+                  </select>
                 </div>
 
                 <div className="col-12 mt-4 d-grid">
@@ -375,6 +480,7 @@ function CheckoutPage() {
               </form>
             </div>
           </div>
+
         </div>
       </div>
     </div>
