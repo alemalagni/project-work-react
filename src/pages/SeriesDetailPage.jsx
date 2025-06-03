@@ -21,8 +21,8 @@ function SerieDetailsPage() {
     const [itemsPerPage] = useState(20);
 
 
+
     useEffect(() => {
-        window.scrollTo(0, 0); // Scorrimento all'inizio della pagina
         axios.get(import.meta.env.VITE_PUBLIC_PATH + `manga/series/${slug}`)
             .then(res => {
                 setSerie(res.data.series);
@@ -72,6 +72,9 @@ function SerieDetailsPage() {
         } else if (allVolumi.length === 0 && currentPage !== 1) {
             setCurrentPage(1);
         }
+
+        window.scrollTo(0, 0);
+
     }, [allVolumi, currentPage, itemsPerPage]);
 
 
