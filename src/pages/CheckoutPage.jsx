@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import { useCart } from "../contexts/CartContext"; // Assicurati che il percorso sia corretto
+import { useCart } from "../contexts/CartContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function CheckoutPage() {
 
-  const BASE_URL = import.meta.env.VITE_PUBLIC_PATH;
 
   const { cartItems, cartTotal, totalItemsInCart } = useCart();
 
@@ -109,7 +108,8 @@ function CheckoutPage() {
       }
 
 
-      axios.post(`${BASE_URL}manga/order`, orderData)
+
+      axios.post(`${import.meta.env.VITE_PUBLIC_PATH}manga/order`, orderData)
         .then(() => {
           clearCart();
           alert("Ordine completato con successo!");
@@ -121,7 +121,8 @@ function CheckoutPage() {
 
     // Se c'è un codice promo, cerca l'ID
     if (formData.promo_code) {
-      axios.get(`${BASE_URL}manga/promo_code?code=${encodeURIComponent(formData.promo_code)}`)
+
+      axios.get(`${import.meta.env.VITE_PUBLIC_PATH}manga/promo_code?code=${encodeURIComponent(formData.promo_code)}`)
         .then(res => {
           // Codice valido
           if (res.data && res.data.id) {
@@ -158,9 +159,6 @@ function CheckoutPage() {
                 <p>Il tuo carrello è vuoto. Aggiungi qualcosa prima di procedere al checkout!</p>
               ) : (
                 <>
-                  {/* Aumentata maxHeight per la lista data l'immagine più grande */}
-                  {/* Lista degli articoli nel riepilogo */}
-                  {/* Aumentata maxHeight per la lista, considera che ogni item è alto almeno 210px per l'immagine */}
                   <ul className="list-group list-group-flush mb-4" style={{ maxHeight: '450px', overflowY: 'auto' }}>
                     {cartItems.map(item => (
                       <li key={item.slug} className="list-group-item d-flex align-items-center py-3 px-4"> {/* Rimosso lh-sm, aggiunto align-items-center */}
