@@ -369,7 +369,7 @@ function CheckoutPage() {
                   <button
                     type="submit"
                     className="btn btn-primary"
-                    onClick={sendForm}
+
                   >
                     Completa il Pagamento
                   </button>
