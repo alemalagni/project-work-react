@@ -63,9 +63,7 @@ function MangaDetailsPage() {
                         <h5 className="text-muted">Serie: {manga.serie}</h5>
 
                         <div className="d-flex align-items-center mt-4">
-                            <div className="px-5 me-3">
-                                <AddToCartButton manga={manga} />
-                            </div>
+                            <AddToCartButton btnLg={true} manga={manga} />
                             <HeartIcon manga={manga} customStyle={{ fontSize: '2.5rem' }} />
                         </div>
 

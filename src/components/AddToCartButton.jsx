@@ -1,7 +1,7 @@
 import { useCart } from '../contexts/CartContext';
 import { useState } from 'react';
 
-function AddToCartButton({ manga }) {
+function AddToCartButton({ manga, btnLg }) {
   const { addToCart } = useCart();
 
   const [clicked, setClicked] = useState(false);
@@ -12,9 +12,11 @@ function AddToCartButton({ manga }) {
     setTimeout(() => setClicked(false), 200);
   };
 
+
+
   return (
     <button
-      className={`btn btn-warning text-primary-emphasis mt-1 fade-button ${clicked ? "clicked" : ""}`}
+      className={`btn btn-warning text-primary-emphasis mt-1 fade-button ${clicked ? "clicked" : ""} ${btnLg === true ? 'btn-lg px-5 me-4' : ''}`}
       onClick={() => {
         addToCart(manga); // 'manga' deve avere una proprietà 'slug'
         handleClick();
