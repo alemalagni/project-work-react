@@ -45,30 +45,30 @@ function CheckoutPage() {
         <div
           className="container border rounded p-4 shadow-sm bg-light"
         >
-          <form class="row g-3">
-            <div class="col-md-6">
-              <label for="name" class="form-label">Nome</label>
-              <input type="text" class="form-control" id="name" />
+          <form className="row g-3">
+            <div className="col-md-6">
+              <label htmlFor="name" className="form-label">Nome</label>
+              <input type="text" className="form-control" id="name" />
             </div>
-            <div class="col-md-6">
-              <label for="inputEmail4" class="form-label">Email</label>
-              <input type="email" class="form-control" id="inputEmail4" />
+            <div className="col-md-6">
+              <label htmlFor="inputEmail4" className="form-label">Email</label>
+              <input type="email" className="form-control" id="inputEmail4" />
             </div>
-            <div class="col-12">
-              <label for="inputAddress" class="form-label">Indirizzo</label>
-              <input type="text" class="form-control" id="inputAddress" placeholder="Via ..." />
+            <div className="col-12">
+              <label htmlFor="inputAddress" className="form-label">Indirizzo</label>
+              <input type="text" className="form-control" id="inputAddress" placeholder="Via ..." />
             </div>
-            <div class="col-12">
-              <label for="inputAddress2" class="form-label">Dettagli di consegna</label>
-              <input type="text" class="form-control" id="inputAddress2" placeholder="Appartamento, scala, piano" />
+            <div className="col-12">
+              <label htmlFor="inputAddress2" className="form-label">Dettagli di consegna</label>
+              <input type="text" className="form-control" id="inputAddress2" placeholder="Appartamento, scala, piano" />
             </div>
-            <div class="col-md-8">
-              <label for="inputCity" class="form-label">Città</label>
-              <input type="text" class="form-control" id="inputCity" />
+            <div className="col-md-8">
+              <label htmlFor="inputCity" className="form-label">Città</label>
+              <input type="text" className="form-control" id="inputCity" />
             </div>
-            <div class="col-md-4">
-              <label for="inputState" class="form-label">Regione</label>
-              <select id="inputState" class="form-select">
+            <div className="col-md-4">
+              <label htmlFor="inputState" className="form-label">Regione</label>
+              <select id="inputState" className="form-select">
                 <option value="">-- Seleziona una regione --</option>
                 <option value="ABR">Abruzzo</option>
                 <option value="BAS">Basilicata</option>
@@ -92,8 +92,8 @@ function CheckoutPage() {
                 <option value="VEN">Veneto</option>
               </select>
             </div>
-            <div class="col-12 mt-5">
-              <button type="submit" class="btn btn-primary">Completa il Pagamento</button>
+            <div className="col-12 mt-5">
+              <button type="submit" className="btn btn-primary">Completa il Pagamento</button>
             </div>
           </form>
         </div>
