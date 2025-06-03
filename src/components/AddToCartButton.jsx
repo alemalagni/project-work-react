@@ -42,13 +42,26 @@ function AddToCartButton({ manga, viewMode, btnLg }) {
 
   const quantityControlBaseClasses = `btn btn-warning text-primary-emphasis`;
   const quantityControlButtonClasses = `${quantityControlBaseClasses} ${btnLg ? 'btn-lg px-4' : 'px-4'}`;
-  const quantityDisplayClasses = `mx-2 ${btnLg ? 'fs-5 mx-5' : ''} d-inline-block text-center`; // Aggiunto min-width per stabilità layout
-
+  const quantityDisplayClasses = `mx-2 ${btnLg ? 'fs-5 mx-5' : ''} d-inline-block text-center`;
   const controlsContainerClasses = `d-flex align-items-center mt-1 ${viewMode === "list" ? "justify-content-start" : "justify-content-between"} ${btnLg ? 'me-4' : ''}`;
 
+  const dynamicMinWidth = () => {
+    if (btnLg) {
+      return '294.89px';
+    }
+    if (viewMode === "list") {
+      return '190.34px';
+    }
+    return '';
+  };
 
   return (
-    <div style={{ minWidth: btnLg ? '294.89px' : '', minWidth: viewMode === "list" ? '190.34px' : '' }} className={controlsContainerClasses} role="group" aria-label={`Quantità di ${manga.title || 'articolo'} nel carrello`}>
+    <div
+      style={{ minWidth: dynamicMinWidth() }}
+      className={controlsContainerClasses}
+      role="group"
+      aria-label={`Quantità di ${manga.title || 'articolo'} nel carrello`}
+    >
       <button
         className={quantityControlButtonClasses}
         onClick={handleDecrease}
