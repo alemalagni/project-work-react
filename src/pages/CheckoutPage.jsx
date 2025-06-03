@@ -161,8 +161,17 @@ function CheckoutPage() {
 
   function sendForm(e) {
     e.preventDefault();
-    // Puoi anche salvare i dati o fare una chiamata API qui
-    navigate("/order-summary");
+
+    navigate("/order-summary", {
+      state: {
+        formData,
+        cartItems,
+        cartTotal,
+        shippingCost,
+        finalOrderTotal,
+        estimatedShippingDate: estimatedShippingDate.toISOString()
+      }
+    });
   }
 
   return (
@@ -251,7 +260,7 @@ function CheckoutPage() {
               {cartItems.length > 0 && <hr className="my-4" />}
 
               <h3 className="mb-4 mt-4">Dati di Spedizione e Pagamento</h3>
-              <form className="row g-3">
+              <form className="row g-3" onSubmit={sendForm}>
                 <div className="col-md-6">
                   <label htmlFor="nameInput" className="form-label">Nome Completo</label>
                   <input
