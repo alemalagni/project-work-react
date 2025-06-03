@@ -40,8 +40,20 @@ export default function Navbar() {
                         <img src={logo} style={{ width: "150px" }} alt="logo" />
                     </NavLink>
 
-                    {/* Nav Links - Centro */}
-                    <div className="d-none d-lg-flex justify-content-end flex-grow-1">
+                    <button
+                        className="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav"
+                        aria-controls="navbarNav"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+
+                    {/* Contenuto collassabile - Centro & Destra */}
+                    <div className="collapse navbar-collapse justify-content-end" id="navbarNav"> {/* Aggiungi id e justify-content-end */}
                         <ul className="navbar-nav gap-3">
                             <li className="nav-item">
                                 <NavLink to='/' end className="nav-link"><strong>Home page</strong></NavLink>
@@ -71,15 +83,9 @@ export default function Navbar() {
                             </li>
                         </ul>
                     </div>
-
-                    {/* Cart - Destra */}
-
-
-
                 </div>
             </nav>
             <CartOffcanvas isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-
         </>
     );
 }
