@@ -3,6 +3,7 @@ import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+
 export default function MangaCarousel() {
     const sliderRef = useRef(null);
     const [mangaList, setMangaList] = useState([]);
@@ -10,7 +11,6 @@ export default function MangaCarousel() {
     useEffect(() => {
         axios.get(import.meta.env.VITE_PUBLIC_PATH + "manga/newRelease")
             .then(res => {
-
                 if (Array.isArray(res.data)) {
                     setMangaList(res.data);
                 } else if (Array.isArray(res.data.manga)) {
@@ -29,10 +29,26 @@ export default function MangaCarousel() {
         slidesToShow: 4,
         slidesToScroll: 1,
         responsive: [
-            { breakpoint: 992, settings: { slidesToShow: 2 } },
-            { breakpoint: 768, settings: { slidesToShow: 1 } }
+            {
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 3,
+                }
+            },
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 2
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 1
+                }
+            }
         ],
-        arrows: false // Disabilita le frecce di default
+        arrows: false
     };
 
     return (

@@ -1,18 +1,22 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import HeartIcon from "../components/HeartIcon";
+import AddToCartButton from "../components/AddToCartButton";
 
 function MangaDetailsPage() {
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const { slug } = useParams();
 
-    const [manga, setManga] = useState([])
+    const [manga, setManga] = useState(null)
 
-    console.log(import.meta.env.VITE_PUBLIC_PATH)
     function getManga() {
         axios.get(import.meta.env.VITE_PUBLIC_PATH + `manga/${slug}`)
             .then(res => {
-                console.log(res.data)
                 setManga(res.data)
             })
             .catch(err => console.log(err))
@@ -20,12 +24,18 @@ function MangaDetailsPage() {
 
     useEffect(() => {
         getManga()
-    }, [])
+    }, [slug])
+
+    if (!manga) {
+        return <div>Caricamento...</div>;
+    }
 
     const prezzo = String(manga.price);
     let decimale = prezzo.slice(prezzo.indexOf(".") + 1);
 
-    if (prezzo.slice(prezzo.indexOf(".") + 1).length === 1) {
+    if (prezzo.indexOf(".") === -1) {
+        decimale = "00";
+    } else if (prezzo.slice(prezzo.indexOf(".") + 1).length === 1) {
         decimale = prezzo.slice(prezzo.indexOf(".") + 1) + "0";
     } else if (prezzo.slice(prezzo.indexOf(".") + 1).length === 0) {
         decimale = "00";
@@ -33,18 +43,14 @@ function MangaDetailsPage() {
         decimale = prezzo.slice(prezzo.indexOf(".") + 1);
     }
 
-    const prezzoNuovo = prezzo.slice(0, prezzo.indexOf(".")) + "," + decimale;
+    const prezzoNuovo = (prezzo.indexOf(".") !== -1 ? prezzo.slice(0, prezzo.indexOf(".")) : prezzo) + "," + decimale;
 
-    // CALCOLO DELLO SCONTO
-    const prezzoBaseNumerico = parseFloat(manga.price);
-    // controllo che sia numero
     const discountPercentualeNumerico = Number(manga.discount);
     const discount = discountPercentualeNumerico / 100;
-    const prezzoScontatoNumerico = prezzoBaseNumerico * (1 - discount);
+    const prezzoScontatoNumerico = parseFloat(manga.price) * (1 - discount);
     const prezzoScontatoFormattato = prezzoScontatoNumerico.toFixed(2).replace(".", ",");
 
     return (
-
         <>
             <div className="container pb-5 pt-5">
                 <div className="row">
@@ -56,9 +62,12 @@ function MangaDetailsPage() {
                         <h1 className="mb-2">{manga.title}</h1>
                         <h5 className="text-muted">Serie: {manga.serie}</h5>
 
-                        <button className="btn btn-warning text-primary-emphasis btn-lg px-5 mt-4">
-                            <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
-                        </button>
+                        <div className="d-flex align-items-center mt-4">
+                            <div className="px-5 me-3">
+                                <AddToCartButton manga={manga} />
+                            </div>
+                            <HeartIcon manga={manga} customStyle={{ fontSize: '2.5rem' }} />
+                        </div>
 
                         <p className="mt-4">
                             {manga.description}
@@ -103,9 +112,7 @@ function MangaDetailsPage() {
                     </div>
                 </div>
             </div>
-
         </>
-
     )
 }
 

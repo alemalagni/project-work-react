@@ -10,7 +10,6 @@ function Series() {
     function getSeries() {
         axios.get(import.meta.env.VITE_PUBLIC_PATH + `manga/series`)
             .then(res => {
-                console.log(res.data)
                 setSeries(res.data)
             })
             .catch(err => console.log(err))

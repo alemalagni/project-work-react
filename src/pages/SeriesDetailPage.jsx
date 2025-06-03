@@ -1,11 +1,15 @@
-
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import MangaCard from "../components/MangaCard";
 import MangaListCard from "../components/MangaListCard";
 
 function prezzo(price) {
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const prezzo = String(price);
     let decimale = prezzo.slice(prezzo.indexOf(".") + 1);
 
@@ -26,6 +30,8 @@ function SerieDetailsPage() {
     const [serie, setSerie] = useState(null);
     const [volumi, setVolumi] = useState([]);
 
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [isInitialized, setIsInitialized] = useState(false);
     const [viewMode, setViewMode] = useState("grid")
 
     useEffect(() => {
@@ -36,6 +42,31 @@ function SerieDetailsPage() {
             })
             .catch(err => console.error(err));
     }, [slug]);
+
+
+
+    useEffect(() => {
+        const urlView = searchParams.get('view') || 'grid';
+
+        if (['grid', 'list'].includes(urlView)) {
+            setViewMode(urlView);
+        } else {
+            setViewMode('grid');
+        }
+        setIsInitialized(true);
+    }, []);
+
+    useEffect(() => {
+        if (!isInitialized) return;
+        const newParams = new URLSearchParams();
+
+        if (viewMode && viewMode !== 'grid') {
+            newParams.set("view", viewMode)
+        }
+
+        setSearchParams(newParams, { replace: true });
+    }, [viewMode]);
+
 
     if (!serie) {
         return <p>Caricamento...</p>;
