@@ -107,6 +107,7 @@
 
 import { useState, useEffect } from "react";
 import { useCart } from "../contexts/CartContext"; // Assicurati che il percorso sia corretto
+import { useNavigate } from "react-router-dom";
 
 function CheckoutPage() {
   const { cartItems, cartTotal, totalItemsInCart } = useCart();
@@ -123,6 +124,8 @@ function CheckoutPage() {
     city: '',
     state: '',
   });
+
+  const navigate = useNavigate();
 
   function handleFormData(e) {
     const { name, value, type, checked } = e.target;
@@ -157,9 +160,9 @@ function CheckoutPage() {
 
 
   function sendForm(e) {
-    e.preventDefault()
-    // Inviare formData, cartItems, cartTotal, shippingCost, finalOrderTotal, estimatedShippingDate
-    alert("Logica di invio form e ordine da implementare!");
+    e.preventDefault();
+    // Puoi anche salvare i dati o fare una chiamata API qui
+    navigate("/order-summary");
   }
 
   return (
@@ -354,10 +357,10 @@ function CheckoutPage() {
                 <div className="col-12 mt-4 d-grid">
                   <button
                     type="submit"
-                    className="btn btn-primary btn-lg"
-                    disabled={cartItems.length === 0}
-                    to={`/order-summary`}>
-                    Completa Ordine e Paga
+                    className="btn btn-primary"
+                    onClick={sendForm}
+                  >
+                    Completa il Pagamento
                   </button>
                 </div>
               </form>
