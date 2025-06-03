@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function CheckoutPage() {
+
+  const BASE_URL = import.meta.env.VITE_PUBLIC_PATH;
+
   const { cartItems, cartTotal, totalItemsInCart } = useCart();
 
   const { clearCart } = useCart();
@@ -106,7 +109,7 @@ function CheckoutPage() {
       }
 
 
-      axios.post("http://127.0.0.1:3000/manga/order", orderData)
+      axios.post(`${BASE_URL}manga/order`, orderData)
         .then(() => {
           clearCart();
           alert("Ordine completato con successo!");
@@ -118,7 +121,7 @@ function CheckoutPage() {
 
     // Se c'è un codice promo, cerca l'ID
     if (formData.promo_code) {
-      axios.get(`http://127.0.0.1:3000/manga/promo_code?code=${encodeURIComponent(formData.promo_code)}`)
+      axios.get(`${BASE_URL}manga/promo_code?code=${encodeURIComponent(formData.promo_code)}`)
         .then(res => {
           // Codice valido
           if (res.data && res.data.id) {
