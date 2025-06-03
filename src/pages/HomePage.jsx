@@ -2,6 +2,7 @@ import HeroSpace from "../components/HeroSpace";
 import Series from "../components/Series";
 import Carousel from "../components/Carousel";
 import CarouselPoplarity from "../components/CarouselPoplarity";
+import ShippingInfoBanner from "../components/ShippingInfoBanner";
 import { useEffect } from "react";
 function HomePage() {
 
@@ -12,6 +13,7 @@ function HomePage() {
     return (
         <>
             <div className="mb-5">
+                <ShippingInfoBanner />
                 <HeroSpace />
                 <Carousel />
                 <CarouselPoplarity />
