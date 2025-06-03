@@ -352,7 +352,11 @@ function CheckoutPage() {
                 </div>
 
                 <div className="col-12 mt-4 d-grid">
-                  <button type="submit" className="btn btn-primary btn-lg" disabled={cartItems.length === 0}>
+                  <button
+                    type="submit"
+                    className="btn btn-primary btn-lg"
+                    disabled={cartItems.length === 0}
+                    to={`/order-summary`}>
                     Completa Ordine e Paga
                   </button>
                 </div>
