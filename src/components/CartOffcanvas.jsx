@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const CartOffcanvas = ({ isOpen, onClose }) => {
     const offcanvasHtmlRef = useRef(null);
     const bsOffcanvasInstanceRef = useRef(null);
-    const { cartItems, cartTotal, totalItemsInCart } = useCart();
+    const { cartItems, cartTotal, totalItemsInCart, } = useCart();
 
     useEffect(() => {
         if (offcanvasHtmlRef.current && window.bootstrap?.Offcanvas) {
