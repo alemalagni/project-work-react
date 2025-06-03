@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function CheckoutPage() {
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
 
   const [formData, setFormData] = useState({
