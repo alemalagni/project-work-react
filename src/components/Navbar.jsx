@@ -82,6 +82,12 @@ export default function Navbar() {
                             <li className="nav-item">
                                 <NavLink to='/manga' end className="nav-link"><strong>Manga</strong></NavLink>
                             </li>
+                            <li className="nav-item">
+                                <NavLink to='/about' end className="nav-link"><strong>About</strong></NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink to='/contacts' className="nav-link"><strong>Contacts</strong></NavLink>
+                            </li>
                             <li className="nav-item btn position-relative">
                                 <NavLink to='/wishlist' className="nav-link">
                                     <strong>Wishlist</strong>
@@ -91,12 +97,6 @@ export default function Navbar() {
                                         </div>
                                     )}
                                 </NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink to='/about' end className="nav-link"><strong>About</strong></NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink to='/contacts' className="nav-link"><strong>Contacts</strong></NavLink>
                             </li>
                             <li className="nav-item">
                                 <button
