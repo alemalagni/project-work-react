@@ -1,13 +1,24 @@
 import { useCart } from "../contexts/CartContext";
+import { useLocation } from "react-router-dom";
 
 function OrderSummaryPage() {
-    const { cartItems, cartTotal, totalItemsInCart } = useCart();
+    const { state } = useLocation();
+
     const formatPrice = (price) => {
         if (typeof price !== 'number' || isNaN(price)) {
             return 'N/A';
         }
         return '€ ' + price.toFixed(2).replace('.', ',');
     };
+
+    const {
+        formData,
+        cartItems,
+        cartTotal,
+        shippingCost,
+        finalOrderTotal,
+        estimatedShippingDate
+    } = state || {};
 
     return (
         <div className="container-fluid gradient-bg py-5">
