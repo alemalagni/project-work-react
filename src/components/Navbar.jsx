@@ -12,26 +12,21 @@ export default function Navbar() {
 
     const cartItemCountBadgeStyle = {
         position: 'absolute',
-        top: '-0.4em',          // Spostalo un po' più in alto per sovrapporlo al bordo del pulsante
-        right: '-0.5em',         // Spostalo un po' più a destra per sovrapporlo al bordo del pulsante
-        backgroundColor: '#dc3545', // Rosso (Bootstrap 'danger'), ottimo per le notifiche
+        top: '-0.4em',
+        right: '-0.5em',
+        backgroundColor: '#dc3545',
         color: 'white',
-        paddingLeft: '0.2em',    // Padding orizzontale
-        paddingRight: '0.2em',   // Padding orizzontale
-        paddingTop: '0.3em',     // Padding verticale (leggermente meno per bilanciare)
-        paddingBottom: '0.3em',  // Padding verticale
-        borderRadius: '10rem',   // Un valore alto per renderlo circolare se il contenuto è corto, o a pillola se più lungo
-        fontSize: '0.75em',      // Dimensione del font più piccola per il badge
+        paddingLeft: '0.2em',
+        paddingRight: '0.2em',
+        paddingTop: '0.3em',
+        paddingBottom: '0.3em',
+        borderRadius: '10rem',
+        fontSize: '0.75em',
         fontWeight: 'bold',
-        lineHeight: '1',         // Aiuta a centrare il testo verticalmente e assicura coerenza nell'altezza
-        minWidth: '1.8em',       // Larghezza minima per far sì che appaia bene anche con una sola cifra (es. '1')
-        // L'altezza sarà determinata dal lineHeight e dal padding verticale
-        textAlign: 'center',     // Centra il numero all'interno del badge
-        zIndex: 10,              // Assicura che sia sopra altri elementi
-        // Per un badge perfettamente circolare con una sola cifra,
-        // potresti dover aggiustare paddingLeft/Right e minWidth o impostare width e height uguali
-        // e usare display: 'flex', alignItems: 'center', justifyContent: 'center'.
-        // Questo approccio è flessibile per 1 o 2 cifre.
+        lineHeight: '1',
+        minWidth: '1.8em',
+        textAlign: 'center',
+        zIndex: 10,
     };
 
 

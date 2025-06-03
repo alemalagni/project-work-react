@@ -1,13 +1,11 @@
-// src/components/CartOffcanvas.js (o il percorso corretto)
 import { useEffect, useRef } from 'react';
-import { useCart } from '../contexts/CartContext'; // Assicurati che il percorso sia corretto
-import MangaCardOnCart from './MangaCardOnCart'; // Assicurati che il percorso sia corretto
+import { useCart } from '../contexts/CartContext';
+import MangaCardOnCart from './MangaCardOnCart';
 import { Link } from 'react-router-dom';
 
 const CartOffcanvas = ({ isOpen, onClose }) => {
     const offcanvasHtmlRef = useRef(null);
     const bsOffcanvasInstanceRef = useRef(null);
-    // Prendi anche cartTotal e totalItemsInCart dal context
     const { cartItems, cartTotal, totalItemsInCart } = useCart();
 
     useEffect(() => {
@@ -42,7 +40,7 @@ const CartOffcanvas = ({ isOpen, onClose }) => {
         if (typeof price !== 'number') {
             return 'N/A';
         }
-        return price.toFixed(2).replace('.', ',') + ' €'; // Formato italiano
+        return price.toFixed(2).replace('.', ',') + ' €';
     };
 
     return (
@@ -57,14 +55,12 @@ const CartOffcanvas = ({ isOpen, onClose }) => {
                 <h5 className="offcanvas-title" id="cartOffcanvasLabel">Il tuo carrello</h5>
                 <button type="button" className="btn-close" aria-label="Close" onClick={onClose}></button>
             </div>
-            {/* Aggiunto d-flex flex-column per gestire lo spazio e posizionare il footer in basso */}
             <div className="offcanvas-body d-flex flex-column">
                 {cartItems.length === 0 ? (
                     // Messaggio per carrello vuoto, centrato verticalmente e orizzontalmente
                     <p className="text-center my-auto">Non hai ancora aggiunto articoli al carrello.</p>
                 ) : (
                     <>
-                        {/* Lista degli articoli con scroll interno se necessario */}
                         <ul className="list-group mb-3" style={{ flexGrow: 1, overflowY: 'auto' }}>
                             {cartItems.map(item => (
                                 <MangaCardOnCart

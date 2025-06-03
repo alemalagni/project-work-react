@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
 const CART_STORAGE_KEY = 'mangaShopCart'; // Chiave per localStorage

@@ -1,6 +1,5 @@
-// src/components/AddToCartButton.js (Nessuna modifica necessaria)
-import { useCart } from '../contexts/CartContext'; // Assicurati che il percorso sia corretto
-import React, { useState } from 'react';
+import { useCart } from '../contexts/CartContext';
+import { useState } from 'react';
 
 function AddToCartButton({ manga }) {
   const { addToCart } = useCart();
