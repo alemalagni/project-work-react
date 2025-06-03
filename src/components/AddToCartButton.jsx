@@ -2,7 +2,7 @@ import { useCart } from '../contexts/CartContext';
 import { useState } from 'react';
 
 
-function AddToCartButton({ manga, viewMode }) {
+function AddToCartButton({ manga, viewMode, btnLg }) {
   const { addToCart } = useCart();
 
   const [clicked, setClicked] = useState(false);
@@ -13,9 +13,10 @@ function AddToCartButton({ manga, viewMode }) {
 
   const buttonClasses = `btn btn-warning text-primary-emphasis mt-1 fade-button ${clicked ? "clicked" : ""} ${viewMode === "list" ? "btn-list-mode" : ""}`;
 
+
   return (
     <button
-      className={buttonClasses}
+      className={`${buttonClasses} ${btnLg === true ? 'btn-lg px-5 me-4' : ''}`}
       onClick={() => {
         addToCart(manga);
         handleClick();

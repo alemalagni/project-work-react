@@ -50,6 +50,29 @@ function MangaDetailsPage() {
     const prezzoScontatoNumerico = parseFloat(manga.price) * (1 - discount);
     const prezzoScontatoFormattato = prezzoScontatoNumerico.toFixed(2).replace(".", ",");
 
+    function formatItalianDate(dateString) {
+        if (!dateString) {
+            return 'N/D';
+        }
+
+        try {
+            const dateObj = new Date(dateString);
+
+            if (isNaN(dateObj.getTime())) {
+                return 'Data non valida';
+            }
+
+            const day = String(dateObj.getDate()).padStart(2, '0');
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const year = dateObj.getFullYear();
+
+            return `${day}/${month}/${year}`;
+        } catch (error) {
+            console.error("Errore durante la formattazione della data:", dateString, error);
+            return 'Errore data';
+        }
+    }
+
     return (
         <>
             <div className="container pb-5 pt-5">
@@ -63,9 +86,7 @@ function MangaDetailsPage() {
                         <h5 className="text-muted">Serie: {manga.serie}</h5>
 
                         <div className="d-flex align-items-center mt-4">
-                            <div className="px-5 me-3">
-                                <AddToCartButton manga={manga} />
-                            </div>
+                            <AddToCartButton btnLg={true} manga={manga} />
                             <HeartIcon manga={manga} customStyle={{ fontSize: '2.5rem' }} />
                         </div>
 
@@ -94,7 +115,7 @@ function MangaDetailsPage() {
                                     )} </li>
                                     <li className="mt-1">ISBN: <strong>{manga.ISBN}</strong></li>
                                     <li className="mt-1">Numero di pagine: <strong>{manga.pages}</strong></li>
-                                    <li className="mt-1">Data uscita: <strong>{manga.release_date ? manga.release_date.slice(0, 10) : <p></p>}</strong></li>
+                                    <li className="mt-1">Data uscita: <strong>{formatItalianDate(manga.release_date)}</strong></li>
                                 </ul>
                             </div>
                             <div className="col-md-6">
