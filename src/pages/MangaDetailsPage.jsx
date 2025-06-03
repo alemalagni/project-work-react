@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import HeartIcon from "../components/HeartIcon";
+import AddToCartButton from "../components/AddToCartButton";
 
 function MangaDetailsPage() {
 
@@ -62,9 +63,9 @@ function MangaDetailsPage() {
                         <h5 className="text-muted">Serie: {manga.serie}</h5>
 
                         <div className="d-flex align-items-center mt-4">
-                            <button className="btn btn-warning text-primary-emphasis btn-lg px-5 me-3">
-                                <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
-                            </button>
+                            <div className="px-5 me-3">
+                                <AddToCartButton manga={manga} />
+                            </div>
                             <HeartIcon manga={manga} customStyle={{ fontSize: '2.5rem' }} />
                         </div>
 

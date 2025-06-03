@@ -1,9 +1,6 @@
 export default function DiscountBedge({ discount }) {
 
     const discountBadgeStyle = {
-        // position: 'absolute',
-        // top: '150px',
-        // right: '12px',
         backgroundColor: '#dc3545',
         color: 'white',
         padding: '0.15em 0.3em',
