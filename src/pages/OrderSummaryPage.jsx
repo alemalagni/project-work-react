@@ -28,14 +28,14 @@ function OrderSummaryPage() {
         day: "numeric"
     })
 
-    function methodPay(method, name, email) {
+    function methodPay(method, name, surname, email) {
         if (method === 'carta') {
             const numberCard = String(Math.floor(Math.random() * 10000)).padStart(4, '0')
             const expiringDate = (String(Math.floor(Math.random() * 28) + 1).padStart(2, '0') + "/" + String(Math.floor(Math.random() * 12) + 1).padStart(2, '0'))
 
             return (
                 <>
-                    <p><strong>Intestatario: </strong>{name}</p>
+                    <p><strong>Intestatario: </strong>{name + " " + surname}</p>
                     <p><strong>Carta: </strong>{`**** **** **** ${numberCard}`}</p>
                     <p><strong>Data di scadenza: </strong>{`${expiringDate}`}</p>
                     <p><strong>CV: </strong>{`***`}</p>
@@ -65,7 +65,8 @@ function OrderSummaryPage() {
 
                             <div>
                                 <h2>Dati Utente</h2>
-                                <p><strong>Nome:</strong> {formData?.name}</p>
+                                <p><strong>Nome: </strong> {formData?.name}</p>
+                                <p><strong>Cognome: </strong> {formData?.surname}</p>
                                 <p><strong>Email:</strong> {formData?.email}</p>
                                 <p><strong>Indirizzo:</strong> {formData?.address} {formData?.address2}</p>
                                 <p><strong>Città:</strong> {formData?.city}</p>
@@ -80,7 +81,7 @@ function OrderSummaryPage() {
 
                                 <h2>Pagamento</h2>
                                 <p><strong>Metodo: </strong>{payment_method.charAt(0).toUpperCase() + payment_method.slice(1).toLowerCase()}</p>
-                                {methodPay(payment_method, formData?.name, formData?.email)}
+                                {methodPay(payment_method, formData?.name, formData?.surname, formData?.email)}
                             </div>
 
                             <div>
