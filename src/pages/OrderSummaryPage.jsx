@@ -28,6 +28,33 @@ function OrderSummaryPage() {
         day: "numeric"
     })
 
+    function methodPay(method, name, email) {
+        if (method === 'carta') {
+            const numberCard = String(Math.floor(Math.random() * 10000)).padStart(4, '0')
+            const expiringDate = (String(Math.floor(Math.random() * 28) + 1).padStart(2, '0') + "/" + String(Math.floor(Math.random() * 12) + 1).padStart(2, '0'))
+
+            return (
+                <>
+                    <p><strong>Intestatario: </strong>{name}</p>
+                    <p><strong>Carta: </strong>{`**** **** **** ${numberCard}`}</p>
+                    <p><strong>Data di scadenza: </strong>{`${expiringDate}`}</p>
+                    <p><strong>CV: </strong>{`***`}</p>
+                </>
+            )
+        } else if (method === 'paypal') {
+            return (
+                <>
+                    <p><strong>email: </strong>{email}</p>
+                </>
+            )
+        } else {
+            return (
+                <>
+                </>
+            )
+        }
+    }
+
     return (
         <div className="container-fluid gradient-bg py-5">
             <div className="container">
@@ -53,6 +80,7 @@ function OrderSummaryPage() {
 
                                 <h2>Pagamento</h2>
                                 <p><strong>Metodo: </strong>{payment_method.charAt(0).toUpperCase() + payment_method.slice(1).toLowerCase()}</p>
+                                {methodPay(payment_method, formData?.name, formData?.email)}
                             </div>
 
                             <div>
