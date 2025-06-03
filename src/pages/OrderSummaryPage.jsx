@@ -1,4 +1,3 @@
-import { useCart } from "../contexts/CartContext";
 import { useLocation } from "react-router-dom";
 
 function OrderSummaryPage() {
@@ -33,7 +32,7 @@ function OrderSummaryPage() {
                 <div className="row justify-content-center">
                     <div className="col-lg-8 col-md-10">
                         <div className="border rounded p-4 p-md-5 shadow-sm bg-light">
-                            <h2 className="p-2">Grazie per l'acquisto!</h2>
+                            <h1 className="pb-2">Grazie per l'acquisto!</h1>
 
                             <div>
                                 <h2>Dati Utente</h2>
