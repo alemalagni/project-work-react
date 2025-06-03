@@ -1,137 +1,211 @@
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
 
 function OrderSummaryPage() {
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const { state } = useLocation();
+
+    const {
+        formData = {},
+        cartItems = [],
+        cartTotal = 0,
+        shippingCost = 0,
+        finalOrderTotal = 0,
+        estimatedShippingDate,
+        payment_method = '',
+        promo_code
+    } = state || {};
 
     const formatPrice = (price) => {
         if (typeof price !== 'number' || isNaN(price)) {
-            return 'N/A';
+            const numPrice = parseFloat(price);
+            if (isNaN(numPrice)) return 'N/A';
+            return '€ ' + numPrice.toFixed(2).replace('.', ',');
         }
         return '€ ' + price.toFixed(2).replace('.', ',');
     };
 
-    const {
-        formData,
-        cartItems,
-        cartTotal,
-        shippingCost,
-        finalOrderTotal,
-        estimatedShippingDate,
-        payment_method,
-        promo_code
-    } = state || {};
+    const estimatedShippingDateFormatted = estimatedShippingDate ?
+        new Date(estimatedShippingDate).toLocaleDateString("it-IT", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        }) : 'Non disponibile';
 
-    const estimatedShippingDateFormatted = new Date(estimatedShippingDate).toLocaleDateString("it-IT", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-    })
+    function PaymentDetails({ method, name, surname, email }) {
+        if (!method) return null;
+        const paymentMethodLower = method.toLowerCase();
 
-    function methodPay(method, name, surname, email) {
-        if (method === 'carta') {
-            const numberCard = String(Math.floor(Math.random() * 10000)).padStart(4, '0')
-            const expiringDate = (String(Math.floor(Math.random() * 28) + 1).padStart(2, '0') + "/" + String(Math.floor(Math.random() * 12) + 1).padStart(2, '0'))
+        if (paymentMethodLower === 'carta') {
+            const numberCard = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+            const currentYearLastTwoDigits = new Date().getFullYear() % 100;
+            const randomFutureYear = currentYearLastTwoDigits + Math.floor(Math.random() * 5) + 1;
+            const randomMonth = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
+            const expiringDate = `${randomMonth}/${randomFutureYear}`;
 
             return (
                 <>
-                    <p><strong>Intestatario: </strong>{name + " " + surname}</p>
-                    <p><strong>Carta: </strong>{`**** **** **** ${numberCard}`}</p>
-                    <p><strong>Data di scadenza: </strong>{`${expiringDate}`}</p>
-                    <p><strong>CV: </strong>{`***`}</p>
+                    <div className="row">
+                        <div className="col-md-6 mb-2">
+                            <strong>Intestatario:</strong><br />
+                            {name} {surname}
+                        </div>
+                        <div className="col-md-6 mb-2">
+                            <strong>Carta:</strong><br />
+                            {`**** **** **** ${numberCard}`}
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-6 mb-2">
+                            <strong>Data di scadenza:</strong><br />
+                            {expiringDate}
+                        </div>
+                        <div className="col-md-6 mb-2">
+                            <strong>CVV:</strong><br />
+                            {`***`}
+                        </div>
+                    </div>
                 </>
-            )
-        } else if (method === 'paypal') {
+            );
+        } else if (paymentMethodLower === 'paypal') {
             return (
-                <>
-                    <p><strong>email: </strong>{email}</p>
-                </>
-            )
-        } else {
-            return (
-                <>
-                </>
-            )
+                <p><strong>Email PayPal: </strong>{email}</p>
+            );
         }
+        return <p>Dettagli per questo metodo di pagamento non disponibili.</p>;
     }
 
     return (
         <div className="container-fluid gradient-bg py-5">
             <div className="container">
                 <div className="row justify-content-center">
-                    <div className="col-lg-8 col-md-10">
-                        <div className="border rounded p-4 p-md-5 shadow-sm bg-light">
-                            <h1 className="pb-2">Grazie per l'acquisto!</h1>
+                    <div className="col-lg-9 col-xl-8">
 
-                            <div>
-                                <h2>Dati Utente</h2>
-                                <p><strong>Nome: </strong> {formData?.name}</p>
-                                <p><strong>Cognome: </strong> {formData?.surname}</p>
-                                <p><strong>Email:</strong> {formData?.email}</p>
-                                <p><strong>Indirizzo:</strong> {formData?.address} {formData?.address2}</p>
-                                <p><strong>Città:</strong> {formData?.city}</p>
-                                <p><strong>Regione:</strong> {formData?.state}</p>
-
-                                <h2>Totale</h2>
-                                <p><strong>Subtotale:</strong> € {cartTotal.toFixed(2)}</p>
-                                <p><strong>Spedizione: </strong>{shippingCost === 0 ? 'Gratuita' : '€' + formatPrice(shippingCost)}</p>
-                                <p><strong>Promo: </strong>{promo_code}</p>
-                                <p><strong>Totale:</strong> € {finalOrderTotal.toFixed(2)}</p>
-                                <p><strong>Consegna stimata:</strong> {estimatedShippingDateFormatted}</p>
-
-                                <h2>Pagamento</h2>
-                                <p><strong>Metodo: </strong>{payment_method.charAt(0).toUpperCase() + payment_method.slice(1).toLowerCase()}</p>
-                                {methodPay(payment_method, formData?.name, formData?.surname, formData?.email)}
+                        <div className="text-center pt-2 pb-4">
+                            <h1 className="display-5 fw-bold text-success">Grazie per il tuo ordine!</h1>
+                            <p className="lead text-muted">Il tuo acquisto è stato confermato e verrà elaborato a breve.</p>
+                            <div className="mt-4 pt-2">
+                                <Link to="/" className="btn btn-primary btn-lg px-4 px-md-5 py-2 py-md-3 shadow-sm">
+                                    Torna alla Home
+                                </Link>
                             </div>
-
-                            <div>
-                                <h2>Prodotti</h2>
-
-                                <ul className="list-group list-group-flush mb-4" style={{ maxHeight: '450px', overflowY: 'auto' }}>
-                                    {cartItems.map(item => (
-                                        <li key={item.slug} className="list-group-item d-flex align-items-center py-3 px-4"> {/* Rimosso lh-sm, aggiunto align-items-center */}
-                                            {item.imagePath && (
-                                                <img
-                                                    src={item.imagePath}
-                                                    alt={item.title}
-                                                    style={{
-                                                        width: '140px',
-                                                        height: '210px',
-                                                        objectFit: 'contain',
-                                                        marginRight: '25px',
-                                                        borderRadius: '4px',
-                                                        flexShrink: 0
-                                                    }}
-                                                />
-                                            )}
-                                            {/* Contenitore per i dettagli del prodotto, cresce per riempire lo spazio */}
-                                            <div className="flex-grow-1">
-                                                <h4 className="mb-2 fw-semibold">{item.title}</h4> {/* Titolo più grande e semibold */}
-
-                                                <div className="mb-1">
-                                                    <small className="text-muted">Prezzo unitario: </small>
-                                                    <small className="text-dark">{formatPrice(item.effective_price)}</small>
-                                                </div>
-
-                                                <div className="mb-1">
-                                                    <small className="text-muted">Quantità: </small>
-                                                    <small className="text-dark fw-bold">{item.quantity}</small>
-                                                </div>
-                                            </div>
-
-                                            {/* Contenitore per il prezzo totale dell'item, allineato a destra */}
-                                            <div className="text-end ps-3" style={{ minWidth: '110px' }}> {/* Aggiunto padding a sinistra e minWidth */}
-                                                <h5 className="mb-0 text-dark fw-bold"> {/* Prezzo totale item più grande e bold */}
-                                                    {formatPrice(item.effective_price * item.quantity)}
-                                                </h5>
-                                            </div>
+                        </div>
+                        <div className="bg-light shadow-sm rounded p-3 p-md-4">
+                            <div className="card mb-4">
+                                <div className="card-header bg-white py-3">
+                                    <h5 className="mb-0">
+                                        Dettagli Spedizione e Contatto
+                                    </h5>
+                                </div>
+                                <div className="card-body">
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <h6><strong>Destinatario:</strong></h6>
+                                            <p className="ps-2 mb-1">{formData.name} {formData.surname}</p>
+                                            <p className="ps-2 mb-3">{formData.email}</p>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <h6><strong>Indirizzo di Consegna:</strong></h6>
+                                            <p className="ps-2 mb-1">{formData.address}{formData.address2 ? `, ${formData.address2}` : ''}</p>
+                                            <p className="ps-2 mb-1">{formData.city}{formData.state ? `, ${formData.state}` : ''}{formData.zip ? ` - ${formData.zip}` : ''}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="card-footer bg-white py-3">
+                                    <p className="mb-0">
+                                        <strong>Consegna stimata:</strong> {estimatedShippingDateFormatted}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="card mb-4">
+                                <div className="card-header bg-white py-3">
+                                    <h5 className="mb-0">
+                                        Riepilogo Ordine
+                                    </h5>
+                                </div>
+                                <div className="card-body p-0">
+                                    <ul className="list-group list-group-flush">
+                                        <li className="list-group-item d-flex justify-content-between align-items-center px-3 px-md-4 py-2">
+                                            <span>Subtotale Prodotti</span>
+                                            <span>{formatPrice(cartTotal)}</span>
                                         </li>
-                                    ))}
-                                </ul>
+                                        <li className="list-group-item d-flex justify-content-between align-items-center px-3 px-md-4 py-2">
+                                            <span>Costo Spedizione</span>
+                                            <span>{shippingCost === 0 ? 'Gratuita' : formatPrice(shippingCost)}</span>
+                                        </li>
+                                        {promo_code && (
+                                            <li className="list-group-item d-flex justify-content-between align-items-center px-3 px-md-4 py-2 text-success">
+                                                <span>Codice Promo "{promo_code}" Applicato</span>
+                                            </li>
+                                        )}
+                                    </ul>
+                                </div>
+                                <div className="card-footer bg-white fw-bold h5 d-flex justify-content-between align-items-center px-3 px-md-4 py-3">
+                                    <span>Totale Finale</span>
+                                    <span>{formatPrice(finalOrderTotal)}</span>
+                                </div>
                             </div>
-
-                            <div>
-                                <h4>Qualcosa è andato storto con il tuo ordine? Contatta il servizio clienti!</h4>
+                            <div className="card mb-4">
+                                <div className="card-header bg-white py-3">
+                                    <h5 className="mb-0">
+                                        Dettagli Pagamento
+                                    </h5>
+                                </div>
+                                <div className="card-body">
+                                    <p className="mb-3"><strong>Metodo: </strong>
+                                        {payment_method ? payment_method.charAt(0).toUpperCase() + payment_method.slice(1).toLowerCase() : 'Non specificato'}
+                                    </p>
+                                    <PaymentDetails method={payment_method} name={formData.name} surname={formData.surname} email={formData.email} />
+                                </div>
+                            </div>
+                            {cartItems && cartItems.length > 0 && (
+                                <div className="card mb-4">
+                                    <div className="card-header bg-white py-3">
+                                        <h5 className="mb-0">
+                                            Prodotti Acquistati ({cartItems.length})
+                                        </h5>
+                                    </div>
+                                    <div className="card-body p-0">
+                                        <ul className="list-group list-group-flush" style={{ maxHeight: '450px', overflowY: 'auto' }}>
+                                            {cartItems.map(item => (
+                                                <li key={item.slug} className="list-group-item d-flex align-items-center py-3 px-3 px-md-4">
+                                                    {item.imagePath && (
+                                                        <img
+                                                            src={item.imagePath}
+                                                            alt={item.title}
+                                                            style={{
+                                                                width: '100px',
+                                                                height: '150px',
+                                                                objectFit: 'contain',
+                                                                marginRight: '20px',
+                                                                borderRadius: '4px',
+                                                                flexShrink: 0
+                                                            }}
+                                                        />
+                                                    )}
+                                                    <div className="flex-grow-1">
+                                                        <h6 className="mb-1 fw-semibold">{item.title}</h6>
+                                                        <small className="d-block text-muted">Prezzo unitario: {formatPrice(item.effective_price)}</small>
+                                                        <small className="d-block text-muted">Quantità: {item.quantity}</small>
+                                                    </div>
+                                                    <div className="text-end ps-2" style={{ minWidth: '100px' }}>
+                                                        <span className="fw-bold">
+                                                            {formatPrice(item.effective_price * item.quantity)}
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            )}
+                            <div className="alert alert-info text-center mt-4" role="alert">
+                                Hai domande o problemi con il tuo ordine? <Link to="/contacts" href="/contatti" className="alert-link fw-semibold">Contatta il Servizio Clienti</Link>.
                             </div>
                         </div>
                     </div>
