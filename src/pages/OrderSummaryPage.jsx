@@ -16,7 +16,9 @@ function OrderSummaryPage() {
         cartTotal,
         shippingCost,
         finalOrderTotal,
-        estimatedShippingDate
+        estimatedShippingDate,
+        payment_method,
+        promo_code
     } = state || {};
 
     const estimatedShippingDateFormatted = new Date(estimatedShippingDate).toLocaleDateString("it-IT", {
@@ -45,8 +47,12 @@ function OrderSummaryPage() {
                                 <h2>Totale</h2>
                                 <p><strong>Subtotale:</strong> € {cartTotal.toFixed(2)}</p>
                                 <p><strong>Spedizione: </strong>{shippingCost === 0 ? 'Gratuita' : '€' + formatPrice(shippingCost)}</p>
+                                <p><strong>Promo: </strong>{promo_code}</p>
                                 <p><strong>Totale:</strong> € {finalOrderTotal.toFixed(2)}</p>
                                 <p><strong>Consegna stimata:</strong> {estimatedShippingDateFormatted}</p>
+
+                                <h2>Pagamento</h2>
+                                <p><strong>Metodo: </strong>{payment_method.charAt(0).toUpperCase() + payment_method.slice(1).toLowerCase()}</p>
                             </div>
 
                             <div>
