@@ -15,7 +15,9 @@ function MangaPage() {
     const [search, setSearch] = useState('');
     const [order, setOrder] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(20);
+    const [itemsPerPage, setItemPerPage] = useState(20);
+    const [stagedItemsPerPage, setStagedItemsPerPage] = useState(itemsPerPage);
+
     const [totalItems, setTotalItems] = useState(0);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -164,16 +166,19 @@ function MangaPage() {
         setIsOffcanvasOpen(false);
     }, []);
 
-    // Gestore per applicare i filtri scelti nell'offcanvas
+
+
     const handleApplyStagedFilters = () => {
         // Copia i valori dagli stati staging agli stati attivi
         setFilterPriceRange(stagedFilterPriceRange);
         setFilterEditorialLine(stagedFilterEditorialLine);
         setFilterHasDiscount(stagedFilterHasDiscount);
+        setItemPerPage(stagedItemsPerPage);
         setCurrentPage(1); // Resetta la pagina quando si applicano nuovi filtri
         handleCloseOffcanvas(); // Chiude l'offcanvas
-        // Il cambio dei filtri attivi, triggererà l'useEffect per getManga
+        // Il cambio dei filtri attivi triggererà l'useEffect per getManga
     };
+
 
     // Gestore per resettare tutti i filtri ai valori di default
     const resetAllFilters = () => {
@@ -383,6 +388,10 @@ function MangaPage() {
                 stagedHasDiscount={stagedFilterHasDiscount}
                 setStagedHasDiscount={setStagedFilterHasDiscount}
                 defaultMaxPrice={DEFAULT_MAX_PRICE} // Passa il valore di default per il prezzo massimo
+
+                stagedItemsPerPage={stagedItemsPerPage}
+                setStagedItemsPerPage={setStagedItemsPerPage}
+                defaultItemsPerPage={itemsPerPage}
             />
         </>
     );
