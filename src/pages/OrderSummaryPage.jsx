@@ -1,6 +1,6 @@
 import { useCart } from "../contexts/CartContext";
 
-function OrderSummary() {
+function OrderSummaryPage() {
     return (
         <div>
             <h2>Grazie per l'acquisto!</h2>
@@ -50,4 +50,4 @@ function OrderSummary() {
     )
 }
 
-export default OrderSummary;
+export default OrderSummaryPage;
