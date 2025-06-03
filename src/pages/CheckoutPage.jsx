@@ -176,9 +176,12 @@ function CheckoutPage() {
         cartTotal,
         shippingCost,
         finalOrderTotal,
-        estimatedShippingDate: estimatedShippingDate.toISOString()
+        estimatedShippingDate: estimatedShippingDate.toISOString(),
+        payment_method: formData.payment_method,
+        promo_code: formData.promo_code
       }
     });
+
     // Validazione base
     if (
       !formData.name ||
