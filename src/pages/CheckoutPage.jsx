@@ -107,6 +107,7 @@
 
 import { useState, useEffect } from "react";
 import { useCart } from "../contexts/CartContext"; // Assicurati che il percorso sia corretto
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function CheckoutPage() {
@@ -129,6 +130,8 @@ function CheckoutPage() {
     payment_method: '',
     promo_code: ''
   });
+
+  const navigate = useNavigate();
 
   function handleFormData(e) {
     const { name, value, type, checked } = e.target;
@@ -165,6 +168,19 @@ function CheckoutPage() {
 
   function sendForm(e) {
     e.preventDefault();
+
+    navigate("/order-summary", {
+      state: {
+        formData,
+        cartItems,
+        cartTotal,
+        shippingCost,
+        finalOrderTotal,
+        estimatedShippingDate: estimatedShippingDate.toISOString(),
+        payment_method: formData.payment_method,
+        promo_code: formData.promo_code
+      }
+    });
 
     // Validazione base
     if (
@@ -458,10 +474,10 @@ function CheckoutPage() {
                 <div className="col-12 mt-4 d-grid">
                   <button
                     type="submit"
-                    className="btn btn-primary btn-lg"
-                    disabled={cartItems.length === 0}
-                    to={`/order-summary`}>
-                    Completa Ordine e Paga
+                    className="btn btn-primary"
+                    onClick={sendForm}
+                  >
+                    Completa il Pagamento
                   </button>
                 </div>
               </form>
