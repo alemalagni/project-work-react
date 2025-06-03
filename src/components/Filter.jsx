@@ -73,7 +73,7 @@ const Filter = ({
     }, [onClose]);
 
     // Effetto 3: Mostra o nasconde programmaticamente l'offcanvas
-    // in base alla prop 'isOpen' (controllata dallo stato React in MangaPage).
+    // in base alla prop 'isOpen'
     useEffect(() => {
         const offcanvasJsInstance = bsOffcanvasInstanceRef.current;
         if (offcanvasJsInstance) {
@@ -202,7 +202,7 @@ const Filter = ({
                     </select>
                 </div>
 
-                {/* MODIFICATO: Filtro per Numero di Elementi per Pagina (Select) */}
+
                 <div className="mb-3">
                     <div className="d-flex justify-content-between align-items-center mb-1">
                         <label htmlFor="itemsPerPageFilterSelect" className="form-label d-block">Manga per Pagina:</label>
@@ -222,7 +222,7 @@ const Filter = ({
                         value={stagedItemsPerPage}
                         onChange={(e) => setStagedItemsPerPage(parseInt(e.target.value))}
                     >
-                        <option value="10">10</option>
+                        <option value="20">20</option>
                         <option value="30">30</option>
                         <option value="50">50</option>
                     </select>
