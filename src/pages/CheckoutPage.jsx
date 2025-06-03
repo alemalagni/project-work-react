@@ -1,115 +1,12 @@
-// import { useState, useEffect } from "react";
-
-// function CheckoutPage() {
-
-//   useEffect(() => {
-//     window.scrollTo(0, 0);
-//   }, []);
-
-
-//   const [formData, setFormData] = useState({
-//     author: '',
-//     title: '',
-//     body: '',
-//     public: true
-//   });
-
-
-//   function handleFormdData(e) {
-//     const value = e.target.type === "checkbox" ? e.target.checked : e.target.value;
-
-//     setFormData((formData) => ({
-//       // value conterra il valore o del checkbox o del form
-//       ...formData, [e.target.name]: value
-//     }));
-
-//   }
-//   console.log(formData)
-
-//   //   function sendForm(e) {
-//   //     e.preventDefault()
-//   //     axios.post("https://67c5b4f3351c081993fb1ab6.mockapi.io/api/posts", formData)
-//   //       .then((response) => {
-//   //         console.log(response.data)
-//   //         alert("Form inserito con successo")
-//   //       })
-//   //       .catch((error) => {
-//   //         console.error(error)
-//   //         alert("Errore durante l'invio del form")
-//   //       })
-
-//   //   }
-
-//   return (
-
-//     <>
-//       <div className="d-flex justify-content-center align-items-center gradient-bg" style={{ height: "100vh" }}>
-//         <div
-//           className="container border rounded p-4 shadow-sm bg-light"
-//         >
-//           <form className="row g-3">
-//             <div className="col-md-6">
-//               <label htmlFor="name" className="form-label">Nome</label>
-//               <input type="text" className="form-control" id="name" />
-//             </div>
-//             <div className="col-md-6">
-//               <label htmlFor="inputEmail4" className="form-label">Email</label>
-//               <input type="email" className="form-control" id="inputEmail4" />
-//             </div>
-//             <div className="col-12">
-//               <label htmlFor="inputAddress" className="form-label">Indirizzo</label>
-//               <input type="text" className="form-control" id="inputAddress" placeholder="Via ..." />
-//             </div>
-//             <div className="col-12">
-//               <label htmlFor="inputAddress2" className="form-label">Dettagli di consegna</label>
-//               <input type="text" className="form-control" id="inputAddress2" placeholder="Appartamento, scala, piano" />
-//             </div>
-//             <div className="col-md-8">
-//               <label htmlFor="inputCity" className="form-label">Città</label>
-//               <input type="text" className="form-control" id="inputCity" />
-//             </div>
-//             <div className="col-md-4">
-//               <label htmlFor="inputState" className="form-label">Regione</label>
-//               <select id="inputState" className="form-select">
-//                 <option value="">-- Seleziona una regione --</option>
-//                 <option value="ABR">Abruzzo</option>
-//                 <option value="BAS">Basilicata</option>
-//                 <option value="CAL">Calabria</option>
-//                 <option value="CAM">Campania</option>
-//                 <option value="EMR">Emilia-Romagna</option>
-//                 <option value="FVG">Friuli-Venezia Giulia</option>
-//                 <option value="LAZ">Lazio</option>
-//                 <option value="LIG">Liguria</option>
-//                 <option value="LOM">Lombardia</option>
-//                 <option value="MAR">Marche</option>
-//                 <option value="MOL">Molise</option>
-//                 <option value="PMN">Piemonte</option>
-//                 <option value="PUG">Puglia</option>
-//                 <option value="SAR">Sardegna</option>
-//                 <option value="SIC">Sicilia</option>
-//                 <option value="TOS">Toscana</option>
-//                 <option value="TAA">Trentino-Alto Adige</option>
-//                 <option value="UMB">Umbria</option>
-//                 <option value="VDA">Valle d'Aosta</option>
-//                 <option value="VEN">Veneto</option>
-//               </select>
-//             </div>
-//             <div className="col-12 mt-5">
-//               <button type="submit" className="btn btn-primary">Completa il Pagamento</button>
-//             </div>
-//           </form>
-//         </div>
-//       </div>
-//     </>
-//   )
-// }
-
-
 import { useState, useEffect } from "react";
-import { useCart } from "../contexts/CartContext"; // Assicurati che il percorso sia corretto
+import { useCart } from "../contexts/CartContext";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function CheckoutPage() {
   const { cartItems, cartTotal, totalItemsInCart } = useCart();
+
+  const { clearCart } = useCart();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -117,12 +14,17 @@ function CheckoutPage() {
 
   const [formData, setFormData] = useState({
     name: '',
+    surname: '',
     email: '',
     address: '',
     address2: '',
     city: '',
     state: '',
+    payment_method: '',
+    promo_code: ''
   });
+
+  const navigate = useNavigate();
 
   function handleFormData(e) {
     const { name, value, type, checked } = e.target;
@@ -153,13 +55,90 @@ function CheckoutPage() {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
+
   });
 
 
   function sendForm(e) {
-    e.preventDefault()
-    // Inviare formData, cartItems, cartTotal, shippingCost, finalOrderTotal, estimatedShippingDate
-    alert("Logica di invio form e ordine da implementare!");
+    e.preventDefault();
+
+    navigate("/order-summary", {
+      state: {
+        formData,
+        cartItems,
+        cartTotal,
+        shippingCost,
+        finalOrderTotal,
+        estimatedShippingDate: estimatedShippingDate.toISOString(),
+        payment_method: formData.payment_method,
+        promo_code: formData.promo_code
+      }
+    });
+
+    // Validazione base
+    if (
+      !formData.name ||
+      !formData.surname ||
+      !formData.email ||
+      !formData.address ||
+      !formData.city ||
+      !formData.state ||
+      !formData.payment_method
+    ) {
+      alert("Per favore compila tutti i campi obbligatori.");
+      return;
+    }
+
+    // Funzione per inviare l'ordine dopo aver risolto l'ID promo
+    const submitOrder = (promoCodeId) => {
+      const orderData = {
+        total_amount: finalOrderTotal,
+        shipping_price: shippingCost,
+        payment_method: formData.payment_method,
+        address: formData.address,
+        email: formData.email,
+        name: formData.name,
+        surname: formData.surname,
+      };
+
+      if (promoCodeId) {
+        orderData.promo_code_id = promoCodeId;
+      }
+
+
+      axios.post(`${import.meta.env.VITE_PUBLIC_PATH}manga/order`, orderData)
+        .then(() => {
+          clearCart();
+          alert("Ordine completato con successo!");
+        })
+        .catch(() => {
+          alert("Errore durante l'invio dell'ordine.");
+        });
+    };
+
+    // Se c'è un codice promo, cerca l'ID
+    if (formData.promo_code) {
+      axios.get(`${import.meta.env.VITE_PUBLIC_PATH}manga/promo_code?code=${encodeURIComponent(formData.promo_code)}`)
+        .then(res => {
+          // Codice valido
+          if (res.data && res.data.id) {
+            submitOrder(res.data.id);
+          } else {
+            alert("Codice promo non valido.");
+          }
+        })
+        .catch(err => {
+          // Gestione errori specifici
+          if (err.response && err.response.data && err.response.data.error) {
+            alert(err.response.data.error);
+          } else {
+            alert("Errore nella verifica del codice promo.");
+          }
+        });
+    } else {
+      // Nessun promo code, invia direttamente
+      submitOrder(null);
+    }
   }
 
   return (
@@ -169,15 +148,13 @@ function CheckoutPage() {
           <div className="col-lg-8 col-md-10">
             <div className="border rounded p-4 p-md-5 shadow-sm bg-light">
 
+
               {/* --- INIZIO RIEPILOGO ORDINE --- */}
               <h2 className="mb-4">Riepilogo Ordine</h2> {/* Titolo principale del riepilogo più grande */}
               {cartItems.length === 0 ? (
                 <p>Il tuo carrello è vuoto. Aggiungi qualcosa prima di procedere al checkout!</p>
               ) : (
                 <>
-                  {/* Aumentata maxHeight per la lista data l'immagine più grande */}
-                  {/* Lista degli articoli nel riepilogo */}
-                  {/* Aumentata maxHeight per la lista, considera che ogni item è alto almeno 210px per l'immagine */}
                   <ul className="list-group list-group-flush mb-4" style={{ maxHeight: '450px', overflowY: 'auto' }}>
                     {cartItems.map(item => (
                       <li key={item.slug} className="list-group-item d-flex align-items-center py-3 px-4"> {/* Rimosso lh-sm, aggiunto align-items-center */}
@@ -248,15 +225,27 @@ function CheckoutPage() {
               {cartItems.length > 0 && <hr className="my-4" />}
 
               <h3 className="mb-4 mt-4">Dati di Spedizione e Pagamento</h3>
-              <form className="row g-3">
+              <form className="row g-3" onSubmit={sendForm}>
                 <div className="col-md-6">
-                  <label htmlFor="nameInput" className="form-label">Nome Completo</label>
+                  <label htmlFor="nameInput" className="form-label">Nome</label>
                   <input
                     type="text"
                     className="form-control"
                     id="nameInput"
                     name="name"
                     value={formData.name}
+                    onChange={handleFormData}
+                    required
+                  />
+                </div>
+                <div className="col-md-6">
+                  <label htmlFor="surnameInput" className="form-label">Cognome</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="surnameInput"
+                    name="surname"
+                    value={formData.surname}
                     onChange={handleFormData}
                     required
                   />
@@ -271,6 +260,18 @@ function CheckoutPage() {
                     value={formData.email}
                     onChange={handleFormData}
                     required
+                  />
+                </div>
+                <div className="col-6">
+                  <label htmlFor="promoCodeInput" className="form-label">Codice Promo (opzionale)</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="promoCodeInput"
+                    name="promo_code"
+                    value={formData.promo_code}
+                    onChange={handleFormData}
+                    placeholder="Inserisci il codice promo"
                   />
                 </div>
                 <div className="col-12">
@@ -344,25 +345,35 @@ function CheckoutPage() {
                   </select>
                 </div>
 
-                <div className="col-12 mt-4">
-                  <h4 className="mb-3">Dati Pagamento</h4>
-                  <div className="alert alert-info">
-                    Sezione pagamento da implementare.
-                  </div>
+                <div className="col-12">
+                  <label htmlFor="paymentMethod" className="form-label">Metodo di pagamento</label>
+                  <select
+                    id="paymentMethod"
+                    name="payment_method"
+                    className="form-select"
+                    value={formData.payment_method}
+                    onChange={handleFormData}
+                    required
+                  >
+                    <option value="">-- Seleziona --</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="carta">Carta di credito</option>
+                  </select>
                 </div>
 
                 <div className="col-12 mt-4 d-grid">
                   <button
                     type="submit"
-                    className="btn btn-primary btn-lg"
-                    disabled={cartItems.length === 0}
-                    to={`/order-summary`}>
-                    Completa Ordine e Paga
+                    className="btn btn-primary"
+                    onClick={sendForm}
+                  >
+                    Completa il Pagamento
                   </button>
                 </div>
               </form>
             </div>
           </div>
+
         </div>
       </div>
     </div>

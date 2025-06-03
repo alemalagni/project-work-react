@@ -11,7 +11,11 @@ const Filter = ({
     setStagedEditorialLine,
     stagedHasDiscount,
     setStagedHasDiscount,
-    defaultMaxPrice
+    defaultMaxPrice,
+    // MODIFICATO: Nuove prop per il filtro elementi per pagina
+    stagedItemsPerPage,
+    setStagedItemsPerPage,
+    defaultItemsPerPage
 }) => {
     const offcanvasHtmlRef = useRef(null);
     const bsOffcanvasInstanceRef = useRef(null);
@@ -197,6 +201,33 @@ const Filter = ({
                         <option value="no">Non in Sconto</option>
                     </select>
                 </div>
+
+                {/* MODIFICATO: Filtro per Numero di Elementi per Pagina (Select) */}
+                <div className="mb-3">
+                    <div className="d-flex justify-content-between align-items-center mb-1">
+                        <label htmlFor="itemsPerPageFilterSelect" className="form-label d-block">Manga per Pagina:</label>
+                        {stagedItemsPerPage !== defaultItemsPerPage && (
+                            <button
+                                type="button"
+                                className="btn btn-sm btn-link text-decoration-none p-0"
+                                onClick={() => handleResetIndividualFilter(setStagedItemsPerPage, defaultItemsPerPage)}
+                                title="Resetta elementi per pagina"
+                                style={{ lineHeight: 1 }}
+                            > x </button>
+                        )}
+                    </div>
+                    <select
+                        className="form-select"
+                        id="itemsPerPageFilterSelect"
+                        value={stagedItemsPerPage}
+                        onChange={(e) => setStagedItemsPerPage(parseInt(e.target.value))}
+                    >
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                </div>
+
 
                 {/* Pulsante per Applicare i Filtri */}
                 <div className="d-grid mt-4">
