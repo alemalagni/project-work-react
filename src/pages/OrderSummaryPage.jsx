@@ -44,9 +44,9 @@ function OrderSummaryPage() {
                                 <p><strong>Regione:</strong> {formData?.state}</p>
 
                                 <h2>Totale</h2>
-                                <p><strong>Subtotale:</strong> €{cartTotal.toFixed(2)}</p>
-                                <p><strong>Spedizione:</strong> €{shippingCost.toFixed(2)}</p>
-                                <p><strong>Totale:</strong> €{finalOrderTotal.toFixed(2)}</p>
+                                <p><strong>Subtotale:</strong> € {cartTotal.toFixed(2)}</p>
+                                <p><strong>Spedizione: </strong>{shippingCost === 0 ? 'Gratuita' : '€' + formatPrice(shippingCost)}</p>
+                                <p><strong>Totale:</strong> € {finalOrderTotal.toFixed(2)}</p>
                                 <p><strong>Consegna stimata:</strong> {estimatedShippingDateFormatted}</p>
                             </div>
 
