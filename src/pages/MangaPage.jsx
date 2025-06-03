@@ -333,7 +333,7 @@ function MangaPage() {
                         <div className="list-group mt-4">
                             {manga.map(mangaItem => (
                                 mangaItem && mangaItem.id ? (
-                                    <MangaListCard key={mangaItem.id} data={mangaItem} />
+                                    <MangaListCard key={mangaItem.id} data={mangaItem} viewMode={viewMode} />
                                 ) : null
                             ))}
                         </div>

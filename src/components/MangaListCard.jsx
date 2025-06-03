@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import DiscountBedge from "./DiscountBedge";
 import HeartIcon from "./HeartIcon";
+import AddToCartButton from "./AddToCartButton";
 
-function MangaListCard({ data }) {
+function MangaListCard({ data, viewMode }) {
 
     const prezzo = String(data.price);
     let decimale = prezzo.slice(prezzo.indexOf(".") + 1);
@@ -79,9 +80,10 @@ function MangaListCard({ data }) {
                         <strong>Genere:</strong> {data.genre}
                     </div>
                 </div>
-                <button className="btn btn-warning text-primary-emphasis mt-2 align-self-end btn-transparent">
-                    <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
-                </button>
+
+                <div className="ms-auto text-end">
+                    <AddToCartButton manga={data} viewMode={viewMode} />
+                </div>
             </div>
         </div>
     );
