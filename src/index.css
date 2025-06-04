@@ -332,7 +332,7 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #FF7F50;
+    background-color: #E75924;
     /* colore del thumb */
     border-radius: 0;
     /* niente bordi arrotondati = quadrato */

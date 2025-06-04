@@ -1,4 +1,4 @@
-import code1 from '../public/banner-10.jpg';
+import code1 from '../public/banner10.jpg';
 import code2 from '../public/banner-20.jpeg';
 import code3 from '../public/banner-30.jpeg';
 import code4 from '../public/banner40.jpg';
