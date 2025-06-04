@@ -79,7 +79,11 @@ function CheckoutPage() {
     }
 
     // Funzione per inviare l'ordine dopo aver risolto l'ID promo
-    const submitOrder = (promoCodeId) => {
+    const submitOrder = (promoCodeId, percent, discount) => {
+      const discountedTotal = cartTotal - discount;
+      const shippingCost = discountedTotal > 50 ? 0 : 5.99;
+      const finalOrderTotal = discountedTotal + shippingCost;
+
       const orderData = {
         total_amount: finalOrderTotal,
         shipping_price: shippingCost,
@@ -107,7 +111,9 @@ function CheckoutPage() {
               finalOrderTotal,
               estimatedShippingDate: estimatedShippingDate.toISOString(),
               payment_method: formData.payment_method,
-              promo_code: formData.promo_code
+              promo_code: formData.promo_code,
+              promoDiscountPercent: percent, // <-- passa il valore calcolato
+              discountAmount: discount       // <-- passa il valore calcolato
             }
           });
         })
@@ -115,14 +121,15 @@ function CheckoutPage() {
           alert("Errore durante l'invio dell'ordine.");
         });
     };
-
-    // Se c'è un codice promo, cerca l'ID
+    // Se c'è un codice promo, recupera la percentuale e calcola lo sconto
     if (formData.promo_code) {
       axios.get(`${import.meta.env.VITE_PUBLIC_PATH}manga/promo_code?code=${encodeURIComponent(formData.promo_code)}`)
         .then(res => {
           if (res.data && res.data.id) {
-            setPromoDiscountPercent(res.data.value_promo || 0);
-            submitOrder(res.data.id);
+            const percent = res.data.value_promo || 0;
+            const discount = cartTotal * (percent / 100);
+            setPromoDiscountPercent(percent); // aggiorna la view live
+            submitOrder(res.data.id, percent, discount); // passa i valori calcolati
           } else {
             setPromoDiscountPercent(0);
             alert("Codice promo non valido.");
@@ -138,7 +145,7 @@ function CheckoutPage() {
         });
     } else {
       setPromoDiscountPercent(0);
-      submitOrder(null);
+      submitOrder(null, 0, 0);
     }
   }
 

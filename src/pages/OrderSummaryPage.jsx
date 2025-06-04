@@ -17,7 +17,9 @@ function OrderSummaryPage() {
         finalOrderTotal = 0,
         estimatedShippingDate,
         payment_method = '',
-        promo_code
+        promo_code,
+        promoDiscountPercent = 0,
+        discountAmount = 0
     } = state || {};
 
     const formatPrice = (price) => {
@@ -79,6 +81,7 @@ function OrderSummaryPage() {
         }
         return <p>Dettagli per questo metodo di pagamento non disponibili.</p>;
     }
+    console.log(promoDiscountPercent, discountAmount)
 
     return (
         <div className="container-fluid gradient-bg py-5">
@@ -134,15 +137,16 @@ function OrderSummaryPage() {
                                             <span>Subtotale Prodotti</span>
                                             <span>{formatPrice(cartTotal)}</span>
                                         </li>
+                                        {promoDiscountPercent > 0 && (
+                                            <li className="list-group-item d-flex justify-content-between align-items-center px-3 px-md-4 py-2 text-success">
+                                                <span>Sconto promo ({promoDiscountPercent}%)</span>
+                                                <span>-{formatPrice(discountAmount)}</span>
+                                            </li>
+                                        )}
                                         <li className="list-group-item d-flex justify-content-between align-items-center px-3 px-md-4 py-2">
                                             <span>Costo Spedizione</span>
                                             <span>{shippingCost === 0 ? 'Gratuita' : formatPrice(shippingCost)}</span>
                                         </li>
-                                        {promo_code && (
-                                            <li className="list-group-item d-flex justify-content-between align-items-center px-3 px-md-4 py-2 text-success">
-                                                <span>Codice Promo "{promo_code}" Applicato</span>
-                                            </li>
-                                        )}
                                     </ul>
                                 </div>
                                 <div className="card-footer bg-white fw-bold h5 d-flex justify-content-between align-items-center px-3 px-md-4 py-3">
