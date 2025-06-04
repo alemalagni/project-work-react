@@ -62,19 +62,6 @@ function CheckoutPage() {
   function sendForm(e) {
     e.preventDefault();
 
-    navigate("/order-summary", {
-      state: {
-        formData,
-        cartItems,
-        cartTotal,
-        shippingCost,
-        finalOrderTotal,
-        estimatedShippingDate: estimatedShippingDate.toISOString(),
-        payment_method: formData.payment_method,
-        promo_code: formData.promo_code
-      }
-    });
-
     // Validazione base
     if (
       !formData.name ||
@@ -99,6 +86,7 @@ function CheckoutPage() {
         email: formData.email,
         name: formData.name,
         surname: formData.surname,
+        cartItems: cartItems,
       };
 
       if (promoCodeId) {
@@ -109,7 +97,19 @@ function CheckoutPage() {
       axios.post(`${import.meta.env.VITE_PUBLIC_PATH}manga/order`, orderData)
         .then(() => {
           clearCart();
-          alert("Ordine completato con successo!");
+          alert("Ordine completato con successo! Riceverai una conferma via email.");
+          navigate("/order-summary", {
+            state: {
+              formData,
+              cartItems,
+              cartTotal,
+              shippingCost,
+              finalOrderTotal,
+              estimatedShippingDate: estimatedShippingDate.toISOString(),
+              payment_method: formData.payment_method,
+              promo_code: formData.promo_code
+            }
+          });
         })
         .catch(() => {
           alert("Errore durante l'invio dell'ordine.");
