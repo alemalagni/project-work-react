@@ -365,7 +365,7 @@ function CheckoutPage() {
                   <button
                     type="submit"
                     className="btn btn-primary"
-                    
+
                   >
                     Completa il Pagamento
                   </button>
