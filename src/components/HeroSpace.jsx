@@ -1,6 +1,10 @@
 import img1 from '../public/l_arte_e_i_retroscena_1970_x_779_px_1_.webp';
 import img2 from '../public/BANNER_E-COMMERCE_10__1.webp';
 import img3 from '../public/Tavola_disegno_1_1.webp';
+import code1 from '../public/banner-10.jpg';
+import code2 from '../public/banner-20.jpeg';
+import code3 from '../public/banner-30.jpeg';
+import code4 from '../public/banner-40.jpg';
 
 
 export default function HeroSpace() {
@@ -18,6 +22,18 @@ export default function HeroSpace() {
                         </div>
                         <div className="carousel-item " data-bs-interval="10000">
                             <img src={img3} className="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-3" />
+                        </div>
+                        <div className="carousel-item " data-bs-interval="10000">
+                            <img src={code1} className="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-3" />
+                        </div>
+                        <div className="carousel-item " data-bs-interval="10000">
+                            <img src={code2} className="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-3" />
+                        </div>
+                        <div className="carousel-item " data-bs-interval="10000">
+                            <img src={code3} className="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-3" />
+                        </div>
+                        <div className="carousel-item " data-bs-interval="10000">
+                            <img src={code4} className="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-3" />
                         </div>
                     </div>
                     <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
