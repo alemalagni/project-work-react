@@ -5,7 +5,7 @@ import axios from "axios";
 
 function CheckoutPage() {
   const { cartItems, cartTotal, totalItemsInCart } = useCart();
-
+  const [promoDiscountPercent, setPromoDiscountPercent] = useState(0);
   const { clearCart } = useCart();
 
   useEffect(() => {
@@ -41,10 +41,6 @@ function CheckoutPage() {
     return '€ ' + price.toFixed(2).replace('.', ',');
   };
 
-  // Calcolo spese di spedizione
-  const shippingCost = cartTotal > 50 ? 0 : 5.99;
-  const finalOrderTotal = cartTotal + shippingCost;
-
   // Calcolo e formattazione data di spedizione stimata
   const today = new Date();
   const estimatedShippingDate = new Date(today);
@@ -55,9 +51,15 @@ function CheckoutPage() {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
-
   });
 
+
+
+  // Calcolo sconto:
+  const discountAmount = cartTotal * (promoDiscountPercent / 100);
+  const discountedTotal = cartTotal - discountAmount;
+  const shippingCost = discountedTotal > 50 ? 0 : 5.99;
+  const finalOrderTotal = discountedTotal + shippingCost;
 
   function sendForm(e) {
     e.preventDefault();
@@ -77,7 +79,11 @@ function CheckoutPage() {
     }
 
     // Funzione per inviare l'ordine dopo aver risolto l'ID promo
-    const submitOrder = (promoCodeId) => {
+    const submitOrder = (promoCodeId, percent, discount) => {
+      const discountedTotal = cartTotal - discount;
+      const shippingCost = discountedTotal > 50 ? 0 : 5.99;
+      const finalOrderTotal = discountedTotal + shippingCost;
+
       const orderData = {
         total_amount: finalOrderTotal,
         shipping_price: shippingCost,
@@ -93,11 +99,10 @@ function CheckoutPage() {
         orderData.promo_code_id = promoCodeId;
       }
 
-
       axios.post(`${import.meta.env.VITE_PUBLIC_PATH}manga/order`, orderData)
         .then(() => {
           clearCart();
-          alert("Ordine completato con successo! Riceverai una conferma via email.");
+          alert("Ordine completato con successo!");
           navigate("/order-summary", {
             state: {
               formData,
@@ -107,7 +112,9 @@ function CheckoutPage() {
               finalOrderTotal,
               estimatedShippingDate: estimatedShippingDate.toISOString(),
               payment_method: formData.payment_method,
-              promo_code: formData.promo_code
+              promo_code: formData.promo_code,
+              promoDiscountPercent: percent, // <-- passa il valore calcolato
+              discountAmount: discount       // <-- passa il valore calcolato
             }
           });
         })
@@ -115,20 +122,22 @@ function CheckoutPage() {
           alert("Errore durante l'invio dell'ordine.");
         });
     };
-
-    // Se c'è un codice promo, cerca l'ID
+    // Se c'è un codice promo, recupera la percentuale e calcola lo sconto
     if (formData.promo_code) {
       axios.get(`${import.meta.env.VITE_PUBLIC_PATH}manga/promo_code?code=${encodeURIComponent(formData.promo_code)}`)
         .then(res => {
-          // Codice valido
           if (res.data && res.data.id) {
-            submitOrder(res.data.id);
+            const percent = res.data.value_promo || 0;
+            const discount = cartTotal * (percent / 100);
+            setPromoDiscountPercent(percent); // aggiorna la view live
+            submitOrder(res.data.id, percent, discount); // passa i valori calcolati
           } else {
+            setPromoDiscountPercent(0);
             alert("Codice promo non valido.");
           }
         })
         .catch(err => {
-          // Gestione errori specifici
+          setPromoDiscountPercent(0);
           if (err.response && err.response.data && err.response.data.error) {
             alert(err.response.data.error);
           } else {
@@ -136,10 +145,11 @@ function CheckoutPage() {
           }
         });
     } else {
-      // Nessun promo code, invia direttamente
-      submitOrder(null);
+      setPromoDiscountPercent(0);
+      submitOrder(null, 0, 0);
     }
   }
+
 
   return (
     <div className="container-fluid gradient-bg py-5">
@@ -202,6 +212,12 @@ function CheckoutPage() {
                       <span className="text-muted">Subtotale articoli ({totalItemsInCart}):</span>
                       <strong>{formatPrice(cartTotal)}</strong>
                     </div>
+                    {promoDiscountPercent > 0 && (
+                      <div className="d-flex justify-content-between align-items-center mb-2 fs-6">
+                        <span className="text-success">Sconto promo ({promoDiscountPercent}%):</span>
+                        <strong>-{formatPrice(discountAmount)}</strong>
+                      </div>
+                    )}
                     <div className="d-flex justify-content-between align-items-center mb-2 fs-6">
                       <span className="text-muted">Spedizione:</span>
                       <strong>{shippingCost === 0 ? 'Gratuita' : formatPrice(shippingCost)}</strong>
