@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import AnimeBackground from "../components/AnimeBackground";
 
 export default function DefaultLayout() {
     return (
@@ -9,6 +10,7 @@ export default function DefaultLayout() {
                 <Navbar />
             </header>
             <div className="main-content-wrapper">
+                <AnimeBackground/>
                 <Outlet />
             </div>
             <Footer />

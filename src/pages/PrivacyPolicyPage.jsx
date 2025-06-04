@@ -5,7 +5,7 @@ function PrivacyPolicyPage() {
     const companyName = "Manga E-Commerce S.R.L.";
     const appName = "Manga E-Commerce";
     const websiteUrl = "MangaE-Commerce.com";
-    const contactEmail = "privacy.manga@ecommerce.com";
+    const contactEmail = "ecommerce.manga@gmail.com";
     const lastUpdated = "31 Maggio 2025";
 
     useEffect(() => {

@@ -92,6 +92,20 @@ function OrderSummaryPage() {
                         <div className="text-center pt-2 pb-4">
                             <h1 className="display-5 fw-bold text-success">Grazie per il tuo ordine!</h1>
                             <p className="lead text-muted">Il tuo acquisto è stato confermato e verrà elaborato a breve.</p>
+
+                            {/* INIZIO MESSAGGIO EMAIL DI CONFERMA */}
+                            <div className="alert alert-warning mt-4" role="alert">
+                                <h5 className="alert-heading mb-2">✉️ Email di Conferma in Arrivo!</h5>
+                                <p className="mb-1">
+                                    A breve riceverai un'email con il riepilogo del tuo ordine all'indirizzo: <strong>{formData.email || 'non specificato'}</strong>.
+                                </p>
+                                <p className="mb-0">
+                                    Se non la trovi entro qualche ora, controlla la cartella SPAM/Posta Indesiderata.
+                                    Se ancora non dovessi visualizzarla, non esitare a <Link to="/contacts" className="alert-link fw-semibold">contattare la nostra assistenza clienti</Link>.
+                                </p>
+                            </div>
+                            {/* FINE MESSAGGIO EMAIL DI CONFERMA */}
+
                             <div className="mt-4 pt-2">
                                 <Link to="/" className="btn btn-primary btn-lg px-4 px-md-5 py-2 py-md-3 shadow-sm">
                                     Torna alla Home
@@ -209,7 +223,7 @@ function OrderSummaryPage() {
                                 </div>
                             )}
                             <div className="alert alert-info text-center mt-4" role="alert">
-                                Hai domande o problemi con il tuo ordine? <Link to="/contacts" href="/contatti" className="alert-link fw-semibold">Contatta il Servizio Clienti</Link>.
+                                Hai domande o problemi con il tuo ordine? <Link to="/contacts" className="alert-link fw-semibold">Contatta il Servizio Clienti</Link>.
                             </div>
                         </div>
                     </div>

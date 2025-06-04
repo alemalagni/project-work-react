@@ -22,7 +22,7 @@ function ShippingInfoBanner() {
         >
             <span className="text-center flex-grow-1">
                 <i className="fas fa-truck me-2"></i>
-                Spedizione gratuita per ordini superiori a 50€!
+                Spedizione gratuita per ordini superiori a €50 al netto di sconti!
             </span>
             <button
                 type="button"
