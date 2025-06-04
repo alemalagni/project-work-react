@@ -34,8 +34,8 @@ function App() {
                 <Route path="/privacy&policy" element={<PrivacyPolicyPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/order-summary" element={<OrderSummaryPage />} />
-                <Route path="*" element={<NotFound />} />
               </Route>
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
         </CartProvider>
