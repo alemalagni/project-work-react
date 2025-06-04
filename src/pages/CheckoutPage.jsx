@@ -95,6 +95,7 @@ function CheckoutPage() {
         shipping_price: actualShippingCost,
 
         // Articoli del carrello - FONDAMENTALE per il backend!
+
         cartItems: cartItems,
       };
 
