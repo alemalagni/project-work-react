@@ -109,13 +109,19 @@ a {
 
 .nav-link.active {
     background-color: #E75924;
-    color: #ffffff !important;
+    color: #ffffff;
     font-weight: 700;
 }
 
 .nav-link:hover {
     background-color: #efefef;
     color: #E75924;
+}
+
+.nav-link.active:hover {
+    background-color: #E75924;
+    color: #ffffff;
+    font-weight: 700;
 }
 
 .btn-primary {
