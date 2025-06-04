@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useCart } from "../contexts/CartContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 function CheckoutPage() {
-  const { cartItems, cartTotal, totalItemsInCart, clearCart } = useCart(); // Aggiunto clearCart qui
+  const { cartItems, cartTotal, totalItemsInCart, clearCart } = useCart();
   const [promoDiscountPercent, setPromoDiscountPercent] = useState(0);
-  // const { clearCart } = useCart(); // Rimosso duplicato
+  // Rimosso: const [showShippingWarning, setShowShippingWarning] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -52,11 +52,12 @@ function CheckoutPage() {
     day: 'numeric'
   });
 
-  // Calcoli per la visualizzazione nel riepilogo (usano lo stato promoDiscountPercent)
   const discountAmountFromState = cartTotal * (promoDiscountPercent / 100);
   const discountedTotalFromState = cartTotal - discountAmountFromState;
-  const shippingCostFromState = discountedTotalFromState > 50 || discountedTotalFromState === 0 ? 0 : 5.99; // Aggiunto controllo per discountedTotalFromState === 0
+  const shippingCostFromState = discountedTotalFromState > 50 || discountedTotalFromState === 0 ? 0 : 5.99;
   const finalOrderTotalFromState = discountedTotalFromState + shippingCostFromState;
+
+  // Rimosso: useEffect per showShippingWarning
 
   function sendForm(e) {
     e.preventDefault();
@@ -75,27 +76,18 @@ function CheckoutPage() {
     }
 
     const submitOrder = (promoCodeIdForSubmit, currentPercent, currentDiscountAmount) => {
-      // Ricalcola i totali CON I VALORI DELLO SCONTO AGGIORNATI E CONFERMATI
       const actualDiscountedTotal = cartTotal - currentDiscountAmount;
-      const actualShippingCost = actualDiscountedTotal > 50 || actualDiscountedTotal === 0 ? 0 : 5.99; // Aggiunto controllo per actualDiscountedTotal === 0
+      const actualShippingCost = actualDiscountedTotal > 50 || actualDiscountedTotal === 0 ? 0 : 5.99;
       const actualFinalOrderTotal = actualDiscountedTotal + actualShippingCost;
 
       const orderData = {
-        // Dati principali del form
         name: formData.name,
         surname: formData.surname,
         email: formData.email,
-        address: `${formData.address}${formData.address2 ? `, ${formData.address2}` : ''}, ${formData.city}, ${formData.state}`, // Indirizzo più completo
-        // city: formData.city, // Se il backend li vuole separati
-        // state: formData.state, // Se il backend li vuole separati
+        address: `${formData.address}${formData.address2 ? `, ${formData.address2}` : ''}, ${formData.city}, ${formData.state}`,
         payment_method: formData.payment_method,
-
-        // Dati calcolati dell'ordine
         total_amount: actualFinalOrderTotal,
         shipping_price: actualShippingCost,
-
-        // Articoli del carrello - FONDAMENTALE per il backend!
-
         cartItems: cartItems,
       };
 
@@ -104,22 +96,21 @@ function CheckoutPage() {
       }
 
       axios.post(`${import.meta.env.VITE_PUBLIC_PATH}manga/order`, orderData)
-        .then((response) => { // Aggiunto response per poter accedere a orderId se il backend lo restituisce nel corpo
+        .then((response) => {
           clearCart();
-          // alert("Ordine completato con successo!"); // Potrebbe non essere necessario se la pagina di riepilogo è chiara
           navigate("/order-summary", {
             state: {
-              formData, // Passa il formData originale per visualizzazione
-              cartItems, // Passa i cartItems originali
-              cartTotal, // Subtotale originale prima dello sconto
-              shippingCost: actualShippingCost, // Costo di spedizione calcolato
-              finalOrderTotal: actualFinalOrderTotal, // Totale finale calcolato
+              formData,
+              cartItems,
+              cartTotal,
+              shippingCost: actualShippingCost,
+              finalOrderTotal: actualFinalOrderTotal,
               estimatedShippingDate: estimatedShippingDate.toISOString(),
               payment_method: formData.payment_method,
-              promo_code: formData.promo_code, // Codice promo inserito
-              promoDiscountPercent: currentPercent, // Percentuale di sconto effettivamente applicata
-              discountAmount: currentDiscountAmount, // Ammontare dello sconto effettivamente applicato
-              orderId: response.data?.orderId // Passa l'ID dell'ordine se il backend lo restituisce
+              promo_code: formData.promo_code,
+              promoDiscountPercent: currentPercent,
+              discountAmount: currentDiscountAmount,
+              orderId: response.data?.orderId
             }
           });
         })
@@ -129,29 +120,27 @@ function CheckoutPage() {
         });
     };
 
-    if (formData.promo_code.trim()) { // Controlla se promo_code non è vuoto
+    if (formData.promo_code.trim()) {
       axios.get(`${import.meta.env.VITE_PUBLIC_PATH}manga/promo_code?code=${encodeURIComponent(formData.promo_code.trim())}`)
         .then(res => {
           if (res.data && res.data.id && typeof res.data.value_promo === 'number') {
             const percent = res.data.value_promo;
             const discount = cartTotal * (percent / 100);
-            setPromoDiscountPercent(percent); // Aggiorna lo stato per la UI
-            submitOrder(res.data.id, percent, discount); // Passa i valori corretti a submitOrder
+            setPromoDiscountPercent(percent);
+            submitOrder(res.data.id, percent, discount);
           } else {
-            setPromoDiscountPercent(0); // Resetta lo sconto nella UI
+            setPromoDiscountPercent(0);
             alert("Codice promo non valido o scaduto.");
-            // Non procedere con submitOrder se il codice promo è invalido e l'utente si aspettava uno sconto
           }
         })
         .catch(err => {
-          setPromoDiscountPercent(0); // Resetta lo sconto nella UI
+          setPromoDiscountPercent(0);
           console.error("Errore verifica codice promo:", err.response ? err.response.data : err.message);
           alert(err.response?.data?.error || "Errore nella verifica del codice promo. Prova a inviare l'ordine senza codice o contatta l'assistenza.");
-          // Non procedere con submitOrder
         });
     } else {
-      setPromoDiscountPercent(0); // Assicura che non ci sia sconto se non c'è codice
-      submitOrder(null, 0, 0); // Procedi senza sconto
+      setPromoDiscountPercent(0);
+      submitOrder(null, 0, 0);
     }
   }
 
@@ -171,14 +160,15 @@ function CheckoutPage() {
               ) : (
                 <>
                   <ul className="list-group list-group-flush mb-4" style={{ maxHeight: '450px', overflowY: 'auto' }}>
+                    {/* ... mapping cartItems ... */}
                     {cartItems.map(item => (
-                      <li key={item.slug} className="list-group-item d-flex align-items-center py-3 px-0 px-md-3"> {/* Ajustato padding per consistenza */}
+                      <li key={item.slug} className="list-group-item d-flex align-items-center py-3 px-0 px-md-3">
                         {item.imagePath && (
                           <img
                             src={item.imagePath}
                             alt={item.title}
                             style={{
-                              width: '100px', // Leggermente più piccolo per mobile e più item
+                              width: '100px',
                               height: '150px',
                               objectFit: 'contain',
                               marginRight: '15px',
@@ -188,7 +178,7 @@ function CheckoutPage() {
                           />
                         )}
                         <div className="flex-grow-1">
-                          <h5 className="mb-1 fw-semibold" style={{ fontSize: '1.1rem' }}>{item.title}</h5> {/* Leggermente più piccolo se molti item */}
+                          <h5 className="mb-1 fw-semibold" style={{ fontSize: '1.1rem' }}>{item.title}</h5>
                           <div className="mb-1">
                             <small className="text-muted">Prezzo: </small>
                             <small className="text-dark">{formatPrice(item.effective_price)}</small>
@@ -212,14 +202,12 @@ function CheckoutPage() {
                       <span className="text-muted">Subtotale ({totalItemsInCart} articoli):</span>
                       <strong>{formatPrice(cartTotal)}</strong>
                     </div>
-                    {/* Mostra lo sconto basato sullo stato, che si aggiorna dopo la verifica del codice */}
                     {promoDiscountPercent > 0 && (
                       <div className="d-flex justify-content-between align-items-center mb-2 text-success">
                         <span>Sconto promo ({promoDiscountPercent}%):</span>
                         <strong>-{formatPrice(discountAmountFromState)}</strong>
                       </div>
                     )}
-                    {/* Mostra le spese di spedizione basate sullo stato, che si aggiorna con lo sconto */}
                     <div className="d-flex justify-content-between align-items-center mb-2">
                       <span className="text-muted">Spedizione:</span>
                       <strong>{shippingCostFromState === 0 ? 'Gratuita' : formatPrice(shippingCostFromState)}</strong>
@@ -228,6 +216,10 @@ function CheckoutPage() {
                       <span className="text-muted">Spedizione stimata il:</span>
                       <strong>{estimatedShippingDateFormatted}</strong>
                     </div>
+                    <small className="form-text text-muted mt-1" style={{ fontSize: '0.75rem', display: 'block' }}>
+                      Nota: la spedizione è gratuita per ordini superiori a {formatPrice(50)}.
+                      L'uso di un codice sconto potrebbe modificare il totale e i costi di spedizione.
+                    </small>
                     <hr className="my-3" />
                     <div className="d-flex justify-content-between align-items-center mt-2">
                       <h4 className="mb-0 fw-bold">Totale Ordine:</h4>
@@ -242,7 +234,6 @@ function CheckoutPage() {
                   <hr className="my-4" />
                   <h3 className="mb-4">Dati di Spedizione e Pagamento</h3>
                   <form className="row g-3" onSubmit={sendForm}>
-                    {/* ... tutti i tuoi campi del form ... */}
                     <div className="col-md-6">
                       <label htmlFor="nameInput" className="form-label">Nome</label>
                       <input type="text" className="form-control" id="nameInput" name="name" value={formData.name} onChange={handleFormData} required />
@@ -251,11 +242,11 @@ function CheckoutPage() {
                       <label htmlFor="surnameInput" className="form-label">Cognome</label>
                       <input type="text" className="form-control" id="surnameInput" name="surname" value={formData.surname} onChange={handleFormData} required />
                     </div>
-                    <div className="col-md-7"> {/* Leggermente più largo per l'email */}
+                    <div className="col-md-7">
                       <label htmlFor="emailInput" className="form-label">Email</label>
                       <input type="email" className="form-control" id="emailInput" name="email" value={formData.email} onChange={handleFormData} required />
                     </div>
-                    <div className="col-md-5"> {/* Leggermente più stretto per il promo */}
+                    <div className="col-md-5">
                       <label htmlFor="promoCodeInput" className="form-label">Codice Promo</label>
                       <input type="text" className="form-control" id="promoCodeInput" name="promo_code" value={formData.promo_code} onChange={handleFormData} placeholder="Opzionale" />
                     </div>
@@ -275,7 +266,6 @@ function CheckoutPage() {
                       <label htmlFor="stateInput" className="form-label">Regione</label>
                       <select id="stateInput" name="state" className="form-select" value={formData.state} onChange={handleFormData} required >
                         <option value="">Seleziona...</option>
-                        {/* ... opzioni regioni ... */}
                         <option value="ABR">Abruzzo</option><option value="BAS">Basilicata</option><option value="CAL">Calabria</option><option value="CAM">Campania</option><option value="EMR">Emilia-Romagna</option><option value="FVG">Friuli-Venezia Giulia</option><option value="LAZ">Lazio</option><option value="LIG">Liguria</option><option value="LOM">Lombardia</option><option value="MAR">Marche</option><option value="MOL">Molise</option><option value="PMN">Piemonte</option><option value="PUG">Puglia</option><option value="SAR">Sardegna</option><option value="SIC">Sicilia</option><option value="TOS">Toscana</option><option value="TAA">Trentino-Alto Adige</option><option value="UMB">Umbria</option><option value="VDA">Valle d'Aosta</option><option value="VEN">Veneto</option>
                       </select>
                     </div>
