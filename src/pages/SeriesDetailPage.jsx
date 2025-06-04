@@ -1,73 +1,90 @@
-
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import MangaCard from "../components/MangaCard";
 import MangaListCard from "../components/MangaListCard";
+import PaginationControls from "../components/PaginationControls";
 
-function prezzo(price) {
-
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-
-    const prezzo = String(price);
-    let decimale = prezzo.slice(prezzo.indexOf(".") + 1);
-
-    if (prezzo.slice(prezzo.indexOf(".") + 1).length === 1) {
-        decimale = prezzo.slice(prezzo.indexOf(".") + 1) + "0";
-    } else if (prezzo.slice(prezzo.indexOf(".") + 1).length === 0) {
-        decimale = "00";
-    } else if (prezzo.slice(prezzo.indexOf(".") + 1).length === 2) {
-        decimale = prezzo.slice(prezzo.indexOf(".") + 1);
-    }
-
-    const newPrice = prezzo.slice(0, prezzo.indexOf(".")) + "," + decimale;
-    return newPrice;
-}
 
 function SerieDetailsPage() {
     const { slug } = useParams();
     const [serie, setSerie] = useState(null);
-    const [volumi, setVolumi] = useState([]);
+    const [allVolumi, setAllVolumi] = useState([]);
+    const [displayVolumi, setDisplayVolumi] = useState([]);
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [isInitialized, setIsInitialized] = useState(false);
-    const [viewMode, setViewMode] = useState("grid")
+    const [viewMode, setViewMode] = useState("grid");
+
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(20);
+
+
 
     useEffect(() => {
         axios.get(import.meta.env.VITE_PUBLIC_PATH + `manga/series/${slug}`)
             .then(res => {
                 setSerie(res.data.series);
-                setVolumi(res.data.manga);
+                setAllVolumi(res.data.manga);
             })
             .catch(err => console.error(err));
     }, [slug]);
 
 
-
     useEffect(() => {
         const urlView = searchParams.get('view') || 'grid';
+        const urlPage = parseInt(searchParams.get('page')) || 1;
 
         if (['grid', 'list'].includes(urlView)) {
             setViewMode(urlView);
         } else {
             setViewMode('grid');
         }
+        setCurrentPage(Math.max(1, urlPage));
         setIsInitialized(true);
     }, []);
+
 
     useEffect(() => {
         if (!isInitialized) return;
         const newParams = new URLSearchParams();
 
         if (viewMode && viewMode !== 'grid') {
-            newParams.set("view", viewMode)
+            newParams.set("view", viewMode);
+        }
+        if (currentPage !== 1) {
+            newParams.set("page", currentPage.toString());
         }
 
         setSearchParams(newParams, { replace: true });
-    }, [viewMode]);
+    }, [viewMode, currentPage, isInitialized, setSearchParams]);
 
+
+    useEffect(() => {
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        const currentItems = allVolumi.slice(indexOfFirstItem, indexOfLastItem);
+        setDisplayVolumi(currentItems);
+
+        if (allVolumi.length > 0 && currentPage > Math.ceil(allVolumi.length / itemsPerPage)) {
+            setCurrentPage(1);
+        } else if (allVolumi.length === 0 && currentPage !== 1) {
+            setCurrentPage(1);
+        }
+
+        window.scrollTo(0, 0);
+
+    }, [allVolumi, currentPage, itemsPerPage]);
+
+
+    const totalPages = Math.ceil(allVolumi.length / itemsPerPage);
+
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        window.scrollTo(0, 0);
+    };
 
     if (!serie) {
         return <p>Caricamento...</p>;
@@ -77,14 +94,13 @@ function SerieDetailsPage() {
         <div className="container mt-2">
             <div className="position-relative">
                 <img
-                    className="card-img-top  rounded-top-4"
+                    className="card-img-top rounded-top-4"
                     src={import.meta.env.VITE_PUBLIC_PATH + serie.image_series}
                     alt={serie.name}
                     style={{
                         height: "400px",
                         objectFit: "cover",
                         objectPosition: "top",
-                        backgroundColor: "#f8f8f8", // per riempire eventuali spazi vuoti
                     }}
                 />
                 <div className="fade-bottom" />
@@ -101,7 +117,7 @@ function SerieDetailsPage() {
             </div>
 
             {/* bottoni per paginazione griglia o lista */}
-            <div className="d-flex align-items-center gap-2">
+            <div className="d-flex align-items-center gap-2 mb-4">
                 <button
                     className={`btn btn-sm ${viewMode === "grid" ? "btn-primary" : "btn-outline-primary"}`}
                     onClick={() => setViewMode("grid")}
@@ -120,10 +136,10 @@ function SerieDetailsPage() {
 
             {/* visualizzazione manga */}
             <div className="row mb-5">
-                {volumi.length > 0 ? (
+                {displayVolumi.length > 0 ? (
                     viewMode === "grid" ? (
                         <div className="row mt-4">
-                            {volumi.map(volumiItem => (
+                            {displayVolumi.map(volumiItem => (
                                 <div key={volumiItem.id} className="col-12 col-md-4 col-lg-3 mt-3">
                                     <MangaCard data={volumiItem} />
                                 </div>
@@ -131,7 +147,7 @@ function SerieDetailsPage() {
                         </div>
                     ) : (
                         <div className="list-group mt-4">
-                            {volumi.map(volumiItem => (
+                            {displayVolumi.map(volumiItem => (
                                 <div key={volumiItem.id} className="list-group-item">
                                     <MangaListCard data={volumiItem} />
                                 </div>
@@ -139,10 +155,17 @@ function SerieDetailsPage() {
                         </div>
                     )
                 ) : (
-                    <p>Nessun volume trovato.</p>
+                    <p className="text-center mt-5">Nessun volume trovato per questa serie.</p>
                 )}
-
             </div>
+
+            {totalPages > 1 && (
+                <PaginationControls
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={handlePageChange}
+                />
+            )}
         </div>
     );
 }

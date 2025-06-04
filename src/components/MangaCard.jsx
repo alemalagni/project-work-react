@@ -45,11 +45,13 @@ function MangaCard({ data }) {
                 </div>
             </Link>
             <div className="card-body d-flex flex-column justify-content-between">
-                <div className="text-center">
-                    <p>
-                        <strong>{data.title}</strong>
-                    </p>
-                </div>
+                <Link to={`/manga/${data.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <div className="text-center">
+                        <p>
+                            <strong>{data.title}</strong>
+                        </p>
+                    </div>
+                </Link>
                 <div className="mt-1 d-flex flex-column">
                     <div className="text-center">
                         {discountPercentualeNumerico > 0 ? (
@@ -76,9 +78,7 @@ function MangaCard({ data }) {
                         </div>
                     </div>
 
-                    {/* <button className="btn btn-warning text-primary-emphasis mt-1">
-                        <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
-                    </button> */}
+
                     <AddToCartButton manga={data} />
 
                 </div>

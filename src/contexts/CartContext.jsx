@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
 const CART_STORAGE_KEY = 'mangaShopCart'; // Chiave per localStorage
@@ -80,6 +80,8 @@ export function CartProvider({ children }) {
     return total + (price * item.quantity);
   }, 0);
 
+  // clearCart
+  const clearCart = () => setCartItems([]);
 
   return (
     <CartContext.Provider
@@ -90,7 +92,8 @@ export function CartProvider({ children }) {
         decreaseQuantity,
         increaseQuantity,
         totalItemsInCart,
-        cartTotal
+        cartTotal,
+        clearCart
       }}
     >
       {children}

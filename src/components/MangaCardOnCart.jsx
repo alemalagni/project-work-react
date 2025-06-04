@@ -1,6 +1,4 @@
-// src/components/MangaCardOnCart.js (Con pulsante "-" disabilitato a quantità 1)
-import React from 'react';
-import { useCart } from '../contexts/CartContext'; // Assicurati che il percorso sia corretto
+import { useCart } from '../contexts/CartContext';
 import { Link } from 'react-router-dom';
 
 const MangaCardOnCart = ({ item, closeCartOffcanvas }) => {
@@ -12,7 +10,7 @@ const MangaCardOnCart = ({ item, closeCartOffcanvas }) => {
     effective_price,
     series_name,
     slug,
-    quantity // La quantità è chiave qui
+    quantity
   } = item;
 
   const itemTotalPrice = effective_price * quantity;
@@ -33,7 +31,7 @@ const MangaCardOnCart = ({ item, closeCartOffcanvas }) => {
 
   return (
     <li className="list-group-item p-3">
-      <div className="row g-3 align-items-center"> {/* Main row for image and content */}
+      <div className="row g-3 align-items-center">
         {/* Colonna Immagine */}
         <div className="col-3 text-center">
           <Link to={'/manga/' + slug} onClick={handleImageLinkClick}>
@@ -46,7 +44,7 @@ const MangaCardOnCart = ({ item, closeCartOffcanvas }) => {
           </Link>
         </div>
 
-        {/* Colonna Contenuto Principale (Testo + Controlli) */}
+
         <div className="col-9 ">
           <div className="d-flex flex-column justify-content-between h-100">
 
@@ -81,7 +79,7 @@ const MangaCardOnCart = ({ item, closeCartOffcanvas }) => {
                   onClick={() => decreaseQuantity(slug)}
                   aria-label="Diminuisci quantità"
                   style={{ lineHeight: '1' }}
-                  disabled={quantity <= 1} // <<< MODIFICA QUI: disabilita se quantità è 1 o meno
+                  disabled={quantity <= 1}
                 >
                   &ndash;
                 </button>

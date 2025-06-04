@@ -17,7 +17,7 @@ const ContactsPage = () => {
                     <p>Via Luca Signorelli, 12, 00196 Roma (RM)</p>
 
                     <h5><i className="fas fa-envelope text-warning me-2"></i> Email</h5>
-                    <p><a href="mailto:support@mangaverse.com">support.manga@ecommerce.com</a></p>
+                    <p><a href="mailto:support@mangaverse.com">ecommerce.manga@gmail.com</a></p>
 
                     <h5><i className="fas fa-phone text-success me-2"></i> Telefono</h5>
                     <p>+39 123 456 7890</p>
