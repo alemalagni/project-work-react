@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function CheckoutPage() {
-  const { cartItems, cartTotal, totalItemsInCart } = useCart();
+  const { cartItems, cartTotal, totalItemsInCart, clearCart } = useCart(); // Aggiunto clearCart qui
   const [promoDiscountPercent, setPromoDiscountPercent] = useState(0);
-  const { clearCart } = useCart();
+  // const { clearCart } = useCart(); // Rimosso duplicato
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -41,7 +41,6 @@ function CheckoutPage() {
     return '€ ' + price.toFixed(2).replace('.', ',');
   };
 
-  // Calcolo e formattazione data di spedizione stimata
   const today = new Date();
   const estimatedShippingDate = new Date(today);
   estimatedShippingDate.setDate(today.getDate() + 7);
@@ -53,18 +52,15 @@ function CheckoutPage() {
     day: 'numeric'
   });
 
-
-
-  // Calcolo sconto:
-  const discountAmount = cartTotal * (promoDiscountPercent / 100);
-  const discountedTotal = cartTotal - discountAmount;
-  const shippingCost = discountedTotal > 50 ? 0 : 5.99;
-  const finalOrderTotal = discountedTotal + shippingCost;
+  // Calcoli per la visualizzazione nel riepilogo (usano lo stato promoDiscountPercent)
+  const discountAmountFromState = cartTotal * (promoDiscountPercent / 100);
+  const discountedTotalFromState = cartTotal - discountAmountFromState;
+  const shippingCostFromState = discountedTotalFromState > 50 || discountedTotalFromState === 0 ? 0 : 5.99; // Aggiunto controllo per discountedTotalFromState === 0
+  const finalOrderTotalFromState = discountedTotalFromState + shippingCostFromState;
 
   function sendForm(e) {
     e.preventDefault();
 
-    // Validazione base
     if (
       !formData.name ||
       !formData.surname ||
@@ -78,77 +74,85 @@ function CheckoutPage() {
       return;
     }
 
-    // Funzione per inviare l'ordine dopo aver risolto l'ID promo
-    const submitOrder = (promoCodeId, percent, discount) => {
-      const discountedTotal = cartTotal - discount;
-      const shippingCost = discountedTotal > 50 ? 0 : 5.99;
-      const finalOrderTotal = discountedTotal + shippingCost;
+    const submitOrder = (promoCodeIdForSubmit, currentPercent, currentDiscountAmount) => {
+      // Ricalcola i totali CON I VALORI DELLO SCONTO AGGIORNATI E CONFERMATI
+      const actualDiscountedTotal = cartTotal - currentDiscountAmount;
+      const actualShippingCost = actualDiscountedTotal > 50 || actualDiscountedTotal === 0 ? 0 : 5.99; // Aggiunto controllo per actualDiscountedTotal === 0
+      const actualFinalOrderTotal = actualDiscountedTotal + actualShippingCost;
 
       const orderData = {
-        total_amount: finalOrderTotal,
-        shipping_price: shippingCost,
-        payment_method: formData.payment_method,
-        address: formData.address,
-        email: formData.email,
+        // Dati principali del form
         name: formData.name,
         surname: formData.surname,
+        email: formData.email,
+        address: `${formData.address}${formData.address2 ? `, ${formData.address2}` : ''}, ${formData.city}, ${formData.state}`, // Indirizzo più completo
+        // city: formData.city, // Se il backend li vuole separati
+        // state: formData.state, // Se il backend li vuole separati
+        payment_method: formData.payment_method,
+
+        // Dati calcolati dell'ordine
+        total_amount: actualFinalOrderTotal,
+        shipping_price: actualShippingCost,
+
+        // Articoli del carrello - FONDAMENTALE per il backend!
+        cartItems: cartItems,
       };
 
-      if (promoCodeId) {
-        orderData.promo_code_id = promoCodeId;
+      if (promoCodeIdForSubmit) {
+        orderData.promo_code_id = promoCodeIdForSubmit;
       }
 
       axios.post(`${import.meta.env.VITE_PUBLIC_PATH}manga/order`, orderData)
-        .then(() => {
+        .then((response) => { // Aggiunto response per poter accedere a orderId se il backend lo restituisce nel corpo
           clearCart();
-          alert("Ordine completato con successo!");
+          // alert("Ordine completato con successo!"); // Potrebbe non essere necessario se la pagina di riepilogo è chiara
           navigate("/order-summary", {
             state: {
-              formData,
-              cartItems,
-              cartTotal,
-              shippingCost,
-              finalOrderTotal,
+              formData, // Passa il formData originale per visualizzazione
+              cartItems, // Passa i cartItems originali
+              cartTotal, // Subtotale originale prima dello sconto
+              shippingCost: actualShippingCost, // Costo di spedizione calcolato
+              finalOrderTotal: actualFinalOrderTotal, // Totale finale calcolato
               estimatedShippingDate: estimatedShippingDate.toISOString(),
               payment_method: formData.payment_method,
-              promo_code: formData.promo_code,
-              promoDiscountPercent: percent, // <-- passa il valore calcolato
-              discountAmount: discount       // <-- passa il valore calcolato
+              promo_code: formData.promo_code, // Codice promo inserito
+              promoDiscountPercent: currentPercent, // Percentuale di sconto effettivamente applicata
+              discountAmount: currentDiscountAmount, // Ammontare dello sconto effettivamente applicato
+              orderId: response.data?.orderId // Passa l'ID dell'ordine se il backend lo restituisce
             }
           });
         })
-        .catch(() => {
-          alert("Errore durante l'invio dell'ordine.");
+        .catch((err) => {
+          console.error("Errore durante l'invio dell'ordine:", err.response ? err.response.data : err.message);
+          alert(err.response?.data?.error || "Errore durante l'invio dell'ordine. Riprova o contatta l'assistenza.");
         });
     };
-    // Se c'è un codice promo, recupera la percentuale e calcola lo sconto
-    if (formData.promo_code) {
-      axios.get(`${import.meta.env.VITE_PUBLIC_PATH}manga/promo_code?code=${encodeURIComponent(formData.promo_code)}`)
+
+    if (formData.promo_code.trim()) { // Controlla se promo_code non è vuoto
+      axios.get(`${import.meta.env.VITE_PUBLIC_PATH}manga/promo_code?code=${encodeURIComponent(formData.promo_code.trim())}`)
         .then(res => {
-          if (res.data && res.data.id) {
-            const percent = res.data.value_promo || 0;
+          if (res.data && res.data.id && typeof res.data.value_promo === 'number') {
+            const percent = res.data.value_promo;
             const discount = cartTotal * (percent / 100);
-            setPromoDiscountPercent(percent); // aggiorna la view live
-            submitOrder(res.data.id, percent, discount); // passa i valori calcolati
+            setPromoDiscountPercent(percent); // Aggiorna lo stato per la UI
+            submitOrder(res.data.id, percent, discount); // Passa i valori corretti a submitOrder
           } else {
-            setPromoDiscountPercent(0);
-            alert("Codice promo non valido.");
+            setPromoDiscountPercent(0); // Resetta lo sconto nella UI
+            alert("Codice promo non valido o scaduto.");
+            // Non procedere con submitOrder se il codice promo è invalido e l'utente si aspettava uno sconto
           }
         })
         .catch(err => {
-          setPromoDiscountPercent(0);
-          if (err.response && err.response.data && err.response.data.error) {
-            alert(err.response.data.error);
-          } else {
-            alert("Errore nella verifica del codice promo.");
-          }
+          setPromoDiscountPercent(0); // Resetta lo sconto nella UI
+          console.error("Errore verifica codice promo:", err.response ? err.response.data : err.message);
+          alert(err.response?.data?.error || "Errore nella verifica del codice promo. Prova a inviare l'ordine senza codice o contatta l'assistenza.");
+          // Non procedere con submitOrder
         });
     } else {
-      setPromoDiscountPercent(0);
-      submitOrder(null, 0, 0);
+      setPromoDiscountPercent(0); // Assicura che non ci sia sconto se non c'è codice
+      submitOrder(null, 0, 0); // Procedi senza sconto
     }
   }
-
 
   return (
     <div className="container-fluid gradient-bg py-5">
@@ -157,238 +161,143 @@ function CheckoutPage() {
           <div className="col-lg-8 col-md-10">
             <div className="border rounded p-4 p-md-5 shadow-sm bg-light">
 
-
-              {/* --- INIZIO RIEPILOGO ORDINE --- */}
-              <h2 className="mb-4">Riepilogo Ordine</h2> {/* Titolo principale del riepilogo più grande */}
+              <h2 className="mb-4">Riepilogo Ordine</h2>
               {cartItems.length === 0 ? (
-                <p>Il tuo carrello è vuoto. Aggiungi qualcosa prima di procedere al checkout!</p>
+                <div className="text-center py-5">
+                  <p className="fs-5 text-muted">Il tuo carrello è vuoto.</p>
+                  <Link to="/" className="btn btn-primary mt-3">Continua lo Shopping</Link>
+                </div>
               ) : (
                 <>
                   <ul className="list-group list-group-flush mb-4" style={{ maxHeight: '450px', overflowY: 'auto' }}>
                     {cartItems.map(item => (
-                      <li key={item.slug} className="list-group-item d-flex align-items-center py-3 px-4"> {/* Rimosso lh-sm, aggiunto align-items-center */}
+                      <li key={item.slug} className="list-group-item d-flex align-items-center py-3 px-0 px-md-3"> {/* Ajustato padding per consistenza */}
                         {item.imagePath && (
                           <img
                             src={item.imagePath}
                             alt={item.title}
                             style={{
-                              width: '140px',    // Come da tua richiesta
-                              height: '210px',   // Come da tua richiesta
+                              width: '100px', // Leggermente più piccolo per mobile e più item
+                              height: '150px',
                               objectFit: 'contain',
-                              marginRight: '25px', // Aumentato un po' il margine
+                              marginRight: '15px',
                               borderRadius: '4px',
-                              flexShrink: 0      // Impedisce all'immagine di restringersi
+                              flexShrink: 0
                             }}
                           />
                         )}
-                        {/* Contenitore per i dettagli del prodotto, cresce per riempire lo spazio */}
                         <div className="flex-grow-1">
-                          <h4 className="mb-2 fw-semibold">{item.title}</h4> {/* Titolo più grande e semibold */}
-
+                          <h5 className="mb-1 fw-semibold" style={{ fontSize: '1.1rem' }}>{item.title}</h5> {/* Leggermente più piccolo se molti item */}
                           <div className="mb-1">
-                            <small className="text-muted">Prezzo unitario: </small>
+                            <small className="text-muted">Prezzo: </small>
                             <small className="text-dark">{formatPrice(item.effective_price)}</small>
                           </div>
-
-                          <div className="mb-1">
-                            <small className="text-muted">Quantità: </small>
+                          <div>
+                            <small className="text-muted">Qtà: </small>
                             <small className="text-dark fw-bold">{item.quantity}</small>
                           </div>
                         </div>
-
-                        {/* Contenitore per il prezzo totale dell'item, allineato a destra */}
-                        <div className="text-end ps-3" style={{ minWidth: '110px' }}> {/* Aggiunto padding a sinistra e minWidth */}
-                          <h5 className="mb-0 text-dark fw-bold"> {/* Prezzo totale item più grande e bold */}
+                        <div className="text-end ps-2" style={{ minWidth: '100px' }}>
+                          <h6 className="mb-0 text-dark fw-bold">
                             {formatPrice(item.effective_price * item.quantity)}
-                          </h5>
+                          </h6>
                         </div>
                       </li>
                     ))}
                   </ul>
 
                   <div className="pt-3">
-                    <div className="d-flex justify-content-between align-items-center mb-2 fs-6"> {/* fs-6 per testo leggermente più grande */}
-                      <span className="text-muted">Subtotale articoli ({totalItemsInCart}):</span>
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                      <span className="text-muted">Subtotale ({totalItemsInCart} articoli):</span>
                       <strong>{formatPrice(cartTotal)}</strong>
                     </div>
+                    {/* Mostra lo sconto basato sullo stato, che si aggiorna dopo la verifica del codice */}
                     {promoDiscountPercent > 0 && (
-                      <div className="d-flex justify-content-between align-items-center mb-2 fs-6">
-                        <span className="text-success">Sconto promo ({promoDiscountPercent}%):</span>
-                        <strong>-{formatPrice(discountAmount)}</strong>
+                      <div className="d-flex justify-content-between align-items-center mb-2 text-success">
+                        <span>Sconto promo ({promoDiscountPercent}%):</span>
+                        <strong>-{formatPrice(discountAmountFromState)}</strong>
                       </div>
                     )}
-                    <div className="d-flex justify-content-between align-items-center mb-2 fs-6">
+                    {/* Mostra le spese di spedizione basate sullo stato, che si aggiorna con lo sconto */}
+                    <div className="d-flex justify-content-between align-items-center mb-2">
                       <span className="text-muted">Spedizione:</span>
-                      <strong>{shippingCost === 0 ? 'Gratuita' : formatPrice(shippingCost)}</strong>
+                      <strong>{shippingCostFromState === 0 ? 'Gratuita' : formatPrice(shippingCostFromState)}</strong>
                     </div>
-                    {/* NUOVO: Data di spedizione stimata */}
-                    <div className="d-flex justify-content-between align-items-center mb-3 fs-6">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
                       <span className="text-muted">Spedizione stimata il:</span>
                       <strong>{estimatedShippingDateFormatted}</strong>
                     </div>
                     <hr className="my-3" />
                     <div className="d-flex justify-content-between align-items-center mt-2">
-                      {/* Totale Ordine più grande */}
-                      <h4 className="mb-0">Totale Ordine:</h4>
-                      <h4 className="mb-0 fw-bold">{formatPrice(finalOrderTotal)}</h4>
+                      <h4 className="mb-0 fw-bold">Totale Ordine:</h4>
+                      <h4 className="mb-0 fw-bold text-primary">{formatPrice(finalOrderTotalFromState)}</h4>
                     </div>
                   </div>
                 </>
               )}
-              {/* --- FINE RIEPILOGO ORDINE --- */}
 
-              {cartItems.length > 0 && <hr className="my-4" />}
+              {cartItems.length > 0 && (
+                <>
+                  <hr className="my-4" />
+                  <h3 className="mb-4">Dati di Spedizione e Pagamento</h3>
+                  <form className="row g-3" onSubmit={sendForm}>
+                    {/* ... tutti i tuoi campi del form ... */}
+                    <div className="col-md-6">
+                      <label htmlFor="nameInput" className="form-label">Nome</label>
+                      <input type="text" className="form-control" id="nameInput" name="name" value={formData.name} onChange={handleFormData} required />
+                    </div>
+                    <div className="col-md-6">
+                      <label htmlFor="surnameInput" className="form-label">Cognome</label>
+                      <input type="text" className="form-control" id="surnameInput" name="surname" value={formData.surname} onChange={handleFormData} required />
+                    </div>
+                    <div className="col-md-7"> {/* Leggermente più largo per l'email */}
+                      <label htmlFor="emailInput" className="form-label">Email</label>
+                      <input type="email" className="form-control" id="emailInput" name="email" value={formData.email} onChange={handleFormData} required />
+                    </div>
+                    <div className="col-md-5"> {/* Leggermente più stretto per il promo */}
+                      <label htmlFor="promoCodeInput" className="form-label">Codice Promo</label>
+                      <input type="text" className="form-control" id="promoCodeInput" name="promo_code" value={formData.promo_code} onChange={handleFormData} placeholder="Opzionale" />
+                    </div>
+                    <div className="col-12">
+                      <label htmlFor="addressInput" className="form-label">Indirizzo</label>
+                      <input type="text" className="form-control" id="addressInput" name="address" value={formData.address} onChange={handleFormData} placeholder="Via, Piazza, ecc." required />
+                    </div>
+                    <div className="col-12">
+                      <label htmlFor="address2Input" className="form-label">Dettagli indirizzo <small className="text-muted">(opzionale)</small></label>
+                      <input type="text" className="form-control" id="address2Input" name="address2" value={formData.address2} onChange={handleFormData} placeholder="Appartamento, scala, piano, interno" />
+                    </div>
+                    <div className="col-md-8">
+                      <label htmlFor="cityInput" className="form-label">Città</label>
+                      <input type="text" className="form-control" id="cityInput" name="city" value={formData.city} onChange={handleFormData} required />
+                    </div>
+                    <div className="col-md-4">
+                      <label htmlFor="stateInput" className="form-label">Regione</label>
+                      <select id="stateInput" name="state" className="form-select" value={formData.state} onChange={handleFormData} required >
+                        <option value="">Seleziona...</option>
+                        {/* ... opzioni regioni ... */}
+                        <option value="ABR">Abruzzo</option><option value="BAS">Basilicata</option><option value="CAL">Calabria</option><option value="CAM">Campania</option><option value="EMR">Emilia-Romagna</option><option value="FVG">Friuli-Venezia Giulia</option><option value="LAZ">Lazio</option><option value="LIG">Liguria</option><option value="LOM">Lombardia</option><option value="MAR">Marche</option><option value="MOL">Molise</option><option value="PMN">Piemonte</option><option value="PUG">Puglia</option><option value="SAR">Sardegna</option><option value="SIC">Sicilia</option><option value="TOS">Toscana</option><option value="TAA">Trentino-Alto Adige</option><option value="UMB">Umbria</option><option value="VDA">Valle d'Aosta</option><option value="VEN">Veneto</option>
+                      </select>
+                    </div>
 
-              <h3 className="mb-4 mt-4">Dati di Spedizione e Pagamento</h3>
-              <form className="row g-3" onSubmit={sendForm}>
-                <div className="col-md-6">
-                  <label htmlFor="nameInput" className="form-label">Nome</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="nameInput"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleFormData}
-                    required
-                  />
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="surnameInput" className="form-label">Cognome</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="surnameInput"
-                    name="surname"
-                    value={formData.surname}
-                    onChange={handleFormData}
-                    required
-                  />
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="emailInput" className="form-label">Email</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="emailInput"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleFormData}
-                    required
-                  />
-                </div>
-                <div className="col-6">
-                  <label htmlFor="promoCodeInput" className="form-label">Codice Promo (opzionale)</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="promoCodeInput"
-                    name="promo_code"
-                    value={formData.promo_code}
-                    onChange={handleFormData}
-                    placeholder="Inserisci il codice promo"
-                  />
-                </div>
-                <div className="col-12">
-                  <label htmlFor="addressInput" className="form-label">Indirizzo</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="addressInput"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleFormData}
-                    placeholder="Via, Piazza, ecc."
-                    required
-                  />
-                </div>
-                <div className="col-12">
-                  <label htmlFor="address2Input" className="form-label">Dettagli indirizzo (opzionale)</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="address2Input"
-                    name="address2"
-                    value={formData.address2}
-                    onChange={handleFormData}
-                    placeholder="Appartamento, scala, piano, interno"
-                  />
-                </div>
-                <div className="col-md-8">
-                  <label htmlFor="cityInput" className="form-label">Città</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="cityInput"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleFormData}
-                    required
-                  />
-                </div>
-                <div className="col-md-4">
-                  <label htmlFor="stateInput" className="form-label">Regione</label>
-                  <select
-                    id="stateInput"
-                    name="state"
-                    className="form-select"
-                    value={formData.state}
-                    onChange={handleFormData}
-                    required
-                  >
-                    <option value="">-- Seleziona --</option>
-                    <option value="ABR">Abruzzo</option>
-                    <option value="BAS">Basilicata</option>
-                    <option value="CAL">Calabria</option>
-                    <option value="CAM">Campania</option>
-                    <option value="EMR">Emilia-Romagna</option>
-                    <option value="FVG">Friuli-Venezia Giulia</option>
-                    <option value="LAZ">Lazio</option>
-                    <option value="LIG">Liguria</option>
-                    <option value="LOM">Lombardia</option>
-                    <option value="MAR">Marche</option>
-                    <option value="MOL">Molise</option>
-                    <option value="PMN">Piemonte</option>
-                    <option value="PUG">Puglia</option>
-                    <option value="SAR">Sardegna</option>
-                    <option value="SIC">Sicilia</option>
-                    <option value="TOS">Toscana</option>
-                    <option value="TAA">Trentino-Alto Adige</option>
-                    <option value="UMB">Umbria</option>
-                    <option value="VDA">Valle d'Aosta</option>
-                    <option value="VEN">Veneto</option>
-                  </select>
-                </div>
+                    <div className="col-12">
+                      <label htmlFor="paymentMethod" className="form-label">Metodo di pagamento</label>
+                      <select id="paymentMethod" name="payment_method" className="form-select" value={formData.payment_method} onChange={handleFormData} required >
+                        <option value="">Seleziona...</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="carta">Carta di credito</option>
+                      </select>
+                    </div>
 
-                <div className="col-12">
-                  <label htmlFor="paymentMethod" className="form-label">Metodo di pagamento</label>
-                  <select
-                    id="paymentMethod"
-                    name="payment_method"
-                    className="form-select"
-                    value={formData.payment_method}
-                    onChange={handleFormData}
-                    required
-                  >
-                    <option value="">-- Seleziona --</option>
-                    <option value="paypal">PayPal</option>
-                    <option value="carta">Carta di credito</option>
-                  </select>
-                </div>
-
-                <div className="col-12 mt-4 d-grid">
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-
-                  >
-                    Completa il Pagamento
-                  </button>
-                </div>
-              </form>
+                    <div className="col-12 mt-4 d-grid">
+                      <button type="submit" className="btn btn-primary btn-lg py-2 fw-semibold">
+                        Completa Ordine e Paga
+                      </button>
+                    </div>
+                  </form>
+                </>
+              )}
             </div>
           </div>
-
         </div>
       </div>
     </div>
