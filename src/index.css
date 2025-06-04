@@ -321,6 +321,32 @@ a {
 }
 
 
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* sfondo della track */
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #FF7F50;
+    /* colore del thumb */
+    border-radius: 0;
+    /* niente bordi arrotondati = quadrato */
+    border: 2px solid #f1f1f1;
+    /* per dare un po' di spaziatura interna */
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    /* sottile */
+    scrollbar-color: #FF7F50 #f1f1f1;
+    /* thumb + track */
+}
 
 /* Media Queries per la responsività */
 @media (max-width: 992px) {
