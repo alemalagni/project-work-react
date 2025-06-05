@@ -417,3 +417,20 @@ a {
         max-height: 120px;
     }
 }
+
+/* per rimuovere scritta tasto add to cart */
+@media (max-width: 525px),
+(min-width: 768px) and (max-width: 992px) {
+
+    .addToCart {
+        display: none;
+    }
+}
+
+@media (min-width: 526px) and (max-width: 767px),
+(min-width: 993px) {
+
+    .addToCart {
+        display: inline;
+    }
+}
