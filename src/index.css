@@ -109,13 +109,19 @@ a {
 
 .nav-link.active {
     background-color: #E75924;
-    color: #ffffff !important;
+    color: #ffffff;
     font-weight: 700;
 }
 
 .nav-link:hover {
     background-color: #efefef;
     color: #E75924;
+}
+
+.nav-link.active:hover {
+    background-color: #E75924;
+    color: #ffffff;
+    font-weight: 700;
 }
 
 .btn-primary {
@@ -327,7 +333,7 @@ a {
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: transparent;
     /* sfondo della track */
 }
 
@@ -344,7 +350,7 @@ a {
 * {
     scrollbar-width: thin;
     /* sottile */
-    scrollbar-color: #FF7F50 #f1f1f1;
+    scrollbar-color: #E75924 #f1f1f1;
     /* thumb + track */
 }
 
@@ -409,5 +415,22 @@ a {
 
     .manga-card .manga-image {
         max-height: 120px;
+    }
+}
+
+/* per rimuovere scritta tasto add to cart */
+@media (max-width: 525px),
+(min-width: 768px) and (max-width: 992px) {
+
+    .addToCart {
+        display: none;
+    }
+}
+
+@media (min-width: 526px) and (max-width: 767px),
+(min-width: 993px) {
+
+    .addToCart {
+        display: inline;
     }
 }

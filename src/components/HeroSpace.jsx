@@ -12,16 +12,16 @@ export default function HeroSpace() {
                 <div id="carouselExampleInterval" className="carousel slide" data-bs-ride="carousel">
                     <div className="carousel-inner " >
                         <div className="carousel-item active" data-bs-interval="10000">
-                            <img src={code1} className="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-3" />
+                            <img src={code1} className="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-1" />
                         </div>
                         <div className="carousel-item " data-bs-interval="10000">
-                            <img src={code2} className="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-3" />
+                            <img src={code2} className="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-2" />
                         </div>
                         <div className="carousel-item " data-bs-interval="10000">
                             <img src={code3} className="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-3" />
                         </div>
                         <div className="carousel-item " data-bs-interval="10000">
-                            <img src={code4} className="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-3" />
+                            <img src={code4} className="d-block mx-auto" style={{ width: "100%", objectFit: "cover" }} alt="foto-4" />
                         </div>
                     </div>
                     <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">

@@ -35,7 +35,8 @@ function AddToCartButton({ manga, viewMode, btnLg }) {
         onClick={handleAddToCart}
         aria-label={`Aggiungi ${manga.title || 'articolo'} al carrello`}
       >
-        <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
+        <i className="fas fa-shopping-cart"></i>
+        <span className='addToCart ms-2'>Aggiungi al carrello</span>
       </button>
     );
   }
