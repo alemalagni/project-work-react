@@ -346,6 +346,13 @@ a {
     /* per dare un po' di spaziatura interna */
 }
 
+@media (max-width: 575px) {
+    .card.shadow-sm.h-100.manga-card {
+        margin-left: 30px;
+        margin-right: 30px;
+    }
+}
+
 /* Firefox */
 * {
     scrollbar-width: thin;
