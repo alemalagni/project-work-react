@@ -35,13 +35,14 @@ function AddToCartButton({ manga, viewMode, btnLg }) {
         onClick={handleAddToCart}
         aria-label={`Aggiungi ${manga.title || 'articolo'} al carrello`}
       >
-        <i className="fas fa-shopping-cart me-2"></i>Aggiungi al carrello
+        <i className="fas fa-shopping-cart"></i>
+        <span className='addToCart ms-2'>Aggiungi al carrello</span>
       </button>
     );
   }
 
   const quantityControlBaseClasses = `btn btn-warning text-primary-emphasis`;
-  const quantityControlButtonClasses = `${quantityControlBaseClasses} ${btnLg ? 'btn-lg px-4' : 'px-4'}`;
+  const quantityControlButtonClasses = `${quantityControlBaseClasses} ${btnLg ? 'btn-lg px-4' : 'px-3'}`;
   const quantityDisplayClasses = `mx-2 ${btnLg ? 'fs-5 mx-5' : ''} d-inline-block text-center`;
   const controlsContainerClasses = `d-flex align-items-center mt-1 ${viewMode === "list" ? "justify-content-start" : "justify-content-between"} ${btnLg ? 'me-4' : ''}`;
 
